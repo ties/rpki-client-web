@@ -1,3 +1,4 @@
+"""Wrapper for rpki-client"""
 import asyncio
 import itertools
 import json
@@ -5,26 +6,23 @@ import logging
 import os.path
 import time
 from dataclasses import dataclass
-from types import SimpleNamespace
 from typing import List, Optional
 
 from prometheus_async.aio import time as time_metric
-from prometheus_client import Counter, Gauge, Histogram, Summary
-from yaml import dump, load
-
-try:
-    from yaml import CDumper as Dumper
-    from yaml import CLoader as Loader
-except ImportError:
-    from yaml import Dumper, Loader
-
+from prometheus_client import Counter, Gauge, Histogram
 
 LOG = logging.getLogger(__name__)
 
 OUTPUT_BUFFER_SIZE = 8_388_608
 
-RPKI_CLIENT_TIME = Histogram(
-    "rpki_client_seconds",
+RPKI_CLIENT_LAST_DURATION = Gauge(
+    "rpki_client_duration_seconds", "Duration of the last call to rpki-client",
+)
+RPKI_CLIENT_LAST_UPDATE = Gauge(
+    "rpki_client_last_update", "Timestamp of the last successful call to rpki-client",
+)
+RPKI_CLIENT_DURATION = Histogram(
+    "rpki_client_duration_seconds",
     "Time spent calling rpki-client",
     buckets=[1, 6, 30, 60, 120, 180, 240, 300],
 )
@@ -73,7 +71,7 @@ class RpkiClient:
 
         return args
 
-    @time_metric(RPKI_CLIENT_TIME)
+    @time_metric(RPKI_CLIENT_DURATION)
     async def run(self) -> ExecutionResult:
         LOG.debug("executing %s %s", self.rpki_client, " ".join(self.args))
         t0 = time.monotonic()
@@ -96,9 +94,13 @@ class RpkiClient:
             proc.kill()
 
         stdout, stderr = await proc.communicate()
-        LOG.info("[%d] exited with %d", proc.pid, proc.returncode)
+        duration = time.monotonic() - t0
+        LOG.info(
+            "[%d] exited with %d in %f seconds", proc.pid, proc.returncode, duration
+        )
 
         RPKI_CLIENT_UPDATE_COUNT.labels(returncode=proc.returncode).inc()
+        RPKI_CLIENT_LAST_DURATION.set(duration)
 
         if proc.returncode == 0:
             asyncio.create_task(self.update_validated_objects_gauge())
@@ -107,7 +109,7 @@ class RpkiClient:
             returncode=proc.returncode,
             stdout=stdout.decode(),
             stderr=stderr.decode(),
-            duration=time.monotonic() - t0,
+            duration=duration,
         )
 
     async def update_validated_objects_gauge(self) -> None:
@@ -158,3 +160,5 @@ class RpkiClient:
 
             for key in LABELS:
                 RPKI_OBJECTS_COUNT.labels(type=key).set(metadata.get(key, None))
+
+        RPKI_CLIENT_LAST_UPDATE.set(time.time())
