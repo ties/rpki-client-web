@@ -1,2 +1,2 @@
-/opt/rpkiclientweb/cache true daemon,32768:32768 0666 2777
-/opt/rpkiclientweb/output true daemon,32768:32768 0666 2777
+/opt/rpkiclientweb/cache true daemon,32768:32768 0666 0777
+/opt/rpkiclientweb/output true daemon,32768:32768 0666 0777
