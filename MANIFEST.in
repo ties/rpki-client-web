@@ -17,6 +17,7 @@ graft .github
 
 exclude requirements.txt requirements_test.txt
 exclude pyproject.toml .gitkeep .isort.cfg Pipfile.lock
+exclude Dockerfile .dockerignore docker/*
 
 exclude venv
 
