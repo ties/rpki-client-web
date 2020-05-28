@@ -12,20 +12,20 @@ with open(os.path.join(here, "README.md"), "rb") as f:
 
 setup(
     name="rpkiclientweb",
-    version="0.1.0",
+    version="0.1.1",
     author="Ties de Kock",
     author_email="ties@tiesdekock.nl",
     description="A web api for RPKI-client",
     long_description_content_type="text/markdown",
     long_description=long_descr,
     url="https://github.com/ties/rpki-client-web",
-    entry_points={"console_scripts": ["rpki-client-web = rpkiclientweb:main_func"]},
+    entry_points={"console_scripts": ["rpki-client-web = rpkiclientweb.__main__:main"]},
     install_requires=["aiohttp", "pyyaml", "prometheus-async"],
     include_package_data=True,
     python_requires=">=3.8",
     license="MIT",
     keywords="rpki rpki-client validator",
-    packages=["rpkiclientweb"],
+    packages=find_packages(exclude=["tests", "tests.*"]),
     classifiers=[
         "Development Status :: 5 - Production/Stable",
         "Topic :: Software Development :: Libraries",

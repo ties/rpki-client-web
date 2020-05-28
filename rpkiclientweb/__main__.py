@@ -1,6 +1,7 @@
 import argparse
 import asyncio
 import logging
+import sys
 
 from yaml import Loader, dump, load
 
@@ -33,6 +34,8 @@ def main():
     web = RpkiClientWeb(conf)
     asyncio.run(web.run())
 
+    return 0
+
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main())
