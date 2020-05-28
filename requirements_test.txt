@@ -1,3 +1,6 @@
-black==19.10b0
-flake8>=3.8.2
-isort>=4.3.21
+-r requirements_test_pre_commit.txt
+
+twine>=3.1.1
+isort[pyproject]>=4.3.21
+check-manifest>=0.42
+readme_renderer>=26.0

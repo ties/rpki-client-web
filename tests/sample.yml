@@ -1,0 +1,15 @@
+cache_dir: /
+output_dir: /
+
+timeout: 450
+interval: 600
+
+host: 0.0.0.0
+port: 8888
+
+# Not the real binary but it is known to exist
+rpki_client: /bin/bash
+
+trust_anchor_locators:
+  - /etc/pki/tals/ripe.tal
+    #  - /etc/pki/tals/afrinic.tal
