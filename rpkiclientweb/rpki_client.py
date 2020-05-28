@@ -28,9 +28,7 @@ RPKI_CLIENT_TIME = Histogram(
     "Time spent calling rpki-client",
     buckets=[1, 6, 30, 60, 120, 180, 240, 300],
 )
-RPKI_CLIENT_VALIDATED_OBJECTS = Gauge(
-    "rpki_client_objects", "Number of objects by type", ["type"]
-)
+RPKI_OBJECTS_COUNT = Gauge("rpki_objects", "Number of objects by type", ["type"])
 RPKI_CLIENT_UPDATE_COUNT = Counter(
     "rpki_client_update", "Number of rpki-client updates", ["returncode"]
 )
@@ -159,4 +157,4 @@ class RpkiClient:
             metadata = json.load(f)["metadata"]
 
             for key in LABELS:
-                RPKI_CLIENT_VALIDATED_OBJECTS.labels(type=key).set(metadata[key])
+                RPKI_OBJECTS_COUNT.labels(type=key).set(metadata.get(key, None))
