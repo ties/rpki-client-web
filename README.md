@@ -5,6 +5,7 @@ Usage
 =====
 
 Create a `config.yml` file and run the utility with `python -m rpki_client -v -c [config_file_name]`.
+Note that the default config only contains the RIPE NCC tal for ease of use during testing
 
 Or run a docker container:
 ```
