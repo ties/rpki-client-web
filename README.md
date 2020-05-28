@@ -3,3 +3,4 @@ CentOS packages needed:
   * python-devel
   * git
   * python-pipenv
+  * gcc

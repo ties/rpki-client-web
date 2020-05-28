@@ -7,7 +7,7 @@ interval: 600
 host: 0.0.0.0
 port: 8888
 
-rpki_client: /usr/bin/rpki-client
+rpki_client: /usr/sbin/rpki-client
 
 trust_anchor_locators:
   - /etc/pki/tals/ripe.tal

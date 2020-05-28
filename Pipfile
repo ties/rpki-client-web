@@ -10,8 +10,8 @@ pre-commit = "*"
 
 [packages]
 pyyaml = "*"
-black = "*"
 aiohttp = "*"
+prometheus-async = {extras = ["aiohttp"],version = "*"}
 
 [requires]
 python_version = "3.8"

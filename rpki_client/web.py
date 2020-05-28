@@ -7,6 +7,7 @@ from dataclasses import dataclass
 from typing import Callable, Dict, List, Optional
 
 from aiohttp import web
+from prometheus_async import aio
 
 from rpki_client.rpki_client import ExecutionResult, RpkiClient
 
@@ -50,6 +51,7 @@ class RpkiClientWeb:
 
         self.app.add_routes(
             [
+                web.get("/metrics", aio.web.server_stats),
                 web.get("/result", self.json_result),
                 web.get("/objects/validated", self.validated_objects),
                 web.static(
