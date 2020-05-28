@@ -1,0 +1,18 @@
+#!/bin/bash
+set -e
+
+cd /opt/rpkiclientweb
+
+echo "ensuring cache and output dir exist..."
+
+if [[ ! -d /opt/rpkiclientweb/cache ]]; then
+	mkdir /opt/rpkiclientweb/cache
+	chown daemon:daemon /opt/rpkiclientweb/cache
+fi
+
+if [[ ! -d /opt/rpkiclientweb/output ]]; then
+	mkdir /opt/rpkiclientweb/output
+	chown daemon:daemon /opt/rpkiclientweb/output
+fi
+
+exec s6-setuidgid daemon python3 -m rpkiclientweb -v

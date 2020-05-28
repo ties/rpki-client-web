@@ -1,0 +1,6 @@
+.tox
+dist
+build
+cache/*
+output/*
+*.egg-info
