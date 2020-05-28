@@ -6,6 +6,17 @@ Usage
 
 Create a `config.yml` file and run the utility with `python -m rpki_client -v -c [config_file_name]`.
 
+Or run a docker container:
+```
+# edit ./config.yml
+docker run \
+  -p 8888:8888 \
+  --detach \
+  --name rpki-client-web \
+  -v `pwd`/config.yml:/opt/rpkiclientweb/config.yml \
+  tiesdekock/rpki-client-web
+```
+
 Endpoints
 =========
 
