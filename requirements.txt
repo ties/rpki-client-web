@@ -1,0 +1,2 @@
+aiohttp>=3.6.2
+prometheus-async[aiohttp]>=19.2.0

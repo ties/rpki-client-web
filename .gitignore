@@ -1,2 +1,6 @@
 output/*
 cache/*
+*.egg-info
+.tox
+dist
+build

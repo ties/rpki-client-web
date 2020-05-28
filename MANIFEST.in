@@ -1,0 +1,24 @@
+graft rpkiclientweb
+graft tests
+graft docs
+graft examples
+
+include README.md
+include LICENSE.txt
+include config.yml
+
+include .coveragerc .flake8 setup.cfg pyproject.toml
+include .pre-commit-config.yaml pylintrc
+include tox.ini appveyor.yml .travis.yml rtd.txt
+include contributing.md RELEASING.txt HACKING.txt TODO.txt
+include azure-pipelines.yml pytest.ini
+include Pipfile
+graft .github
+
+exclude requirements.txt requirements_test.txt
+exclude pyproject.toml .gitkeep .isort.cfg Pipfile.lock
+
+exclude venv
+
+global-exclude __pycache__ *.py[cod]
+global-exclude .DS_Store
