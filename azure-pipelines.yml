@@ -53,8 +53,11 @@ stages:
     # This could be a lint and a test stage
     - script: |
         . venv/bin/activate
-        pip install tox
-        tox
+        flake8 rpkiclientweb setup.py
+        black --check --diff rpkiclientweb setup.py
+        python setup.py sdist
+        twine check dist/*
+        check-manifest
 - stage: 'Dist'
   dependsOn: 'Test'
   jobs:
