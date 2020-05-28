@@ -67,8 +67,8 @@ stages:
       vmImage: 'ubuntu-latest'
     strategy:
       matrix:
-        Python37:
-          containerResource: py37
+        Python38:
+          containerResource: py38
     container: $[ variables['containerResource']]
 
     steps:
