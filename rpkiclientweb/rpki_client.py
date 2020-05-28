@@ -101,7 +101,9 @@ class RpkiClient:
         LOG.info("[%d] exited with %d", proc.pid, proc.returncode)
 
         RPKI_CLIENT_UPDATE_COUNT.labels(returncode=proc.returncode).inc()
-        asyncio.create_task(self.update_validated_objects_gauge())
+
+        if proc.returncode == 0:
+            asyncio.create_task(self.update_validated_objects_gauge())
 
         return ExecutionResult(
             returncode=proc.returncode,
