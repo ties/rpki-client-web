@@ -102,8 +102,7 @@ class RpkiClient:
         RPKI_CLIENT_UPDATE_COUNT.labels(returncode=proc.returncode).inc()
         RPKI_CLIENT_LAST_DURATION.set(duration)
 
-        if proc.returncode == 0:
-            asyncio.create_task(self.update_validated_objects_gauge())
+        asyncio.create_task(self.update_validated_objects_gauge(proc.returncode))
 
         return ExecutionResult(
             returncode=proc.returncode,
@@ -112,7 +111,7 @@ class RpkiClient:
             duration=duration,
         )
 
-    async def update_validated_objects_gauge(self) -> None:
+    async def update_validated_objects_gauge(self, returncode: int) -> None:
         """
         Get statistics from `.metadata` of validated objects. Example output:
         ```
@@ -155,10 +154,23 @@ class RpkiClient:
             "vrps",
             "uniquevrps",
         )
-        with open(os.path.join(self.output_dir, "json"), "r") as f:
+
+        json_path = os.path.join(self.output_dir, "json")
+
+        if not os.path.isfile(json_path):
+            LOG.warning("json output file (%s) is missing", json_path)
+            return
+
+        with open(json_path, "r") as f:
             metadata = json.load(f)["metadata"]
 
             for key in LABELS:
-                RPKI_OBJECTS_COUNT.labels(type=key).set(metadata.get(key, None))
+                value = metadata.get(key, None)
 
-        RPKI_CLIENT_LAST_UPDATE.set(time.time())
+                if value:
+                    RPKI_OBJECTS_COUNT.labels(type=key).set(value)
+                else:
+                    LOG.info("key '%s' missing in json .metadata", key)
+
+        if returncode == 0:
+            RPKI_CLIENT_LAST_UPDATE.set(time.time())
