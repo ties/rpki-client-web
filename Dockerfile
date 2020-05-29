@@ -12,6 +12,7 @@ ADD https://github.com/just-containers/s6-overlay/releases/download/v2.0.0.1/s6-
 RUN tar xzf /tmp/s6-overlay-amd64.tar.gz -C / --exclude='./bin' && tar xzf /tmp/s6-overlay-amd64.tar.gz -C /usr ./bin && rm /tmp/s6-overlay-amd64.tar.gz
 
 ADD . /opt/rpkiclientweb
+VOLUME ["/opt/rpkiclientweb/cache", "/opt/rpkiclientweb/output", "/config"]
 
 RUN cd /opt/rpkiclientweb\
 	&& pip install -r requirements.txt\
@@ -20,10 +21,10 @@ RUN cd /opt/rpkiclientweb\
 # https://github.com/just-containers/s6-overlay functionality
 ADD docker/rpkiclientweb.run /etc/services.d/rpkiclientweb/run
 ADD docker/rpkiclientweb.chmod /etc/fix-attrs.d/01-rpki-client-web
+ADD config.yml /config
 
 
 # default port from default config
 EXPOSE 8888
 
-VOLUME ["/opt/rpkiclientweb/cache", "/opt/rpkiclientweb/output"]
 ENTRYPOINT ["/init"]

@@ -9,12 +9,12 @@ Note that the default config only contains the RIPE NCC tal for ease of use duri
 
 Or run a docker container:
 ```
-# edit ./config.yml
+# edit ./config.yml and put in ./config/config.yml
 docker run \
   -p 8888:8888 \
   --detach \
   --name rpki-client-web \
-  -v `pwd`/config.yml:/opt/rpkiclientweb/config.yml \
+  -v ./config:/config \
   tiesdekock/rpki-client-web
 ```
 
@@ -22,6 +22,7 @@ Endpoints
 =========
 
 ```
+/config             - output the current config
 /result             - exit code, stdout, and stderr of last rpki-client run
 /metrics            - prometheus metrics
 /validated/objects  - validated RPKI objects

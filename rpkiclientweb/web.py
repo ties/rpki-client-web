@@ -51,6 +51,7 @@ class RpkiClientWeb:
 
         self.app.add_routes(
             [
+                web.get("/config", lambda req: web.json_response(conf)),
                 web.get("/metrics", aio.web.server_stats),
                 web.get("/result", self.json_result),
                 web.get("/objects/validated", self.validated_objects),
@@ -74,9 +75,9 @@ class RpkiClientWeb:
 
     async def json_result(self, req) -> web.Response:
         if self.result:
-            return web.Response(text=json.dumps(dataclasses.asdict(self.result)))
+            return web.json_response(self.result)
 
-        return web.Response(status=500)
+        return web.json_response(None, status=500)
 
     async def run(self):
         LOG.info("starting webserver on %s:%d", self.host, self.port)
