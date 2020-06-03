@@ -41,3 +41,21 @@ Fedora packages needed:
   * git
   * python-pipenv
   * gcc
+
+Metrics
+=======
+
+There is a prometheus endpoint available on `/metrics`. The easiest way to check
+that `rpki-client` exited successfully is to monitor the exit codes. When the
+process is killed due to a timeout the exit code is -9. You could create an
+alert for either the existence of non-zero exit codes or for the recent
+occurrence of one.
+
+```
+# HELP rpki_client_update_total Number of rpki-client updates
+# TYPE rpki_client_update_total counter
+rpki_client_update_total{returncode="-9"} 1.0
+# HELP rpki_client_update_created Number of rpki-client updates
+# TYPE rpki_client_update_created gauge
+rpki_client_update_created{returncode="-9"} 1.5911933945483255e+09
+```
