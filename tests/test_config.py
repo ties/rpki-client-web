@@ -27,7 +27,7 @@ class ConfigTests(TestCase):
             conf["output_dir"] = dir_name
             conf["cache_dir"] = ".well-known-missing"
 
-            with self.assertRaises(AssertionError):
+            with self.assertRaises(ValueError):
                 client = RpkiClient(**conf)
                 client.args
 
@@ -38,7 +38,7 @@ class ConfigTests(TestCase):
             conf["cache_dir"] = dir_name
             conf["output_dir"] = ".well-known-missing"
 
-            with self.assertRaises(AssertionError):
+            with self.assertRaises(ValueError):
                 client = RpkiClient(**conf)
                 client.args
 
@@ -61,7 +61,7 @@ class ConfigTests(TestCase):
         client = RpkiClient(**conf)
         client.args
 
-        with self.assertRaises(AssertionError):
+        with self.assertRaises(ValueError):
             conf["rpki_client"] = "/.well-known-missing"
             client = RpkiClient(**conf)
             client.args
