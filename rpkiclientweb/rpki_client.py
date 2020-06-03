@@ -8,28 +8,31 @@ import time
 from dataclasses import dataclass
 from typing import List, Optional
 
-from prometheus_async.aio import time as time_metric
+from prometheus_async.aio import time as time_metric, track_inprogress
 from prometheus_client import Counter, Gauge, Histogram
 
 LOG = logging.getLogger(__name__)
 
 OUTPUT_BUFFER_SIZE = 8_388_608
 
+RPKI_CLIENT_DURATION = Histogram(
+    "rpki_client_duration_seconds",
+    "Time spent calling rpki-client",
+    buckets=[1, 6, 30, 60, 120, 180, 240, 300],
+)
 RPKI_CLIENT_LAST_DURATION = Gauge(
     "rpki_client_duration_seconds", "Duration of the last call to rpki-client",
 )
 RPKI_CLIENT_LAST_UPDATE = Gauge(
     "rpki_client_last_update", "Timestamp of the last successful call to rpki-client",
 )
-RPKI_CLIENT_DURATION = Histogram(
-    "rpki_client_duration_seconds",
-    "Time spent calling rpki-client",
-    buckets=[1, 6, 30, 60, 120, 180, 240, 300],
-)
-RPKI_OBJECTS_COUNT = Gauge("rpki_objects", "Number of objects by type", ["type"])
 RPKI_CLIENT_UPDATE_COUNT = Counter(
     "rpki_client_update", "Number of rpki-client updates", ["returncode"]
 )
+RPKI_CLIENT_RUNNING = Gauge(
+    "rpki_client_running", "Number of running rpki-client instances"
+)
+RPKI_OBJECTS_COUNT = Gauge("rpki_objects", "Number of objects by type", ["type"])
 
 
 @dataclass
@@ -52,10 +55,17 @@ class RpkiClient:
 
     @property
     def args(self) -> List[str]:
-        assert os.path.isfile(self.rpki_client)
-        assert os.path.isdir(self.cache_dir)
-        assert os.path.isdir(self.output_dir)
-        assert not self.timeout or self.timeout >= -1
+        if not os.path.isfile(self.rpki_client):
+            raise ValueError(f"rpki_client: '{self.rpki_client}' does not exist")
+
+        if not os.path.isdir(self.cache_dir):
+            raise ValueError(f"cache_dir: '{self.cache_dir}' is not a directory.")
+
+        if not os.path.isdir(self.output_dir):
+            raise ValueError(f"output_dir: '{self.output_dir}' is not a directory.")
+
+        if not (not self.timeout or self.timeout >= -1):
+            raise ValueError(f"illegal timeout: {self.timeout} -- should be >= -1")
 
         args = [
             "-v",  # verbose
@@ -71,6 +81,7 @@ class RpkiClient:
 
         return args
 
+    @track_inprogress(RPKI_CLIENT_RUNNING)
     @time_metric(RPKI_CLIENT_DURATION)
     async def run(self) -> ExecutionResult:
         LOG.debug("executing %s %s", self.rpki_client, " ".join(self.args))

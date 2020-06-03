@@ -51,7 +51,7 @@ class RpkiClientWeb:
 
         self.app.add_routes(
             [
-                web.get("/config", lambda req: web.json_response(conf)),
+                web.get("/config", self.config_response),
                 web.get("/metrics", aio.web.server_stats),
                 web.get("/result", self.json_result),
                 web.get("/objects/validated", self.validated_objects),
@@ -63,6 +63,9 @@ class RpkiClientWeb:
                 ),
             ]
         )
+
+    async def config_response(self, req) -> web.Response:
+        return web.json_response(self.conf)
 
     async def validated_objects(self, req) -> web.FileResponse:
         path = os.path.join(os.path.abspath(self.conf["output_dir"]), "json")
