@@ -12,6 +12,7 @@ pre-commit = "*"
 pyyaml = "*"
 aiohttp = "*"
 prometheus-async = {extras = ["aiohttp"],version = "*"}
+pytest = "*"
 
 [requires]
 python_version = "3.8"
