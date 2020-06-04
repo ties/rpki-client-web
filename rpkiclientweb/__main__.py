@@ -23,14 +23,12 @@ def main():
 
     if args.verbose:
         logging.getLogger().setLevel(logging.DEBUG)
+    else:
+        logging.getLogger().setLevel(logging.INFO)
 
     conf = load(args.config, Loader=Loader)
     LOG.debug("Configuration: %s", conf)
 
-    # interval = conf.pop('interval')
-    # client = RpkiClient(**conf)
-
-    # asyncio.run(repeat(interval, client.run))
     web = RpkiClientWeb(conf)
     asyncio.run(web.run())
 
