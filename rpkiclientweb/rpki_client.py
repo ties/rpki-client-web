@@ -35,6 +35,32 @@ RPKI_CLIENT_RUNNING = Gauge(
 RPKI_OBJECTS_COUNT = Gauge("rpki_objects", "Number of objects by type", ["type"])
 
 
+METADATA_LABELS = (
+    "roas",
+    "failedroas",
+    "invalidroas",
+    "certificates",
+    "failcertificates",
+    "invalidcertificates",
+    "manifests",
+    "failedmanifests",
+    "stalemanifests",
+    "crls",
+    "repositories",
+    "vrps",
+    "uniquevrps",
+)
+OPTIONAL_METADATA_LABELS = frozenset(
+    [
+        "failedroas",
+        "invalidroas",
+        "failcertificates",
+        "invalidcertificates",
+        "stalemanifests",
+    ]
+)
+
+
 @dataclass
 class ExecutionResult:
     returncode: int
@@ -150,22 +176,6 @@ class RpkiClient:
         }
         ```
         """
-        LABELS = (
-            "roas",
-            "failedroas",
-            "invalidroas",
-            "certificates",
-            "failcertificates",
-            "invalidcertificates",
-            "manifests",
-            "failedmanifests",
-            "stalemanifests",
-            "crls",
-            "repositories",
-            "vrps",
-            "uniquevrps",
-        )
-
         json_path = os.path.join(self.output_dir, "json")
 
         if not os.path.isfile(json_path):
@@ -174,14 +184,22 @@ class RpkiClient:
 
         with open(json_path, "r") as f:
             metadata = json.load(f)["metadata"]
+            missing_keys = set()
 
-            for key in LABELS:
+            for key in METADATA_LABELS:
                 value = metadata.get(key, None)
 
                 if value:
                     RPKI_OBJECTS_COUNT.labels(type=key).set(value)
-                else:
-                    LOG.info("key '%s' missing in json .metadata", key)
+                elif key not in OPTIONAL_METADATA_LABELS:
+                    missing_keys.add(key)
+
+            if missing_keys:
+                LOG.info(
+                    "keys (%s) missing in json .metadata (%s)",
+                    ", ".join(missing_keys),
+                    json.dumps(metadata),
+                )
 
         if returncode == 0:
             RPKI_CLIENT_LAST_UPDATE.set(time.time())
