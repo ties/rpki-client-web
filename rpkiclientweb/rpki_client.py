@@ -160,6 +160,7 @@ class RpkiClient:
           "systemtime": "57",
           "roas": 16245,
           "failedroas": 0,
+
           "invalidroas": 0,
           "certificates": 11835,
           "failcertificates": 0,
@@ -182,16 +183,15 @@ class RpkiClient:
             LOG.warning("json output file (%s) is missing", json_path)
             return
 
-        with open(json_path, "r") as f:
-            metadata = json.load(f)["metadata"]
+        with open(json_path, "r") as json_res:
+            metadata = json.load(json_res)["metadata"]
             missing_keys = set()
 
             for key in METADATA_LABELS:
                 value = metadata.get(key, None)
 
-                if value:
-                    RPKI_OBJECTS_COUNT.labels(type=key).set(value)
-                elif key not in OPTIONAL_METADATA_LABELS:
+                RPKI_OBJECTS_COUNT.labels(type=key).set(value)
+                if key not in OPTIONAL_METADATA_LABELS and value is None:
                     missing_keys.add(key)
 
             if missing_keys:
