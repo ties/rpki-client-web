@@ -16,21 +16,21 @@ LOG = logging.getLogger(__name__)
 OUTPUT_BUFFER_SIZE = 8_388_608
 
 RPKI_CLIENT_DURATION = Histogram(
-    "rpki_client_duration_seconds",
+    "rpkiclient_duration_seconds",
     "Time spent calling rpki-client",
     buckets=[1, 6, 30, 60, 120, 180, 240, 300],
 )
 RPKI_CLIENT_LAST_DURATION = Gauge(
-    "rpki_client_last_duration_seconds", "Duration of the last call to rpki-client",
+    "rpkiclient_last_duration_seconds", "Duration of the last call to rpki-client",
 )
 RPKI_CLIENT_LAST_UPDATE = Gauge(
-    "rpki_client_last_update", "Timestamp of the last successful call to rpki-client",
+    "rpkiclient_last_update", "Timestamp of the last successful call to rpki-client",
 )
 RPKI_CLIENT_UPDATE_COUNT = Counter(
-    "rpki_client_update", "Number of rpki-client updates", ["returncode"]
+    "rpkiclient_update", "Number of rpki-client updates", ["returncode"]
 )
 RPKI_CLIENT_RUNNING = Gauge(
-    "rpki_client_running", "Number of running rpki-client instances"
+    "rpkiclient_running", "Number of running rpki-client instances"
 )
 RPKI_OBJECTS_COUNT = Gauge("rpki_objects", "Number of objects by type", ["type"])
 
