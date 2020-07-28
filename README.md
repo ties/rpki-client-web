@@ -1,6 +1,13 @@
 This repository contains a utility that exposes the results of [rpki-client](https://www.rpki-client.org/)
 via a HTTP API.
 
+Changes
+=======
+
+2020-07-27 v0.3.0:
+
+  * Metric names start with `rpkiclient` instead of `rpki_client`.
+
 Usage
 =====
 
@@ -52,10 +59,10 @@ alert for either the existence of non-zero exit codes or for the recent
 occurrence of one.
 
 ```
-# HELP rpki_client_update_total Number of rpki-client updates
-# TYPE rpki_client_update_total counter
-rpki_client_update_total{returncode="-9"} 1.0
-# HELP rpki_client_update_created Number of rpki-client updates
-# TYPE rpki_client_update_created gauge
-rpki_client_update_created{returncode="-9"} 1.5911933945483255e+09
+# HELP rpkiclient_update_total Number of rpki-client updates
+# TYPE rpkiclient_update_total counter
+rpkiclient_update_total{returncode="-9"} 1.0
+# HELP rpkiclient_update_created Number of rpki-client updates
+# TYPE rpkiclient_update_created gauge
+rpkiclient_update_created{returncode="-9"} 1.5911933945483255e+09
 ```
