@@ -19,7 +19,11 @@ def main():
 
     args = parser.parse_args()
 
-    logging.basicConfig()
+    logging.basicConfig(
+        handlers=[
+            logging.StreamHandler(sys.stdout)
+        ]
+    )
 
     if args.verbose:
         logging.getLogger().setLevel(logging.DEBUG)
