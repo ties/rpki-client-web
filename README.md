@@ -4,6 +4,11 @@ via a HTTP API.
 Changes
 =======
 
+2020-09-04 v0.3.1:
+
+  * Add index http endpoint.
+  * Fix the `/result` endpoint.
+
 2020-07-27 v0.3.0:
 
   * Metric names start with `rpkiclient` instead of `rpki_client`.
