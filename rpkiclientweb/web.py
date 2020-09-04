@@ -27,7 +27,8 @@ async def repeat(interval: int, func: Callable, *args, **kwargs):
     LOG.info("Running %s every %d seconds", func, interval)
     while True:
         await asyncio.gather(
-            func(*args, **kwargs), asyncio.sleep(interval),
+            func(*args, **kwargs),
+            asyncio.sleep(interval),
         )
 
 
@@ -95,7 +96,7 @@ class RpkiClientWeb:
 
     async def json_result(self, req) -> web.Response:
         if self.result:
-            return web.json_response(self.result)
+            return web.json_response(dataclasses.asdict(self.result))
 
         return web.json_response(None, status=500)
 

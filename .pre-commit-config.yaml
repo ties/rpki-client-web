@@ -2,20 +2,20 @@
 # See https://pre-commit.com/hooks.html for more hooks
 repos:
   - repo: https://github.com/ambv/black
-    rev: stable
+    rev: 20.8b1
     hooks:
       - id: black
         language_version: python3.8
   -   repo: https://github.com/pre-commit/pre-commit-hooks
-      rev: v2.0.0
+      rev: v3.2.0
       hooks:
       - id: flake8
   -   repo: https://github.com/asottile/seed-isort-config
-      rev: v2.1.1
+      rev: v2.2.0
       hooks:
       -   id: seed-isort-config
   -   repo: https://github.com/timothycrosley/isort
-      rev: ''  # Use the revision sha / tag you want to point at
+      rev: '5.5.1'  # Use the revision sha / tag you want to point at
       hooks:
       - id: isort
         additional_dependencies: [toml]
