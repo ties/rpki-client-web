@@ -21,10 +21,12 @@ RPKI_CLIENT_DURATION = Histogram(
     buckets=[1, 6, 30, 60, 120, 180, 240, 300],
 )
 RPKI_CLIENT_LAST_DURATION = Gauge(
-    "rpkiclient_last_duration_seconds", "Duration of the last call to rpki-client",
+    "rpkiclient_last_duration_seconds",
+    "Duration of the last call to rpki-client",
 )
 RPKI_CLIENT_LAST_UPDATE = Gauge(
-    "rpkiclient_last_update", "Timestamp of the last successful call to rpki-client",
+    "rpkiclient_last_update",
+    "Timestamp of the last successful call to rpki-client",
 )
 RPKI_CLIENT_UPDATE_COUNT = Counter(
     "rpkiclient_update", "Number of rpki-client updates", ["returncode"]
