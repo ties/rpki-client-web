@@ -51,6 +51,7 @@ class RpkiClientWeb:
 
         self.app.add_routes(
             [
+                web.get("/", self.index),
                 web.get("/config", self.config_response),
                 web.get("/metrics", aio.web.server_stats),
                 web.get("/result", self.json_result),
@@ -62,6 +63,22 @@ class RpkiClientWeb:
                     show_index=True,
                 ),
             ]
+        )
+
+    async def index(self, req) -> web.Response:
+        return web.Response(
+            text="""<html>
+            <head><title>rpki-client wrapper</title></head>
+            <body>
+                <h1>rpki-client wrapper</h1>
+                <p><a href="/cache">Cache directory</a></p>
+                <p><a href="/config">Configuration</a></p>
+                <p><a href="/metrics">Metrics</a></p>
+                <p><a href="/objects/validated">Validated objects</a></p>
+                <p><a href="/result">Result</a></p>
+            </body>
+        </html>""",
+            content_type="text/html",
         )
 
     async def config_response(self, req) -> web.Response:
