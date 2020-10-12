@@ -18,7 +18,8 @@ OUTPUT_BUFFER_SIZE = 8_388_608
 RPKI_CLIENT_DURATION = Histogram(
     "rpkiclient_duration_seconds",
     "Time spent calling rpki-client",
-    buckets=[1, 6, 30, 60, 120, 180, 240, 300],
+    buckets=[1, 3, 6, 12, 18, 24, 30, 44, 60, 72, 84, 96, 108, 120, 150, 180,
+             240, 300],
 )
 RPKI_CLIENT_LAST_DURATION = Gauge(
     "rpkiclient_last_duration_seconds",
