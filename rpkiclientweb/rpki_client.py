@@ -5,11 +5,13 @@ import json
 import logging
 import os.path
 import time
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import List, Optional
 
 from prometheus_async.aio import time as time_metric, track_inprogress
 from prometheus_client import Counter, Gauge, Histogram
+
+from .outputparser import parse_rpki_client_output, statistics_by_host, WarningSummary
 
 LOG = logging.getLogger(__name__)
 
@@ -18,8 +20,7 @@ OUTPUT_BUFFER_SIZE = 8_388_608
 RPKI_CLIENT_DURATION = Histogram(
     "rpkiclient_duration_seconds",
     "Time spent calling rpki-client",
-    buckets=[1, 3, 6, 12, 18, 24, 30, 44, 60, 72, 84, 96, 108, 120, 150, 180,
-             240, 300],
+    buckets=[1, 3, 6, 12, 18, 24, 30, 44, 60, 72, 84, 96, 108, 120, 150, 180, 240, 300],
 )
 RPKI_CLIENT_LAST_DURATION = Gauge(
     "rpkiclient_last_duration_seconds",
@@ -36,6 +37,9 @@ RPKI_CLIENT_RUNNING = Gauge(
     "rpkiclient_running", "Number of running rpki-client instances"
 )
 RPKI_OBJECTS_COUNT = Gauge("rpki_objects", "Number of objects by type", ["type"])
+RPKI_CLIENT_WARNINGS = Gauge(
+    "rpkiclient_warnings", "Warnings from rpki-client", ["hostname", "type"]
+)
 
 
 METADATA_LABELS = (
@@ -79,8 +83,10 @@ class RpkiClient:
     rpki_client: str
     cache_dir: str
     output_dir: str
-    trust_anchor_locators: List[str] = list
+    trust_anchor_locators: List[str] = field(default_factory=list)
     timeout: Optional[int] = None
+
+    warnings: List[WarningSummary] = field(default_factory=list)
 
     @property
     def args(self) -> List[str]:
@@ -113,7 +119,7 @@ class RpkiClient:
     @track_inprogress(RPKI_CLIENT_RUNNING)
     @time_metric(RPKI_CLIENT_DURATION)
     async def run(self) -> ExecutionResult:
-        LOG.debug("executing %s %s", self.rpki_client, " ".join(self.args))
+        LOG.info("executing %s %s", self.rpki_client, " ".join(self.args))
         t0 = time.monotonic()
 
         proc = await asyncio.create_subprocess_exec(
@@ -139,6 +145,12 @@ class RpkiClient:
             "[%d] exited with %d in %f seconds", proc.pid, proc.returncode, duration
         )
 
+        if LOG.isEnabledFor(logging.DEBUG):
+            LOG.debug("stdout: %s", stdout)
+            LOG.debug("stderr: %s", stderr)
+
+        self.update_warning_metrics(stderr)
+
         RPKI_CLIENT_UPDATE_COUNT.labels(returncode=proc.returncode).inc()
         RPKI_CLIENT_LAST_DURATION.set(duration)
 
@@ -150,6 +162,29 @@ class RpkiClient:
             stderr=stderr.decode(),
             duration=duration,
         )
+
+    def update_warning_metrics(self, stderr: bytes) -> None:
+        """Update the warning gauges."""
+        warnings = parse_rpki_client_output(stderr.decode("utf8"))
+        new_warnings = list(statistics_by_host(warnings))
+        # Set previous gauges to 0 --- this is thread-unsafe
+        for warning in self.warnings:
+            RPKI_CLIENT_WARNINGS.labels(
+                type=warning.warning_type, hostname=warning.hostname
+            ).set(0)
+        # Now set new values
+        for warning in new_warnings:
+            LOG.info(
+                "rpki-client: %d %ss for %s",
+                warning.count,
+                warning.warning_type,
+                warning.hostname,
+            )
+            RPKI_CLIENT_WARNINGS.labels(
+                type=warning.warning_type, hostname=warning.hostname
+            ).set(warning.count)
+        # And store
+        self.warnings = new_warnings
 
     async def update_validated_objects_gauge(self, returncode: int) -> None:
         """
@@ -205,4 +240,4 @@ class RpkiClient:
                 )
 
         if returncode == 0:
-            RPKI_CLIENT_LAST_UPDATE.set(time.time())
+            RPKI_CLIENT_LAST_UPDATE.set_to_current_time()

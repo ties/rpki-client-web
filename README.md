@@ -4,6 +4,9 @@ via a HTTP API.
 Changes
 =======
 
+2020-11-24 v0.4:
+  * Parse `rpki-client` output for warnings and add these as metrics.
+
 2020-09-04 v0.3.1:
 
   * Add index http endpoint.
