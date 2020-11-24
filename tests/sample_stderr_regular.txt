@@ -1,0 +1,48 @@
+rpki-client: rpki.ripe.net/ta: pulling from network
+rpki-client: rpki.ripe.net/ta: loaded from network
+rpki-client: rpki.ripe.net/repository: pulling from network
+rpki-client: period stats: 1 pending repos
+rpki-client: period stats: 1 pending entries
+rpki-client: period stats: 1 pending repos
+rpki-client: period stats: 1 pending entries
+rpki-client: period stats: 1 pending repos
+rpki-client: period stats: 1 pending entries
+rpki-client: period stats: 1 pending repos
+rpki-client: period stats: 1 pending entries
+rpki-client: period stats: 1 pending repos
+rpki-client: period stats: 1 pending entries
+rpki-client: rpki.ripe.net/repository: loaded from network
+rpki-client: nostromo.heficed.net/repo: pulling from network
+rpki-client: nostromo.heficed.net/repo: loaded from network
+rpki-client: rpki.multacom.com/repo: pulling from network
+rpki-client: rsync.rpki.nlnetlabs.nl/repo: pulling from network
+rpki-client: rsync.rpki.nlnetlabs.nl/repo: loaded from network
+rpki-client: rpki.admin.freerangecloud.com/repo: pulling from network
+rpki-client: rpki.multacom.com/repo: loaded from network
+rpki-client: rpki.admin.freerangecloud.com/repo: loaded from network
+rpki-client: rpkica.mckay.com/rpki: pulling from network
+rpki-client: rpkica.mckay.com/rpki: loaded from network
+rpki-client: rsync.rpki.a2b-internet.com/repo: pulling from network
+rpki-client: rsync.rpki.a2b-internet.com/repo: loaded from network
+rpki-client: rpki.xindi.eu/repo: pulling from network
+rpki-client: rpki.xindi.eu/repo: loaded from network
+rpki-client: ca.rg.net/rpki: pulling from network
+rpki-client: ca.rg.net/rpki: loaded from network
+rpki-client: rpki.qs.nu/repo: pulling from network
+rpki-client: rpki.qs.nu/repo: loaded from network
+rpki-client: rpkica.mckay.com/rpki/MCnet/Jp4Tjp_GB5I1RfeaOGhKZNlDmAQ.mft: mft expired on Aug 26 11:03:34 2020 GMT
+rpki-client: rpkica.mckay.com/rpki/MCnet/UEh2SAvdIgPsUFdv92RSSaNqBnY.mft: No such file or directory
+rpki-client: cc.rg.net/rpki: pulling from network
+rpki-client: cb.rg.net/rpki: pulling from network
+rpki-client: cc.rg.net/rpki: loaded from network
+rpki-client: cb.rg.net/rpki: loaded from network
+rpki-client: ca.rg.net/rpki/RGnet-OU/ovsCA/IOUcOeBGM_Tb4dwfvswY4bnNZYY.mft: No such file or directory
+rpki-client: all files parsed: generating output
+rpki-client: Route Origin Authorizations: 20303 (0 failed parse, 0 invalid)
+rpki-client: Certificates: 13414 (0 failed parse, 0 invalid)
+rpki-client: Trust Anchor Locators: 1
+rpki-client: Manifests: 13414 (3 failed parse, 0 stale)
+rpki-client: Certificate revocation lists: 13411
+rpki-client: Repositories: 13
+rpki-client: Files removed: 479
+rpki-client: VRP Entries: 109644 (109642 unique)

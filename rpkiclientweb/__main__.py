@@ -15,14 +15,20 @@ def main():
     parser.add_argument(
         "-c", "--config", default="config.yml", type=argparse.FileType("r")
     )
-    parser.add_argument("-v", "--verbose", action="store_true")
+    parser.add_argument("-v", "--verbose", action="count", default=0)
 
     args = parser.parse_args()
 
     logging.basicConfig(handlers=[logging.StreamHandler(sys.stdout)])
 
-    if args.verbose:
+    if args.verbose > 0:
         logging.getLogger().setLevel(logging.DEBUG)
+        # Only log rpki-client output when very verbose.
+        level = logging.INFO
+        if args.verbose > 1:
+            level = logging.DEBUG
+
+        logging.getLogger("rpkiclientweb.rpki_client").setLevel(level)
     else:
         logging.getLogger().setLevel(logging.INFO)
 

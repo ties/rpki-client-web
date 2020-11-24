@@ -20,6 +20,7 @@ exclude pyproject.toml .gitkeep .isort.cfg Pipfile.lock
 exclude Dockerfile .dockerignore docker/*
 
 exclude venv
+exclude Vagrantfile
 
 global-exclude __pycache__ *.py[cod]
 global-exclude .DS_Store
