@@ -174,12 +174,6 @@ class RpkiClient:
             ).set(0)
         # Now set new values
         for warning in new_warnings:
-            LOG.info(
-                "rpki-client: %d %ss for %s",
-                warning.count,
-                warning.warning_type,
-                warning.hostname,
-            )
             RPKI_CLIENT_WARNINGS.labels(
                 type=warning.warning_type, hostname=warning.hostname
             ).set(warning.count)

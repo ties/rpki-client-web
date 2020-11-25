@@ -4,3 +4,9 @@ build
 cache/*
 output/*
 *.egg-info
+.git
+.metals
+.pre-commit-config.yaml
+.pytest_cache
+.vagrant
+.autoenv.zsh
