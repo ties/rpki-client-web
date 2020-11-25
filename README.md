@@ -4,6 +4,9 @@ via a HTTP API.
 Changes
 =======
 
+2020-11-25 v0.4.2:
+  * Attempt to remove non-existent labels in a different way
+
 2020-11-25 v0.4.1:
   * Change container so command can be picked up from command line, e.g. `docker run --rm [image name] s6-setuidgid daemon python3 -m rpkiclientweb -c /config/config.yml -v -v`
 

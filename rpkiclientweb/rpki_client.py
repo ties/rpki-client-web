@@ -11,7 +11,7 @@ from typing import List, Optional
 from prometheus_async.aio import time as time_metric, track_inprogress
 from prometheus_client import Counter, Gauge, Histogram
 
-from .outputparser import parse_rpki_client_output, statistics_by_host, WarningSummary
+from .outputparser import parse_rpki_client_output, statistics_by_host, WarningSummary, missing_labels
 
 LOG = logging.getLogger(__name__)
 
@@ -166,13 +166,15 @@ class RpkiClient:
     def update_warning_metrics(self, stderr: bytes) -> None:
         """Update the warning gauges."""
         warnings = parse_rpki_client_output(stderr.decode("utf8"))
-        new_warnings = list(statistics_by_host(warnings))
-        # Set previous gauges to 0 --- this is thread-unsafe
-        for warning in self.warnings:
-            RPKI_CLIENT_WARNINGS.labels(
-                type=warning.warning_type, hostname=warning.hostname
-            ).set(0)
-        # Now set new values
+        new_warnings = statistics_by_host(warnings)
+
+        # Remove labels that are missing
+        for missing_label in missing_labels(self.warnings, new_warnings):
+            LOG.debug("Removing label %s", missing_label)
+            RPKI_CLIENT_WARNINGS.remove(type=missing_label.warning_type,
+                                        hostname=missing_label.hostname)
+
+        # Set new values
         for warning in new_warnings:
             RPKI_CLIENT_WARNINGS.labels(
                 type=warning.warning_type, hostname=warning.hostname
