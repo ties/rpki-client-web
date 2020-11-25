@@ -14,5 +14,3 @@ if [[ ! -d /opt/rpkiclientweb/output ]]; then
 	mkdir /opt/rpkiclientweb/output
 	chown daemon:daemon /opt/rpkiclientweb/output
 fi
-
-exec s6-setuidgid daemon python3 -m rpkiclientweb -c /config/config.yml -v
