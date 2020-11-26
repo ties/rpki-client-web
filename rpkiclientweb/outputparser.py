@@ -47,8 +47,9 @@ class WarningSummary(NamedTuple):
 
 
 class MissingLabel(NamedTuple):
-    warning_type: str
+    """A missing label."""
     hostname: str
+    warning_type: str
 
 
 RPKIClientWarning = Union[LabelWarning, ExpirationWarning, ManifestObjectWarning]

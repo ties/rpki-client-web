@@ -11,7 +11,7 @@ from typing import List, Optional
 from prometheus_async.aio import time as time_metric, track_inprogress
 from prometheus_client import Counter, Gauge, Histogram
 
-from .outputparser import (
+from rpkiclientweb.outputparser import (
     parse_rpki_client_output,
     statistics_by_host,
     WarningSummary,
@@ -173,14 +173,15 @@ class RpkiClient:
         warnings = parse_rpki_client_output(stderr.decode("utf8"))
         new_warnings = statistics_by_host(warnings)
 
+        LOG.debug("warnings: %s", self.warnings)
         LOG.debug("new_warnings: %s", new_warnings)
 
         # Remove labels that are missing
         for missing_label in missing_labels(self.warnings, new_warnings):
             LOG.debug("Removing label %s", missing_label)
-            RPKI_CLIENT_WARNINGS.remove(
-                type=missing_label.warning_type, hostname=missing_label.hostname
-            )
+            # label values need to be provided to remove in alphabetical order of
+            # their label names.
+            RPKI_CLIENT_WARNINGS.remove(missing_label.hostname, missing_label.warning_type)
 
         # Set new values
         for warning in new_warnings:

@@ -4,32 +4,17 @@ import json
 import logging
 import os
 from dataclasses import dataclass
-from typing import Callable, Dict, List, Optional
+from typing import Dict, List, Optional
 
 from aiohttp import web
 from prometheus_async import aio
 
 from rpkiclientweb.rpki_client import ExecutionResult, RpkiClient
+from rpkiclientweb.util import repeat
 
 LOG = logging.getLogger(__name__)
 
 OUTPUT_BUFFER_SIZE = 8_388_608
-
-
-async def repeat(interval: int, func: Callable, *args, **kwargs):
-    """Run func every interval seconds.
-
-    If func has not finished before *interval*, will run again
-    immediately when the previous iteration finished.
-
-    *args and **kwargs are passed as the arguments to func.
-    """
-    LOG.info("Running %s every %d seconds", func, interval)
-    while True:
-        await asyncio.gather(
-            func(*args, **kwargs),
-            asyncio.sleep(interval),
-        )
 
 
 class RpkiClientWeb:
@@ -49,6 +34,9 @@ class RpkiClientWeb:
         self.host = conf.pop("host", "localhost")
         self.port = conf.pop("port", 8080)
         self.conf = conf
+
+        self.client = RpkiClient(**self.conf)
+
 
         self.app.add_routes(
             [
@@ -90,9 +78,8 @@ class RpkiClientWeb:
         return web.FileResponse(path)
 
     async def call_client(self) -> None:
-        client = RpkiClient(**self.conf)
-
-        self.result = await client.run()
+        """Run the rpki-client wrapper again."""
+        self.result = await self.client.run()
 
     async def json_result(self, req) -> web.Response:
         if self.result:
