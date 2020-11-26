@@ -86,3 +86,5 @@ def test_missing_labels():
             MissingLabel("bad_message_digest", "rpki.ripe.net"),
         ]
     )
+
+    assert missing_labels(after, before) == frozenset()

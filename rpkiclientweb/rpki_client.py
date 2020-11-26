@@ -154,10 +154,10 @@ class RpkiClient:
             LOG.debug("stdout: %s", stdout)
             LOG.debug("stderr: %s", stderr)
 
-        self.update_warning_metrics(stderr)
-
         RPKI_CLIENT_UPDATE_COUNT.labels(returncode=proc.returncode).inc()
         RPKI_CLIENT_LAST_DURATION.set(duration)
+
+        self.update_warning_metrics(stderr)
 
         asyncio.create_task(self.update_validated_objects_gauge(proc.returncode))
 
@@ -172,6 +172,8 @@ class RpkiClient:
         """Update the warning gauges."""
         warnings = parse_rpki_client_output(stderr.decode("utf8"))
         new_warnings = statistics_by_host(warnings)
+
+        LOG.debug("new_warnings: %s", new_warnings)
 
         # Remove labels that are missing
         for missing_label in missing_labels(self.warnings, new_warnings):
