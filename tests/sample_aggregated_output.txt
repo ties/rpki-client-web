@@ -1,0 +1,117 @@
+rpki-client: all files parsed: generating output
+rpki-client: ca.rg.net/rpki: loaded from network
+rpki-client: ca.rg.net/rpki: pulling from network
+rpki-client: ca.rg.net/rpki/RGnet-OU/ovsCA/IOUcOeBGM_Tb4dwfvswY4bnNZYY.mft: No such file or directory
+rpki-client: cb.rg.net/rpki: loaded from network
+rpki-client: cb.rg.net/rpki: pulling from network
+rpki-client: cc.rg.net/rpki: loaded from network
+rpki-client: cc.rg.net/rpki: pulling from network
+rpki-client: Certificate revocation lists: 13381
+rpki-client: Certificate revocation lists: 13382
+rpki-client: Certificate revocation lists: 13383
+rpki-client: Certificate revocation lists: 13384
+rpki-client: Certificate revocation lists: 13385
+rpki-client: Certificates: 13386 (0 failed parse, 0 invalid)
+rpki-client: Certificates: 13387 (0 failed parse, 0 invalid)
+rpki-client: Certificates: 13389 (0 failed parse, 0 invalid)
+rpki-client: Certificates: 13390 (0 failed parse, 0 invalid)
+rpki-client: Certificates: 13391 (0 failed parse, 0 invalid)
+rpki-client: Certificates: 13392 (0 failed parse, 0 invalid)
+rpki-client: Files removed: 467
+rpki-client: Files removed: 479
+rpki-client: Files removed: 480
+rpki-client: Files removed: 481
+rpki-client: Files removed: 482
+rpki-client: Files removed: 483
+rpki-client: Files removed: 487
+rpki-client: Files removed: 488
+rpki-client: Files removed: 489
+rpki-client: Files removed: 490
+rpki-client: Files removed: 491
+rpki-client: Files removed: 492
+rpki-client: Files removed: 493
+rpki-client: Files removed: 494
+rpki-client: Files removed: 495
+rpki-client: Files removed: 496
+rpki-client: Files removed: 500
+rpki-client: Manifests: 13386 (4 failed parse, 0 stale)
+rpki-client: Manifests: 13386 (5 failed parse, 0 stale)
+rpki-client: Manifests: 13387 (4 failed parse, 0 stale)
+rpki-client: Manifests: 13389 (7 failed parse, 0 stale)
+rpki-client: Manifests: 13390 (7 failed parse, 0 stale)
+rpki-client: Manifests: 13391 (7 failed parse, 0 stale)
+rpki-client: Manifests: 13392 (7 failed parse, 0 stale)
+rpki-client: nostromo.heficed.net/repo: loaded from network
+rpki-client: nostromo.heficed.net/repo: load from network failed, fallback to cache
+rpki-client: nostromo.heficed.net/repo: pulling from network
+rpki-client: period stats: 1 pending entries
+rpki-client: period stats: 1 pending repos
+rpki-client: Repositories: 14
+rpki-client: Route Origin Authorizations: 20245 (0 failed parse, 0 invalid)
+rpki-client: Route Origin Authorizations: 20246 (0 failed parse, 0 invalid)
+rpki-client: Route Origin Authorizations: 20247 (0 failed parse, 0 invalid)
+rpki-client: Route Origin Authorizations: 20248 (0 failed parse, 0 invalid)
+rpki-client: Route Origin Authorizations: 20250 (0 failed parse, 0 invalid)
+rpki-client: Route Origin Authorizations: 20251 (0 failed parse, 0 invalid)
+rpki-client: Route Origin Authorizations: 20255 (0 failed parse, 0 invalid)
+rpki-client: Route Origin Authorizations: 20258 (0 failed parse, 0 invalid)
+rpki-client: Route Origin Authorizations: 20259 (0 failed parse, 0 invalid)
+rpki-client: Route Origin Authorizations: 20261 (0 failed parse, 0 invalid)
+rpki-client: Route Origin Authorizations: 20263 (0 failed parse, 0 invalid)
+rpki-client: Route Origin Authorizations: 20264 (0 failed parse, 0 invalid)
+rpki-client: Route Origin Authorizations: 20265 (0 failed parse, 0 invalid)
+rpki-client: Route Origin Authorizations: 20266 (0 failed parse, 0 invalid)
+rpki-client: Route Origin Authorizations: 20267 (0 failed parse, 0 invalid)
+rpki-client: Route Origin Authorizations: 20268 (0 failed parse, 0 invalid)
+rpki-client: Route Origin Authorizations: 20269 (0 failed parse, 0 invalid)
+rpki-client: Route Origin Authorizations: 20271 (0 failed parse, 0 invalid)
+rpki-client: rpki1.terratransit.de/repo: load from network failed, fallback to cache
+rpki-client: rpki1.terratransit.de/repo: pulling from network
+rpki-client: rpki1.terratransit.de/repo/TerraTransit/0/32AC7492B0EE1B530737342F01954AF0F1C5217E.mft: No such file or directory
+rpki-client: rpki1.terratransit.de/repo/TerraTransit/1/DDF3443D683C2396A9D49697332ADC6763239F5D.mft: No such file or directory
+rpki-client: rpki1.terratransit.de/repo/TerraTransit/2/07A8AF2B5FE831FF589EB38AE3C025CE871F23E7.mft: No such file or directory
+rpki-client: rpki1.terratransit.de/repo/tt1-51/0/A86BB2D6000DCA3FD27A42470AEA8CAA70C22688.mft: No such file or directory
+rpki-client: rpki.admin.freerangecloud.com/repo: loaded from network
+rpki-client: rpki.admin.freerangecloud.com/repo: pulling from network
+rpki-client: rpkica.mckay.com/rpki: loaded from network
+rpki-client: rpkica.mckay.com/rpki/MCnet/Jp4Tjp_GB5I1RfeaOGhKZNlDmAQ.mft: mft expired on Aug 26 11:03:34 2020 GMT
+rpki-client: rpkica.mckay.com/rpki/MCnet/UEh2SAvdIgPsUFdv92RSSaNqBnY.mft: No such file or directory
+rpki-client: rpkica.mckay.com/rpki: pulling from network
+rpki-client: rpki.multacom.com/repo: loaded from network
+rpki-client: rpki.multacom.com/repo: pulling from network
+rpki-client: rpki.qs.nu/repo: loaded from network
+rpki-client: rpki.qs.nu/repo: pulling from network
+rpki-client: rpki.ripe.net/repository/DEFAULT/d6/43d2c6-e4fa-4c39-ac0f-024e649261ec/1/cIb-UuM7FI_P9rrA0UYvDGnIJTQ.mft: bad message digest for cIb-UuM7FI_P9rrA0UYvDGnIJTQ.crl
+rpki-client: rpki.ripe.net/repository: loaded from network
+rpki-client: rpki.ripe.net/repository: pulling from network
+rpki-client: rpki.ripe.net/ta: loaded from network
+rpki-client: rpki.xindi.eu/repo: loaded from network
+rpki-client: rpki.xindi.eu/repo: pulling from network
+rpki-client: rsync.rpki.a2b-internet.com/repo: loaded from network
+rpki-client: rsync.rpki.a2b-internet.com/repo: pulling from network
+rpki-client: rsync.rpki.nlnetlabs.nl/repo: loaded from network
+rpki-client: rsync.rpki.nlnetlabs.nl/repo: pulling from network
+rpki-client: rsync rsync://nostromo.heficed.net/repo failed
+rpki-client: rsync rsync://rpki1.terratransit.de/repo failed
+rpki-client: Trust Anchor Locators: 1
+rpki-client: VRP Entries: 109665 (109663 unique)
+rpki-client: VRP Entries: 109687 (109685 unique)
+rpki-client: VRP Entries: 109688 (109686 unique)
+rpki-client: VRP Entries: 109690 (109688 unique)
+rpki-client: VRP Entries: 109691 (109689 unique)
+rpki-client: VRP Entries: 109696 (109694 unique)
+rpki-client: VRP Entries: 109699 (109697 unique)
+rpki-client: VRP Entries: 109701 (109699 unique)
+rpki-client: VRP Entries: 109702 (109700 unique)
+rpki-client: VRP Entries: 109704 (109702 unique)
+rpki-client: VRP Entries: 109706 (109704 unique)
+rpki-client: VRP Entries: 109710 (109708 unique)
+rpki-client: VRP Entries: 109716 (109714 unique)
+rpki-client: VRP Entries: 109718 (109716 unique)
+rpki-client: VRP Entries: 109724 (109722 unique)
+rpki-client: VRP Entries: 109727 (109725 unique)
+rpki-client: VRP Entries: 109728 (109726 unique)
+rpki-client: VRP Entries: 109732 (109730 unique)
+rpki-client: VRP Entries: 109737 (109735 unique)
+rpki-client: VRP Entries: 109755 (109753 unique)
+rpki-client: VRP Entries: 109757 (109755 unique)
