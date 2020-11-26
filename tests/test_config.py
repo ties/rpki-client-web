@@ -30,6 +30,7 @@ def test_config_checks_cache_dir():
             client = RpkiClient(**conf)
             client.args
 
+
 def test_config_checks_output_dir():
     conf = load_sample_conf()
 
@@ -41,6 +42,7 @@ def test_config_checks_output_dir():
             client = RpkiClient(**conf)
             client.args
 
+
 def test_config_accepts_when_both_exist():
     conf = load_sample_conf()
 
@@ -51,6 +53,7 @@ def test_config_accepts_when_both_exist():
 
             client = RpkiClient(**conf)
             client.args
+
 
 def test_requires_rpki_client_present():
     conf = load_sample_conf()

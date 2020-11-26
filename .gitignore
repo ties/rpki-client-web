@@ -6,3 +6,5 @@ dist
 build
 pip-wheel-metadata
 .vagrant
+.autoenv.zsh
+__pycache__
