@@ -173,11 +173,15 @@ class RpkiClient:
         warnings = parse_rpki_client_output(stderr.decode("utf8"))
         new_warnings = statistics_by_host(warnings)
 
-        # Zero the metrics that are no longer present
-        for label in missing_labels(self.warnings, new_warnings):
-            RPKI_CLIENT_WARNINGS.label(
-                type=label.warning_type, hostname=label.hostname
-            ).set(0)
+        # Remove the metrics that are no longer present
+        # prevents exporting a max of ~200 unneeded metrics on each fetch
+        for missing_label in missing_labels(self.warnings, new_warnings):
+            LOG.debug("Removing label %s", missing_label)
+            # label values need to be provided to remove in alphabetical order of
+            # their label names.
+            RPKI_CLIENT_WARNINGS.remove(
+                missing_label.hostname, missing_label.warning_type
+            )
 
         # Set new values
         for warning in new_warnings:
