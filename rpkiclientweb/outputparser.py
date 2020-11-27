@@ -48,6 +48,7 @@ class WarningSummary(NamedTuple):
 
 class MissingLabel(NamedTuple):
     """A missing label."""
+
     warning_type: str
     hostname: str
 
@@ -112,7 +113,7 @@ def missing_labels(
 
     Used to determine what labels are no longer present on the metrics.
     """
-    l = frozenset(MissingLabel(w.warning_type, w.hostname) for w in lhs)
-    r = frozenset(MissingLabel(w.warning_type, w.hostname) for w in rhs)
+    left = frozenset(MissingLabel(w.warning_type, w.hostname) for w in lhs)
+    right = frozenset(MissingLabel(w.warning_type, w.hostname) for w in rhs)
 
-    return l - r
+    return left - right

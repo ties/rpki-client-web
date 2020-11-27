@@ -37,7 +37,6 @@ class RpkiClientWeb:
 
         self.client = RpkiClient(**self.conf)
 
-
         self.app.add_routes(
             [
                 web.get("/", self.index),
