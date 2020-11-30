@@ -173,15 +173,12 @@ class RpkiClient:
         warnings = parse_rpki_client_output(stderr.decode("utf8"))
         new_warnings = statistics_by_host(warnings)
 
-        # Remove the metrics that are no longer present
-        # prevents exporting a max of ~200 unneeded metrics on each fetch
-        for missing_label in missing_labels(self.warnings, new_warnings):
-            LOG.debug("Removing label %s", missing_label)
-            # label values need to be provided to remove in alphabetical order of
-            # their label names.
-            RPKI_CLIENT_WARNINGS.remove(
-                missing_label.hostname, missing_label.warning_type
-            )
+        # Set 'missing' metric-label values to 0 since missing values are
+        # confusing (they disappear in prometheus and grafana)
+        for missing in missing_labels(self.warnings, new_warnings):
+            RPKI_CLIENT_WARNINGS.labels(
+                type=missing.warning_type, hostname=missing.hostname
+            ).set(0)
 
         # Set new values
         for warning in new_warnings:
