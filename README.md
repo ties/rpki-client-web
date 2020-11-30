@@ -4,6 +4,9 @@ via a HTTP API.
 Changes
 =======
 
+2020-11-30 v0.4.5:
+  * Set missing labels to 0.
+
 2020-11-26 v0.4.4:
   * Fix label removal bug --- old labels should now be removed.
 
