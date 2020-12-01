@@ -12,8 +12,7 @@ from prometheus_async.aio import time as time_metric, track_inprogress
 from prometheus_client import Counter, Gauge, Histogram
 
 from rpkiclientweb.outputparser import (
-    parse_rpki_client_output,
-    statistics_by_host,
+    OutputParser,
     WarningSummary,
     missing_labels,
 )
@@ -45,9 +44,22 @@ RPKI_OBJECTS_COUNT = Gauge("rpki_objects", "Number of objects by type", ["type"]
 RPKI_CLIENT_WARNINGS = Gauge(
     "rpkiclient_warnings", "Warnings from rpki-client", ["hostname", "type"]
 )
+RPKI_CLIENT_PULLING = Gauge(
+    "rpkiclient_pulling",
+    "Last time pulling from this repository was started (referenced).",
+    ["uri"],
+)
+RPKI_CLIENT_PULLED = Gauge(
+    "rpkiclient_pulled",
+    "Last time repo was pulled (before process ended due to timeout).",
+    ["uri"],
+)
 
 
 METADATA_LABELS = (
+    "elapsedtime",
+    "usertime",
+    "systemtime",
     "roas",
     "failedroas",
     "invalidroas",
@@ -92,6 +104,7 @@ class RpkiClient:
     timeout: Optional[int] = None
 
     warnings: List[WarningSummary] = field(default_factory=list)
+    last_update_repos: List[str] = frozenset()
 
     @property
     def args(self) -> List[str]:
@@ -157,7 +170,7 @@ class RpkiClient:
         RPKI_CLIENT_UPDATE_COUNT.labels(returncode=proc.returncode).inc()
         RPKI_CLIENT_LAST_DURATION.set(duration)
 
-        self.update_warning_metrics(stderr)
+        self.update_warning_metrics(stderr, proc.returncode == 0)
 
         asyncio.create_task(self.update_validated_objects_gauge(proc.returncode))
 
@@ -168,11 +181,28 @@ class RpkiClient:
             duration=duration,
         )
 
-    def update_warning_metrics(self, stderr: bytes) -> None:
+    def update_warning_metrics(self, stderr: bytes, was_successful_run: bool) -> None:
         """Update the warning gauges."""
-        warnings = parse_rpki_client_output(stderr.decode("utf8"))
-        new_warnings = statistics_by_host(warnings)
+        parsed = OutputParser(stderr.decode("utf8"))
 
+        # Delete labels for repos not included anymore (unreferenced)
+        new_pulling = parsed.pulling
+
+        if was_successful_run:
+            for unreferenced_repo in self.last_update_repos - new_pulling:
+                LOG.info("Removing unreferenced repository %s", unreferenced_repo)
+                try:
+                    RPKI_CLIENT_PULLING.remove(unreferenced_repo)
+                    RPKI_CLIENT_PULLED.remove(unreferenced_repo)
+                except KeyError:
+                    pass
+        # Update pulling & pulled
+        for repo in new_pulling:
+            RPKI_CLIENT_PULLING.labels(repo).set_to_current_time()
+        for repo in parsed.pulled:
+            RPKI_CLIENT_PULLED.labels(repo).set_to_current_time()
+
+        new_warnings = parsed.statistics_by_host()
         # Set 'missing' metric-label values to 0 since missing values are
         # confusing (they disappear in prometheus and grafana)
         for missing in missing_labels(self.warnings, new_warnings):
@@ -187,6 +217,7 @@ class RpkiClient:
             ).set(warning.count)
         # And store
         self.warnings = new_warnings
+        self.last_update_repos = new_pulling
 
     async def update_validated_objects_gauge(self, returncode: int) -> None:
         """
@@ -198,9 +229,9 @@ class RpkiClient:
           "elapsedtime": "223",
           "usertime": "46",
           "systemtime": "57",
+
           "roas": 16245,
           "failedroas": 0,
-
           "invalidroas": 0,
           "certificates": 11835,
           "failcertificates": 0,
