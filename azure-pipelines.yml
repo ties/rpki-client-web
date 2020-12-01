@@ -19,6 +19,8 @@ resources:
   containers:
   - container: py38
     image: python:3.8
+  - container: py39
+    image: python:3.9
 
 stages:
 - stage: 'Test'
@@ -31,6 +33,8 @@ stages:
       matrix:
         Python38:
           containerResource: py38
+        Python39:
+          containerResource: py39
 
     container: $[ variables['containerResource']]
 
@@ -69,6 +73,8 @@ stages:
       matrix:
         Python38:
           containerResource: py38
+        Python39:
+          containerResource: py39
     container: $[ variables['containerResource']]
 
     steps:
