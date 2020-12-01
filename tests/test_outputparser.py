@@ -4,35 +4,33 @@ import pytest
 from typing import List
 
 from rpkiclientweb.outputparser import (
-    parse_rpki_client_output,
-    statistics_by_host,
+    OutputParser,
     missing_labels,
     LabelWarning,
     ExpirationWarning,
     WarningSummary,
     RPKIClientWarning,
     ManifestObjectWarning,
-    MissingLabel,
+    MissingLabel
 )
 
 
-def parse_output_file(name: str) -> List[RPKIClientWarning]:
+def parse_output_file(name: str) -> OutputParser:
     with open(name, "r") as f:
-        # Generator -> list
-        return list(parse_rpki_client_output(f.read()))
+        return OutputParser(f.read())
 
 
 def test_parse_sample_stderr_missing_files():
-    res = parse_output_file("tests/sample_stderr_regular.txt")
+    parser = parse_output_file("tests/sample_stderr_regular.txt")
 
     assert (
         LabelWarning(
             warning_type="missing_file",
             uri="ca.rg.net/rpki/RGnet-OU/ovsCA/IOUcOeBGM_Tb4dwfvswY4bnNZYY.mft",
         )
-        in res
+        in parser.warnings
     )
-    assert any(map(lambda r: isinstance(r, ExpirationWarning), res))
+    assert any(map(lambda r: isinstance(r, ExpirationWarning), parser.warnings))
 
 
 def test_parse_sample_aggregated():
@@ -42,16 +40,16 @@ def test_parse_sample_aggregated():
 
     Gathered with `docker logs rpki-client-web | sed -e 's/\\n/\n/g' | grep -E "^rpki-client:" | sort | uniq`
     """
-    res = parse_output_file("tests/sample_aggregated_output.txt")
+    parser = parse_output_file("tests/sample_aggregated_output.txt")
 
     assert (
         LabelWarning(
             warning_type="missing_file",
             uri="ca.rg.net/rpki/RGnet-OU/ovsCA/IOUcOeBGM_Tb4dwfvswY4bnNZYY.mft",
         )
-        in res
+        in parser.warnings
     )
-    assert any(map(lambda r: isinstance(r, ExpirationWarning), res))
+    assert any(map(lambda r: isinstance(r, ExpirationWarning), parser.warnings))
     # partial read
     assert (
         ManifestObjectWarning(
@@ -59,15 +57,24 @@ def test_parse_sample_aggregated():
             uri="rpki.ripe.net/repository/DEFAULT/d6/43d2c6-e4fa-4c39-ac0f-024e649261ec/1/cIb-UuM7FI_P9rrA0UYvDGnIJTQ.mft",
             object_name="cIb-UuM7FI_P9rrA0UYvDGnIJTQ.crl",
         )
-        in res
+        in parser.warnings
     )
 
+def test_pulling_lines():
+    """Test that the correct pulling lines are listed."""
+    parser = parse_output_file("tests/sample_stderr_regular.txt")
+
+    assert 'rpki.ripe.net/ta' in parser.pulling
+    assert 'rpki.ripe.net/repository' in parser.pulling
+
+    assert 'rpki.ripe.net/ta' in parser.pulled
+    assert 'rpki.ripe.net/repository' in parser.pulled
 
 def test_statistics_by_host():
     """Test the grouping of warnings by host."""
-    res = parse_output_file("tests/sample_aggregated_output.txt")
+    parser = parse_output_file("tests/sample_aggregated_output.txt")
 
-    stats = statistics_by_host(res)
+    stats = parser.statistics_by_host()
 
     assert WarningSummary("expired_manifest", "rpkica.mckay.com", 1) in stats
     assert WarningSummary("missing_file", "ca.rg.net", 1) in stats
@@ -77,8 +84,8 @@ def test_statistics_by_host():
 
 def test_missing_labels():
     """Test the diffing of sets of labels."""
-    after = statistics_by_host(parse_output_file("tests/sample_stderr_regular.txt"))
-    before = statistics_by_host(parse_output_file("tests/sample_aggregated_output.txt"))
+    after = parse_output_file("tests/sample_stderr_regular.txt").statistics_by_host()
+    before = parse_output_file("tests/sample_aggregated_output.txt").statistics_by_host()
 
     assert missing_labels(before, after) == frozenset(
         [
