@@ -32,6 +32,8 @@ def test_parse_sample_stderr_missing_files():
     )
     assert any(map(lambda r: isinstance(r, ExpirationWarning), parser.warnings))
 
+    assert parser.files_removed == 479
+
 
 def test_parse_sample_aggregated():
     """
@@ -59,6 +61,11 @@ def test_parse_sample_aggregated():
         )
         in parser.warnings
     )
+
+def test_overclaiming_line():
+    parser = OutputParser("rpki-client: ca.rg.net/rpki/RGnet-OU/_XrQ8TKGekuqYxq7Ev1ZflcIsWM.roa: RFC 3779 resource not subset of parent's resources")
+
+    assert LabelWarning(warning_type="overclaiming", uri="ca.rg.net/rpki/RGnet-OU/_XrQ8TKGekuqYxq7Ev1ZflcIsWM.roa") in parser.warnings
 
 def test_pulling_lines():
     """Test that the correct pulling lines are listed."""
