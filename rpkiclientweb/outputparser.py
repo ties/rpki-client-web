@@ -6,15 +6,17 @@ import urllib.parse
 from typing import FrozenSet, NamedTuple, Generator, List, Union
 
 
-MISSING_FILE_RE = re.compile(r"rpki-client: (?P<uri>.*): No such file or directory")
-EXPIRED_MANIFEST_RE = re.compile(
-    r"rpki-client: (?P<uri>.*): mft expired on (?P<expiry>.*)"
-)
 BAD_MESSAGE_DIGEST_RE = re.compile(
     r"rpki-client: (?P<uri>.*): bad message digest for (?P<object>.*)"
 )
+EXPIRED_MANIFEST_RE = re.compile(
+    r"rpki-client: (?P<uri>.*): mft expired on (?P<expiry>.*)"
+)
+FILES_REMOVED = re.compile(r"rpki-client: Files removed: (?P<files_removed>[0-9]+)")
+MISSING_FILE_RE = re.compile(r"rpki-client: (?P<uri>.*): No such file or directory")
 PULLING_RE = re.compile(r"rpki-client: (?P<uri>.*): pulling from network")
 PULLED_RE = re.compile(r"rpki-client: (?P<uri>.*): loaded from network")
+RESOURCE_OVERCLAIMING = re.compile(r"rpki-client: (?P<uri>.*): RFC 3779 resource not subset of parent's resources")
 
 
 class LabelWarning(NamedTuple):
@@ -80,6 +82,11 @@ class OutputParser:
                 yield LabelWarning("missing_file", missing_file.group("uri"))
                 continue
 
+            overclaiming = RESOURCE_OVERCLAIMING.match(line)
+            if overclaiming:
+                yield LabelWarning("overclaiming", overclaiming.group("uri"))
+                continue
+
             expired_manifest = EXPIRED_MANIFEST_RE.match(line)
             if expired_manifest:
                 expiry = expired_manifest.group("expiry")
@@ -99,6 +106,14 @@ class OutputParser:
                     bad_message_digest.group("uri"),
                     bad_message_digest.group("object"),
                 )
+
+    @property
+    def files_removed(self) -> int:
+        for line in self.lines:
+            removed = FILES_REMOVED.match(line)
+            if removed:
+                return int(removed.group("files_removed"))
+
 
     @property
     def pulling(self) -> FrozenSet[str]:

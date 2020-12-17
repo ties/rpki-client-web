@@ -202,6 +202,8 @@ class RpkiClient:
         for repo in parsed.pulled:
             RPKI_CLIENT_PULLED.labels(repo).set_to_current_time()
 
+        RPKI_OBJECTS_COUNT.labels(type="files_removed").set(parsed.files_removed)
+
         new_warnings = parsed.statistics_by_host()
         # Set 'missing' metric-label values to 0 since missing values are
         # confusing (they disappear in prometheus and grafana)

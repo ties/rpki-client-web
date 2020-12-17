@@ -4,6 +4,10 @@ via a HTTP API.
 Changes
 =======
 
+2020-12-17 v0.5.0:
+  * Track overclaiming ROAs
+  * Track number of deleted files
+
 2020-12-1 v0.4.6:
   * Track repositories pulled from
 
