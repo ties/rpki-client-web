@@ -109,10 +109,13 @@ class OutputParser:
 
     @property
     def files_removed(self) -> int:
+        """Number of files removed during rpki-client run"""
         for line in self.lines:
             removed = FILES_REMOVED.match(line)
             if removed:
                 return int(removed.group("files_removed"))
+
+        return 0
 
 
     @property
