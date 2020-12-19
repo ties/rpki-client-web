@@ -4,6 +4,9 @@ via a HTTP API.
 Changes
 =======
 
+2020-12-19 v0.5.1:
+  * Fix: Crash when files removed line is missing due to unsuccessful run.
+
 2020-12-17 v0.5.0:
   * Track overclaiming ROAs
   * Track number of deleted files
