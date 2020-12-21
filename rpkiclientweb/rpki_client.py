@@ -120,6 +120,8 @@ class RpkiClient:
         if not (not self.timeout or self.timeout >= -1):
             raise ValueError(f"illegal timeout: {self.timeout} -- should be >= -1")
 
+        # Not using `-s [timeout]` for now because the timeout is managed from
+        # this wrapping code.
         args = [
             "-v",  # verbose
             "-j",  # JSON output
