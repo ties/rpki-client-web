@@ -3,6 +3,7 @@ import dataclasses
 import json
 import logging
 import os
+import random
 from dataclasses import dataclass
 from typing import Dict, List, Optional
 
@@ -26,11 +27,14 @@ class RpkiClientWeb:
     port: int
 
     interval: int
+    jitter: int
 
     def __init__(self, conf: Dict) -> None:
         self.app = web.Application()
 
         self.interval = conf.pop("interval")
+        # default to the interval for jitter value
+        self.jitter = conf.pop("jitter")
         self.host = conf.pop("host", "localhost")
         self.port = conf.pop("port", 8080)
         self.conf = conf
@@ -92,7 +96,16 @@ class RpkiClientWeb:
         await runner.setup()
         site = web.TCPSite(runner, self.host, self.port)
 
-        # await site.start()
+        if self.jitter:
+            jitter_delay = random.uniform(0, self.jitter)
+            LOG.info(
+                "delaying by random delay of [0, %d] seconds of %f seconds",
+                self.jitter,
+                jitter_delay,
+            )
+
+            await asyncio.sleep(jitter_delay)
+
         return await asyncio.gather(
             repeat(self.interval, self.call_client), site.start()
         )

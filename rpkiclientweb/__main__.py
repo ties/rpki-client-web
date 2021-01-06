@@ -1,6 +1,7 @@
 import argparse
 import asyncio
 import logging
+import os
 import sys
 
 from yaml import Loader, dump, load
@@ -16,6 +17,14 @@ def main():
         "-c", "--config", default="config.yml", type=argparse.FileType("r")
     )
     parser.add_argument("-v", "--verbose", action="count", default=0)
+    # -1: interval from config, 0 = zero delay
+    parser.add_argument(
+        "-j",
+        "--jitter",
+        default=0 if os.isatty(sys.stdout.fileno()) else 300,
+        type=int,
+        help="random delay of up to [jitter] before starting rpki-client for the first time. Defaults to 0 when in an interactive terminal, 300 when non-interactive.",
+    )
 
     args = parser.parse_args()
 
@@ -33,6 +42,7 @@ def main():
         logging.getLogger().setLevel(logging.INFO)
 
     conf = load(args.config, Loader=Loader)
+    conf["jitter"] = args.jitter
     LOG.debug("Configuration: %s", conf)
 
     web = RpkiClientWeb(conf)

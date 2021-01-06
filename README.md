@@ -4,6 +4,9 @@ via a HTTP API.
 Changes
 =======
 
+2021-01-06 v0.6.0:
+  * Start with a random delay of up to 300s when non-interactive
+
 2020-12-19 v0.5.1:
   * Fix: Crash when files removed line is missing due to unsuccessful run.
 

@@ -1,10 +1,8 @@
-from collections import Counter
-from datetime import datetime
 import re
 import urllib.parse
-
-from typing import FrozenSet, NamedTuple, Generator, List, Union
-
+from collections import Counter
+from datetime import datetime
+from typing import FrozenSet, Generator, List, NamedTuple, Union
 
 BAD_MESSAGE_DIGEST_RE = re.compile(
     r"rpki-client: (?P<uri>.*): bad message digest for (?P<object>.*)"
@@ -16,7 +14,9 @@ FILES_REMOVED = re.compile(r"rpki-client: Files removed: (?P<files_removed>[0-9]
 MISSING_FILE_RE = re.compile(r"rpki-client: (?P<uri>.*): No such file or directory")
 PULLING_RE = re.compile(r"rpki-client: (?P<uri>.*): pulling from network")
 PULLED_RE = re.compile(r"rpki-client: (?P<uri>.*): loaded from network")
-RESOURCE_OVERCLAIMING = re.compile(r"rpki-client: (?P<uri>.*): RFC 3779 resource not subset of parent's resources")
+RESOURCE_OVERCLAIMING = re.compile(
+    r"rpki-client: (?P<uri>.*): RFC 3779 resource not subset of parent's resources"
+)
 
 
 class LabelWarning(NamedTuple):
@@ -116,7 +116,6 @@ class OutputParser:
                 return int(removed.group("files_removed"))
 
         return 0
-
 
     @property
     def pulling(self) -> FrozenSet[str]:
