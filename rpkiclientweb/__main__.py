@@ -21,9 +21,9 @@ def main():
     parser.add_argument(
         "-j",
         "--jitter",
-        default=0 if os.isatty(sys.stdout.fileno()) else 300,
+        default=0 if os.isatty(sys.stdout.fileno()) else 600,
         type=int,
-        help="random delay of up to [jitter] before starting rpki-client for the first time. Defaults to 0 when in an interactive terminal, 300 when non-interactive.",
+        help="random delay of up to [jitter] before starting rpki-client for the first time. Defaults to 0 when in an interactive terminal, 600 when non-interactive.",
     )
 
     args = parser.parse_args()
