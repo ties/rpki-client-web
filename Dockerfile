@@ -19,8 +19,7 @@ RUN cd /opt/rpkiclientweb\
 
 # https://github.com/just-containers/s6-overlay functionality
 ADD docker/rpkiclientweb.init /etc/cont-init.d/02-rpkiclientweb
-# Do not change permissions on cache directory: Extremely slow
-#ADD docker/rpkiclientweb.chmod /etc/fix-attrs.d/01-rpki-client-web
+ADD docker/rpkiclientweb.chmod /etc/fix-attrs.d/01-rpki-client-web
 ADD config.yml /config/
 
 
