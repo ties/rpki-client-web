@@ -4,6 +4,9 @@ via a HTTP API.
 Changes
 =======
 
+2021-01-21 v0.6.2:
+  * Start webserver/prometheus endpoint immediately when waiting for delay
+
 2021-01-06 v0.6.1:
   * Start with a random delay of up to 600s when non-interactive
 

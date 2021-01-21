@@ -96,6 +96,8 @@ class RpkiClientWeb:
         await runner.setup()
         site = web.TCPSite(runner, self.host, self.port)
 
+        asyncio.create_task(site.start(), name="site")
+
         if self.jitter:
             jitter_delay = random.uniform(0, self.jitter)
             LOG.info(
@@ -106,6 +108,4 @@ class RpkiClientWeb:
 
             await asyncio.sleep(jitter_delay)
 
-        return await asyncio.gather(
-            repeat(self.interval, self.call_client), site.start()
-        )
+        return await repeat(self.interval, self.call_client)
