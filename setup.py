@@ -12,7 +12,7 @@ with open(os.path.join(here, "README.md"), "rb") as f:
 
 setup(
     name="rpkiclientweb",
-    version="0.6.2",
+    version="0.7.0",
     author="Ties de Kock",
     author_email="ties@tiesdekock.nl",
     description="A web api for RPKI-client",
