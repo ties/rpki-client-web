@@ -4,6 +4,9 @@ via a HTTP API.
 Changes
 =======
 
+2021-02-08 v0.7.1:
+  * Hotfix: Exception on path being hit.
+
 2021-02-08 v0.7.0:
   * Track vanished files and directory count.
   * Track the number of no longer referenced repositories.
