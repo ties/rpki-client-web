@@ -117,3 +117,7 @@ rpkiclient_update_created{returncode="-9"} 1.5911933945483255e+09
 #### Important metrics
   * `rpkiclient_removed_unreferenced`: The number of repositories that are no
     longer referenced from a trust anchor.
+  * `rpkiclient_warnings{hostname="<repo hostname",type="<type of error>"}`:
+    Tracks specific types of error per repository when they happen. For a healthy
+    repository, no warnings should exist.
+  * `rpki_objects{type="<type>"}`: Object count by type, both regular ("number of ROAs") and extraordinary ("number of rejected certificates") metrics.
