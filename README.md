@@ -4,6 +4,11 @@ via a HTTP API.
 Changes
 =======
 
+2021-02-08 v0.7.0:
+  * Track vanished files and directory count.
+  * Track the number of no longer referenced repositories.
+  * Track the number of revoked certificate lines.
+
 2021-01-21 v0.6.2:
   * Start webserver/prometheus endpoint immediately when waiting for delay
 
@@ -108,3 +113,7 @@ rpkiclient_update_total{returncode="-9"} 1.0
 # TYPE rpkiclient_update_created gauge
 rpkiclient_update_created{returncode="-9"} 1.5911933945483255e+09
 ```
+
+#### Important metrics
+  * `rpkiclient_removed_unreferenced`: The number of repositories that are no
+    longer referenced from a trust anchor.

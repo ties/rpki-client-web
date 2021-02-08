@@ -54,6 +54,9 @@ RPKI_CLIENT_PULLED = Gauge(
     "Last time repo was pulled (before process ended due to timeout).",
     ["uri"],
 )
+RPKI_CLIENT_REMOVED_UNREFERENCED = Counter(
+    "rpkiclient_removed_unreferenced", "Number of removals of repositories that were no longer referenced."
+)
 
 
 METADATA_LABELS = (
@@ -193,6 +196,7 @@ class RpkiClient:
         if was_successful_run:
             for unreferenced_repo in self.last_update_repos - new_pulling:
                 LOG.info("Removing unreferenced repository %s", unreferenced_repo)
+                RPKI_CLIENT_REMOVED_UNREFERENCED.inc()
                 try:
                     RPKI_CLIENT_PULLING.remove(unreferenced_repo)
                     RPKI_CLIENT_PULLED.remove(unreferenced_repo)
@@ -205,6 +209,8 @@ class RpkiClient:
             RPKI_CLIENT_PULLED.labels(repo).set_to_current_time()
 
         RPKI_OBJECTS_COUNT.labels(type="files_removed").set(parsed.files_removed)
+        RPKI_OBJECTS_COUNT.labels(type="vanished_files").set(parsed.vanished_files)
+        RPKI_OBJECTS_COUNT.labels(type="vanished_directories").set(parsed.vanished_directories)
 
         new_warnings = parsed.statistics_by_host()
         # Set 'missing' metric-label values to 0 since missing values are

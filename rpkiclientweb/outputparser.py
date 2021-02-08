@@ -17,6 +17,9 @@ PULLED_RE = re.compile(r"rpki-client: (?P<uri>.*): loaded from network")
 RESOURCE_OVERCLAIMING = re.compile(
     r"rpki-client: (?P<uri>.*): RFC 3779 resource not subset of parent's resources"
 )
+REVOKED_CERTIFICATE = re.compile(r"rpki-client: (?P<uri>.*): certificate revoked")
+VANISHED_FILE_RE = re.compile(r"file has vanished: \"(?P<path>.*)\" \(in repo\)")
+VANISHED_DIRECTORY_RE = re.compile(r"directory has vanished: \"(?P<path>.*)\" \(in repo\)")
 
 
 class LabelWarning(NamedTuple):
@@ -77,6 +80,7 @@ class OutputParser:
     @property
     def warnings(self) -> Generator[RPKIClientWarning, None, None]:
         for line in self.lines:
+            # LabelWarning (<type, file> tuples) first
             missing_file = MISSING_FILE_RE.match(line)
             if missing_file:
                 yield LabelWarning("missing_file", missing_file.group("uri"))
@@ -86,6 +90,13 @@ class OutputParser:
             if overclaiming:
                 yield LabelWarning("overclaiming", overclaiming.group("uri"))
                 continue
+
+            revoked_cert = REVOKED_CERTIFICATE.match(line)
+            if revoked_cert:
+                yield LabelWarning("revoked_certificate", revoked_cert.group("uri"))
+                continue
+
+            # Follow with more specific warnings
 
             expired_manifest = EXPIRED_MANIFEST_RE.match(line)
             if expired_manifest:
@@ -138,6 +149,28 @@ class OutputParser:
                 res.add(pulling.group("uri"))
 
         return frozenset(res)
+
+    @property
+    def vanished_directories(self) -> FrozenSet[str]:
+        """The vanished directories."""
+        res = set()
+        for line in self.lines:
+            vanished_dir = VANISHED_DIRECTORY_RE.match(line)
+            if vanished_dir:
+                res.add(vanished_dir.group("path"))
+
+        return res
+
+    @property
+    def vanished_files(self) -> FrozenSet[str]:
+        """The vanished files."""
+        res = set()
+        for line in self.lines:
+            vanished_file = VANISHED_FILE_RE.match(line)
+            if vanished_file:
+                res.add(vanished_file.group("path"))
+
+        return res
 
     def statistics_by_host(self) -> List[WarningSummary]:
         """Group the output by host by type."""

@@ -62,6 +62,22 @@ def test_parse_sample_aggregated():
         in parser.warnings
     )
 
+
+def test_twnic_revoked_objects():
+    """
+    Parse the output on 2021-2-3 that contains revoked objects.
+    """
+    parser = parse_output_file("tests/20210206_sample_twnic_during.txt")
+
+    assert (
+        LabelWarning(
+            warning_type="revoked_certificate",
+            uri="rpkica.twnic.tw/rpki/TWNICCA/OPENRICH/mlhIJnN1dfbOEvjGTcE83FLq17Q.roa",
+        )
+        in parser.warnings
+    )
+
+
 def test_overclaiming_line():
     parser = OutputParser("rpki-client: ca.rg.net/rpki/RGnet-OU/_XrQ8TKGekuqYxq7Ev1ZflcIsWM.roa: RFC 3779 resource not subset of parent's resources")
 
@@ -76,6 +92,22 @@ def test_pulling_lines():
 
     assert 'rpki.ripe.net/ta' in parser.pulled
     assert 'rpki.ripe.net/repository' in parser.pulled
+
+
+def test_vanished_lines():
+    """Test that the vanished file lines are detected."""
+    parser = parse_output_file("tests/20210206_sample_twnic_pre_incident_missing.txt")
+
+    files = parser.vanished_files
+    directories = parser.vanished_directories
+
+    # Two random samples
+    assert "/89f26fb8-72c4-49d9-9cbe-8226397271a2" in directories
+    assert "/48f39bd4-cdac-41cf-8858-d7410f64d155/0/323430353a316534303a3a2f34382d3438203d3e203538343735.roa" in files
+    # Test that is is above lower bound
+    assert len(files) > 850 and len(files) < 900
+    assert len(directories) > 190 and len(directories) < 210
+
 
 def test_statistics_by_host():
     """Test the grouping of warnings by host."""
