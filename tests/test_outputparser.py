@@ -11,7 +11,7 @@ from rpkiclientweb.outputparser import (
     WarningSummary,
     RPKIClientWarning,
     ManifestObjectWarning,
-    MissingLabel
+    MissingLabel,
 )
 
 
@@ -78,20 +78,49 @@ def test_twnic_revoked_objects():
     )
 
 
-def test_overclaiming_line():
-    parser = OutputParser("rpki-client: ca.rg.net/rpki/RGnet-OU/_XrQ8TKGekuqYxq7Ev1ZflcIsWM.roa: RFC 3779 resource not subset of parent's resources")
+def test_intertwined_lines():
+    """
+    Parse a file that contains lines that have mixed output.
 
-    assert LabelWarning(warning_type="overclaiming", uri="ca.rg.net/rpki/RGnet-OU/_XrQ8TKGekuqYxq7Ev1ZflcIsWM.roa") in parser.warnings
+    Multiple processes write to the same file descriptor, so a line can contain
+    output from multiple processes.
+    """
+    parser = parse_output_file(
+        "tests/20210304_sample_idnic_multiple_processes_write_to_same_fd.txt"
+    )
+
+    for line in parser.pulling:
+        assert "rpki-client:" not in line
+        assert len(line) < 35
+
+    for line in parser.pulled:
+        assert "rpki-client:" not in line
+        assert len(line) < 35
+
+
+def test_overclaiming_line():
+    parser = OutputParser(
+        "rpki-client: ca.rg.net/rpki/RGnet-OU/_XrQ8TKGekuqYxq7Ev1ZflcIsWM.roa: RFC 3779 resource not subset of parent's resources"
+    )
+
+    assert (
+        LabelWarning(
+            warning_type="overclaiming",
+            uri="ca.rg.net/rpki/RGnet-OU/_XrQ8TKGekuqYxq7Ev1ZflcIsWM.roa",
+        )
+        in parser.warnings
+    )
+
 
 def test_pulling_lines():
     """Test that the correct pulling lines are listed."""
     parser = parse_output_file("tests/sample_stderr_regular.txt")
 
-    assert 'rpki.ripe.net/ta' in parser.pulling
-    assert 'rpki.ripe.net/repository' in parser.pulling
+    assert "rpki.ripe.net/ta" in parser.pulling
+    assert "rpki.ripe.net/repository" in parser.pulling
 
-    assert 'rpki.ripe.net/ta' in parser.pulled
-    assert 'rpki.ripe.net/repository' in parser.pulled
+    assert "rpki.ripe.net/ta" in parser.pulled
+    assert "rpki.ripe.net/repository" in parser.pulled
 
 
 def test_vanished_lines():
@@ -103,7 +132,10 @@ def test_vanished_lines():
 
     # Two random samples
     assert "/89f26fb8-72c4-49d9-9cbe-8226397271a2" in directories
-    assert "/48f39bd4-cdac-41cf-8858-d7410f64d155/0/323430353a316534303a3a2f34382d3438203d3e203538343735.roa" in files
+    assert (
+        "/48f39bd4-cdac-41cf-8858-d7410f64d155/0/323430353a316534303a3a2f34382d3438203d3e203538343735.roa"
+        in files
+    )
     # Test that is is above lower bound
     assert len(files) > 850 and len(files) < 900
     assert len(directories) > 190 and len(directories) < 210
@@ -124,7 +156,9 @@ def test_statistics_by_host():
 def test_missing_labels():
     """Test the diffing of sets of labels."""
     after = parse_output_file("tests/sample_stderr_regular.txt").statistics_by_host()
-    before = parse_output_file("tests/sample_aggregated_output.txt").statistics_by_host()
+    before = parse_output_file(
+        "tests/sample_aggregated_output.txt"
+    ).statistics_by_host()
 
     assert missing_labels(before, after) == frozenset(
         [
