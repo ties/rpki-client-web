@@ -8,8 +8,8 @@ RUN dnf --setopt=install_weak_deps=False --best install -y rpki-client python3-a
   	&& rm -rf /var/cache/yum
 
 # S6 init-like system for proper <C-c>
-ADD https://github.com/just-containers/s6-overlay/releases/download/v2.0.0.1/s6-overlay-amd64.tar.gz /tmp/
-RUN tar xzf /tmp/s6-overlay-amd64.tar.gz -C / --exclude='./bin' && tar xzf /tmp/s6-overlay-amd64.tar.gz -C /usr ./bin && rm /tmp/s6-overlay-amd64.tar.gz
+ADD https://github.com/just-containers/s6-overlay/releases/download/v2.2.0.1/s6-overlay-amd64-installer /tmp/
+RUN chmod +x /tmp/s6-overlay-amd64-installer && /tmp/s6-overlay-amd64-installer /
 
 ADD . /opt/rpkiclientweb
 VOLUME ["/opt/rpkiclientweb/cache", "/opt/rpkiclientweb/output", "/config"]

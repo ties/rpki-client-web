@@ -11,15 +11,23 @@ EXPIRED_MANIFEST_RE = re.compile(
     r"rpki-client: (?P<uri>.*): mft expired on (?P<expiry>.*)"
 )
 FILES_REMOVED = re.compile(r"rpki-client: Files removed: (?P<files_removed>[0-9]+)")
-MISSING_FILE_RE = re.compile(r"rpki-client: (?P<uri>.*): No such file or directory")
-PULLING_RE = re.compile(r"rpki-client: (?P<uri>.*): pulling from network")
-PULLED_RE = re.compile(r"rpki-client: (?P<uri>.*): loaded from network")
+MISSING_FILE_RE = re.compile(
+    r"rpki-client: (?!rpki-client:)(?P<uri>.*): No such file or directory"
+)
+PULLING_RE = re.compile(
+    r"rpki-client: (?!rpki-client:)(?P<uri>.*): pulling from network"
+)
+PULLED_RE = re.compile(r"rpki-client: (?!rpki-client:)(?P<uri>.*): loaded from network")
 RESOURCE_OVERCLAIMING = re.compile(
     r"rpki-client: (?P<uri>.*): RFC 3779 resource not subset of parent's resources"
 )
-REVOKED_CERTIFICATE = re.compile(r"rpki-client: (?P<uri>.*): certificate revoked")
+REVOKED_CERTIFICATE = re.compile(
+    r"rpki-client: (?!rpki-client:)(?P<uri>.*): certificate revoked"
+)
 VANISHED_FILE_RE = re.compile(r"file has vanished: \"(?P<path>.*)\" \(in repo\)")
-VANISHED_DIRECTORY_RE = re.compile(r"directory has vanished: \"(?P<path>.*)\" \(in repo\)")
+VANISHED_DIRECTORY_RE = re.compile(
+    r"directory has vanished: \"(?P<path>.*)\" \(in repo\)"
+)
 
 
 class LabelWarning(NamedTuple):

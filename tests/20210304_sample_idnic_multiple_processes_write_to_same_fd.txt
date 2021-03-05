@@ -1,0 +1,47 @@
+rpki-client: rpki.apnic.net/repository: pulling from network
+rpki-client: rpki.apnic.net/repository: loaded from network
+rpki-client: rpki.apnic.net/member_repository: pulling from network
+rpki-client: rpki.rand.apnic.net/repo: pulling from network
+rpki-client: repo-rpki.idnic.net/repo: pulling from network
+rpki-client: nostromo.heficed.net/repo: pulling from network
+rpki-client: rpki.admin.freerangecloud.com/repo: pulling from network
+rpki-client: rpki.cnnic.cn/rpki: pulling from network
+rpki-client: rpkica.twnic.tw/rpki: pulling from network
+rpki-client: rpki-repository.nic.ad.jp/ap: pulling from network
+rpki-client: nostromo.heficed.net/repo: loaded from network
+rpki-client: sakuya.nat.moe/repo: pulling from network
+rpki-client: rpki.admin.freerangecloud.com/repo: loaded from network
+rpki-client: rpki.rand.apnic.net/repo: loaded from network
+rpki-client: rpki-repository.nic.ad.jp/ap: loaded from network
+rpki-client: sakuya.nat.moe/repo: loaded from network
+rpki-client: rpki.apernet.io/repo: pulling from network
+rpki-client: rpkica.twnic.tw/rpki: loaded from network
+rpki-client: rpki.cnnic.cn/rpki: loaded from network
+rpki-client: rpkica.twnic.tw/rpki/TWNICCA/GRONEXT/nWDE6oanVu0YkuM9zbrzGN6NUcA.roa: certificate revoked
+rpki-client: rpkica.twnic.tw/rpki/TWNICCA/TWDS/B5PQsmh1TljaFgwyOGC-5MtWGpI.roa: certificate revoked
+rpki-client: rpkica.twnic.tw/rpki/TWNICCA/TWDS/gdscotL6s86eYl4bBvYkiXv5tic.roa: certificate revoked
+rpki-client: rpkica.twnic.tw/rpki/TWNICCA/TWDS/lDUD_D4TWqjyP8AZPpegp8Xu7JE.roa: certificate revoked
+rpki-client: rpkica.twnic.tw/rpki/TWNICCA/FANTASY/0UtPP39_zbLTJ3q06s9rqZ3Ip80.roa: certificate revoked
+rpki-client: rpki.cnnic.cn/rpki/A9162E3D0000/73/CfUv1bVUg5EXd8PcpEpl08lfhYA.mft: No such file or directory
+rpki-client: rpki-client: repo-rpki.idnic.net/repo: loaded from network
+rpki.cnnic.cn/rpki/A9162E3D0000/643/PgsdlIaQ7Nxy4-Rg5eY-3pU8JOg.mft: No such file or directory
+rpki-client: rpki.cnnic.cn/rpki/A9162E3D0000/423/Xb2Ek-hXQR0lkZ2GO7t9n_zfQCY.mft: No such file or directory
+rpki-client: rpki.cnnic.cn/rpki/A9162E3D0000/2694/eUP-SGbbNJOVcUUB9ipl-0GcJiQ.roa: certificate revoked
+rpki-client: rpki.cnnic.cn/rpki/A9162E3D0000/577/URRZrYWDizGPJyMDhdioriBOyFg.roa: certificate revoked
+rpki-client: rpki.cnnic.cn/rpki/A9162E3D0000/577/mkkQ9kRElRfd7ArKe5z-ZjzlkcM.roa: certificate revoked
+rpki-client: rpki.cnnic.cn/rpki/A9162E3D0000/1587/1Ql4FimJVrYPVH55Ga5NwfANQfA.roa: certificate revoked
+rpki-client: rpki.cnnic.cn/rpki/A9162E3D0000/1587/BqdMYMzN42NdLb72g5SAMyVv2uo.roa: certificate revoked
+rpki-client: rpki.cnnic.cn/rpki/A9162E3D0000/1587/h6wAjnaB0p2pptlBZ4bkOwowMM8.roa: certificate revoked
+rpki-client: rpki.apernet.io/repo: loaded from network
+rpki-client: rpki.apnic.net/member_repository: loaded from network
+rpki-client: rpki.apnic.net/member_repository/A91E5A9F/6736F334E33A11E886117780C4F9AE02/lQJWKPFDQQRhRqwgujJGFEYanMM.mft: No such file or directory
+rpki-client: all files parsed: generating output
+rpki-client: Route Origin Authorizations: 13758 (11 failed parse, 0 invalid)
+rpki-client: Certificates: 4735 (0 failed parse, 0 invalid)
+rpki-client: Trust Anchor Locators: 1
+rpki-client: Manifests: 4735 (4 failed parse, 0 stale)
+rpki-client: Certificate revocation lists: 4731
+rpki-client: Repositories: 11
+rpki-client: Files removed: 2462
+rpki-client: VRP Entries: 67473 (67427 unique)
+

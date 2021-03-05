@@ -4,6 +4,11 @@ via a HTTP API.
 Changes
 =======
 
+2021-03-05 v0.7.2:
+  * Ignore lines with intertwined output, prevents `rpki-client: pulling ...`
+    (and similar) from being parsed as URLs.
+  * Updated s6 version
+
 2021-02-08 v0.7.1:
   * Hotfix: Exception on path being hit.
 
