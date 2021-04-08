@@ -10,7 +10,6 @@ BAD_MESSAGE_DIGEST_RE = re.compile(
 EXPIRED_MANIFEST_RE = re.compile(
     r"rpki-client: (?P<uri>.*): mft expired on (?P<expiry>.*)"
 )
-FILES_REMOVED = re.compile(r"rpki-client: Files removed: (?P<files_removed>[0-9]+)")
 MISSING_FILE_RE = re.compile(
     r"rpki-client: (?!rpki-client:)(?P<uri>.*): No such file or directory"
 )
@@ -125,16 +124,6 @@ class OutputParser:
                     bad_message_digest.group("uri"),
                     bad_message_digest.group("object"),
                 )
-
-    @property
-    def files_removed(self) -> int:
-        """Number of files removed during rpki-client run"""
-        for line in self.lines:
-            removed = FILES_REMOVED.match(line)
-            if removed:
-                return int(removed.group("files_removed"))
-
-        return 0
 
     @property
     def pulling(self) -> FrozenSet[str]:
