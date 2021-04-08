@@ -77,6 +77,8 @@ METADATA_LABELS = (
     "repositories",
     "vrps",
     "uniquevrps",
+    "cachedir_del_files",
+    "cachedir_del_dirs",
 )
 OPTIONAL_METADATA_LABELS = frozenset(
     [
@@ -209,7 +211,6 @@ class RpkiClient:
         for repo in parsed.pulled:
             RPKI_CLIENT_PULLED.labels(repo).set_to_current_time()
 
-        RPKI_OBJECTS_COUNT.labels(type="files_removed").set(parsed.files_removed)
         RPKI_OBJECTS_COUNT.labels(type="vanished_files").set(len(parsed.vanished_files))
         RPKI_OBJECTS_COUNT.labels(type="vanished_directories").set(
             len(parsed.vanished_directories)
@@ -257,7 +258,9 @@ class RpkiClient:
           "crls": 11833,
           "repositories": 13,
           "vrps": 87978,
-          "uniquevrps": 87978
+          "uniquevrps": 87978,
+          "cachedir_del_files": 105,
+          "cachedir_del_dirs": 31
         }
         ```
         """
