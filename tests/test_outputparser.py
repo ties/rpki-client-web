@@ -32,8 +32,6 @@ def test_parse_sample_stderr_missing_files():
     )
     assert any(map(lambda r: isinstance(r, ExpirationWarning), parser.warnings))
 
-    assert parser.files_removed == 479
-
 
 def test_parse_sample_aggregated():
     """
