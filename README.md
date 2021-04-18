@@ -4,6 +4,9 @@ via a HTTP API.
 Changes
 =======
 
+main:
+  * Update readme to refer to `rpkiclientweb` module instead of `rpki_client`.
+
 2021-03-05 v0.7.2:
   * Ignore lines with intertwined output, prevents `rpki-client: pulling ...`
     (and similar) from being parsed as URLs.
@@ -66,7 +69,7 @@ Changes
 Usage
 =====
 
-Create a `config.yml` file and run the utility with `python -m rpki_client -v -c [config_file_name]`.
+Create a `config.yml` file and run the utility with `python -m rpkiclientweb -v -c [config_file_name]`.
 Note that the default config only contains the RIPE NCC tal for ease of use during testing
 
 Or run a docker container:
@@ -95,7 +98,7 @@ Installation
 
 For now, clone the repository and run `pipenv install` to install the dependencies.
 Afterwards you can run the project if you are in the correct python environment
-or by using pipenv (`pipenv run python -m rpki_client -v -c ./config.yml`).
+or by using pipenv (`pipenv run python -m rpkiclientweb -v -c ./config.yml`).
 
 Fedora packages needed:
   * rpki-client
