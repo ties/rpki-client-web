@@ -6,6 +6,7 @@ Changes
 
 main:
   * Update readme to refer to `rpkiclientweb` module instead of `rpki_client`.
+  * Patches to make it run on Python 3.7.x
 
 2021-03-05 v0.7.2:
   * Ignore lines with intertwined output, prevents `rpki-client: pulling ...`
