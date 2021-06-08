@@ -1,0 +1,140 @@
+"rpki-client: ta/afrinic: pulling from https://rpki.afrinic.net/repository/AfriNIC.cer
+rpki-client: ta/apnic: pulling from https://rpki.apnic.net/repository/apnic-rpki-root-iana-origin.cer
+rpki-client: ta/lacnic: pulling from rsync://repository.lacnic.net/rpki/lacnic/rta-lacnic-rpki.cer
+rpki-client: ta/ripe: pulling from https://rpki.ripe.net/ta/ripe-ncc-ta.cer
+rsync_timeout: DEADLINE=2021-06-10 17:07:15.594549 time_left=29.980592 rsync -rt --no-motd --timeout 180 rsync://repository.lacnic.net/rpki/lacnic/rta-lacnic-rpki.cer ta/lacnic
+rpki-client: ta/ripe: loaded from network
+rpki-client: https://rrdp.ripe.net/notification.xml: pulling from network
+rpki-client: https://rrdp.ripe.net/notification.xml: connect: Connection refused
+rpki-client: https://rrdp.ripe.net/notification.xml: load from network failed, fallback to rsync
+rpki-client: rsync/rpki.ripe.net/repository: pulling from rsync://rpki.ripe.net/repository
+rsync_timeout: DEADLINE=2021-06-10 17:07:15.594549 time_left=29.903393 rsync -rt --no-motd --timeout 180 rsync://rpki.ripe.net/repository rsync/rpki.ripe.net/repository
+rpki-client: ta/afrinic: loaded from network
+rpki-client: https://rrdp.afrinic.net/notification.xml: pulling from network
+rpki-client: ta/apnic: loaded from network
+rpki-client: https://rrdp.apnic.net/notification.xml: pulling from network
+rpki-client: ta/lacnic: loaded from network
+rpki-client: https://rrdp.lacnic.net/rrdp/notification.xml: pulling from network
+rpki-client: https://rrdp.afrinic.net/notification.xml: repository not modified
+rpki-client: https://rrdp.afrinic.net/notification.xml: loaded from network
+rpki-client: https://rrdp.lacnic.net/rrdp/notification.xml: notification file not modified
+rpki-client: https://rrdp.lacnic.net/rrdp/notification.xml: loaded from network
+rpki-client: https://nostromo.heficed.net/rrdp/notification.xml: pulling from network
+rpki-client: https://nostromo.heficed.net/rrdp/notification.xml: notification file not modified
+rpki-client: https://nostromo.heficed.net/rrdp/notification.xml: loaded from network
+rpki-client: https://rrdp.apnic.net/notification.xml: downloading 2 deltas
+rpki-client: https://rpki-repo.registro.br/rrdp/notification.xml: pulling from network
+rpki-client: https://rrdp.apnic.net/notification.xml: loaded from network
+rpki-client: https://rpki-repo.registro.br/rrdp/notification.xml: notification file not modified
+rpki-client: https://rpki-repo.registro.br/rrdp/notification.xml: loaded from network
+rpki-client: rrdp/198613f16d61d95b77329eb7acdb3e1f8d1f0ec2b75e9510a7f7eacc7c3ebe19/rpki-repo.registro.br/repo/CdwCiTUGWyooJPMS1kEENXCA3aBaR67C8gcsvCd5HFU1/0/CBC415E956186D9CC61972979D5AC7B197F563BB.mft: bad message digest for 323830343a363566343a3a2f33322d3438203d3e203532373433.roa
+rpki-client: rrdp/198613f16d61d95b77329eb7acdb3e1f8d1f0ec2b75e9510a7f7eacc7c3ebe19/rpki-repo.registro.br/repo/CdwCiTUGWyooJPMS1kEENXCA3aBaR67C8gcsvCd5HFU1/0/CBC415E956186D9CC61972979D5AC7B197F563BB.mft: bad message digest for 3137372e38352e3136342e302f32322d3234203d3e203532373433.roa
+rpki-client: rrdp/198613f16d61d95b77329eb7acdb3e1f8d1f0ec2b75e9510a7f7eacc7c3ebe19/rpki-repo.registro.br/repo/DwQxnFqziithwRm3cVCMKqLKU3689FDMJMMRLC7gwbUZ/0/3BB0EBF5569F560AB751A23E2DD86568033C6262.mft: bad message digest for 34352e37302e3139322e302f32322d3234203d3e20323637353835.roa
+rpki-client: rrdp/198613f16d61d95b77329eb7acdb3e1f8d1f0ec2b75e9510a7f7eacc7c3ebe19/rpki-repo.registro.br/repo/DwQxnFqziithwRm3cVCMKqLKU3689FDMJMMRLC7gwbUZ/0/3BB0EBF5569F560AB751A23E2DD86568033C6262.mft: bad message digest for 323830343a343362343a3a2f33322d3334203d3e20323637353835.roa
+rpki-client: rrdp/198613f16d61d95b77329eb7acdb3e1f8d1f0ec2b75e9510a7f7eacc7c3ebe19/rpki-repo.registro.br/repo/CVeWwrnxk3wqrGVtdFvmroyigPmiQ6BVoPSK8iVK5LcU/0/5B392BB047A76396BA250D5BD7C8FBE1B24C3897.mft: mft expired on Jun  9 14:44:01 2021 GMT
+rpki-client: rrdp/198613f16d61d95b77329eb7acdb3e1f8d1f0ec2b75e9510a7f7eacc7c3ebe19/rpki-repo.registro.br/repo/9zM9rzhoLidYtwUsTGwwXLy2F3aFQeYFsDH49YLpkNuC/0/903DCC9CE00A3A63C8A767354675DE030AAD480F.mft: bad message digest for 323830343a313164633a3a2f33322d3336203d3e20323633343434.roa
+rpki-client: rrdp/198613f16d61d95b77329eb7acdb3e1f8d1f0ec2b75e9510a7f7eacc7c3ebe19/rpki-repo.registro.br/repo/9zM9rzhoLidYtwUsTGwwXLy2F3aFQeYFsDH49YLpkNuC/0/903DCC9CE00A3A63C8A767354675DE030AAD480F.mft: bad message digest for 3137372e39312e3136302e302f32322d3234203d3e20323633343434.roa
+rpki-client: rrdp/198613f16d61d95b77329eb7acdb3e1f8d1f0ec2b75e9510a7f7eacc7c3ebe19/rpki-repo.registro.br/repo/9zM9rzhoLidYtwUsTGwwXLy2F3aFQeYFsDH49YLpkNuC/0/903DCC9CE00A3A63C8A767354675DE030AAD480F.mft: bad message digest for 3133382e33362e3136342e302f32322d3234203d3e20323633343434.roa
+rpki-client: rrdp/198613f16d61d95b77329eb7acdb3e1f8d1f0ec2b75e9510a7f7eacc7c3ebe19/rpki-repo.registro.br/repo/EvXhi2gbF826wjaRbPgaG6DbYnMNkT6gXztYK36jVVsj/0/A30351E216D98B507DA653E4F0F7F72481A046A4.mft: mft expired on Jun  8 04:00:00 2021 GMT
+rpki-client: https://rrdp.sub.apnic.net/notification.xml: pulling from network
+rpki-client: https://rpki.rand.apnic.net/rrdp/notification.xml: pulling from network
+rpki-client: https://repo-rpki.idnic.net/rrdp/notification.xml: pulling from network
+rpki-client: https://rpki.admin.freerangecloud.com/rrdp/notification.xml: pulling from network
+rpki-client: https://rpki.cnnic.cn/rrdp/notify.xml: pulling from network
+rpki-client: https://rpki.blade.sh/rrdp/notification.xml: pulling from network
+rpki-client: https://rrdp.twnic.tw/rrdp/notify.xml: pulling from network
+rpki-client: rsync/rpki-repository.nic.ad.jp/ap: pulling from rsync://rpki-repository.nic.ad.jp/ap
+rsync_timeout: DEADLINE=2021-06-10 17:07:15.594549 time_left=18.54057 rsync -rt --no-motd --timeout 180 rsync://rpki-repository.nic.ad.jp/ap rsync/rpki-repository.nic.ad.jp/ap
+rpki-client: https://rpki.blade.sh/rrdp/notification.xml: notification file not modified
+rpki-client: https://rpki.blade.sh/rrdp/notification.xml: loaded from network
+rpki-client: https://rpki.roa.net/rrdp/notification.xml: pulling from network
+rpki-client: https://rpki.roa.net/rrdp/notification.xml: notification file not modified
+rpki-client: https://rpki.roa.net/rrdp/notification.xml: loaded from network
+rpki-client: https://sakuya.nat.moe/rrdp/notification.xml: pulling from network
+rpki-client: https://rrdp.sub.apnic.net/notification.xml: notification file not modified
+rpki-client: https://rrdp.sub.apnic.net/notification.xml: loaded from network
+rpki-client: https://rpki.rand.apnic.net/rrdp/notification.xml: notification file not modified
+rpki-client: https://rpki.rand.apnic.net/rrdp/notification.xml: loaded from network
+rpki-client: https://rpki.admin.freerangecloud.com/rrdp/notification.xml: notification file not modified
+rpki-client: https://rpki.admin.freerangecloud.com/rrdp/notification.xml: loaded from network
+rpki-client: https://sakuya.nat.moe/rrdp/notification.xml: notification file not modified
+rpki-client: https://sakuya.nat.moe/rrdp/notification.xml: loaded from network
+rpki-client: https://rrdp.twnic.tw/rrdp/notify.xml: notification file not modified
+rpki-client: https://rrdp.twnic.tw/rrdp/notify.xml: loaded from network
+rpki-client: https://rpki.cnnic.cn/rrdp/notify.xml: notification file not modified
+rpki-client: https://rpki.cnnic.cn/rrdp/notify.xml: loaded from network
+rpki-client: https://repo-rpki.idnic.net/rrdp/notification.xml: repository not modified
+rpki-client: https://repo-rpki.idnic.net/rrdp/notification.xml: loaded from network
+rpki-client: https://rpki.luys.cloud/rrdp/notification.xml: pulling from network
+rpki-client: https://rpki-rrdp.mnihyc.com/rrdp/notification.xml: pulling from network
+rpki-client: https://rpki.apernet.io/rrdp/notification.xml: pulling from network
+rpki-client: https://rpki-rrdp.mnihyc.com/rrdp/notification.xml: notification file not modified
+rpki-client: https://rpki-rrdp.mnihyc.com/rrdp/notification.xml: loaded from network
+rpki-client: rsync/rpki-repository.nic.ad.jp/ap: loaded from network
+rpki-client: rrdp/b8f24a9d701c0fa9bc46d97164baf1c97cc608a7211b021a0cc972ea5bfcd2ac/rpki.cnnic.cn/rpki/A9162E3D0000/1672/vwv2f9DI4C-vzDS2droF8zqYvBk.mft: mft expired on Jun  9 04:58:27 2021 GMT
+rpki-client: rrdp/b8f24a9d701c0fa9bc46d97164baf1c97cc608a7211b021a0cc972ea5bfcd2ac/rpki.cnnic.cn/rpki/A9162E3D0000/1672/vwv2f9DI4C-vzDS2droF8zqYvBk.mft: certificate has expired
+rpki-client: https://rpki.luys.cloud/rrdp/notification.xml: repository not modified
+rpki-client: https://rpki.luys.cloud/rrdp/notification.xml: loaded from network
+rpki-client: https://rpki.apernet.io/rrdp/notification.xml: notification file not modified
+rpki-client: https://rpki.apernet.io/rrdp/notification.xml: loaded from network
+rpki-client: rsync/rpki.ripe.net/repository: loaded from network
+rpki-client: https://rpki1.terratransit.de/rrdp/notification.xml: pulling from network
+rpki-client: https://rpki.multacom.com/rrdp/notification.xml: pulling from network
+rpki-client: https://rpki.e15f.net/rrdp/notification.xml: pulling from network
+rpki-client: https://rpki1.terratransit.de/rrdp/notification.xml: repository not modified
+rpki-client: https://rpki1.terratransit.de/rrdp/notification.xml: loaded from network
+rpki-client: https://rpki.as207960.net/rrdp/notification.xml: pulling from network
+rpki-client: https://rrdp.rpki.nlnetlabs.nl/rrdp/notification.xml: pulling from network
+rpki-client: https://rpki.e15f.net/rrdp/notification.xml: notification file not modified
+rpki-client: https://rpki.e15f.net/rrdp/notification.xml: loaded from network
+rpki-client: https://rrdp.rpki.nlnetlabs.nl/rrdp/notification.xml: notification file not modified
+rpki-client: https://rrdp.rpki.nlnetlabs.nl/rrdp/notification.xml: loaded from network
+rpki-client: https://rpki.multacom.com/rrdp/notification.xml: notification file not modified
+rpki-client: https://rpki.multacom.com/rrdp/notification.xml: loaded from network
+rpki-client: https://rpki.as207960.net/rrdp/notification.xml: repository not modified
+rpki-client: https://rpki.as207960.net/rrdp/notification.xml: loaded from network
+rpki-client: https://rpki.rpkitest.ml/rrdp/notification.xml: pulling from network
+rpki-client: https://rpki.rpkitest.ml/rrdp/notification.xml: notification file not modified
+rpki-client: https://rpki.rpkitest.ml/rrdp/notification.xml: loaded from network
+rpki-client: https://chloe.sobornost.net/rpki/news-public.xml: pulling from network
+rpki-client: https://rpkica.mckay.com/rrdp/notify.xml: pulling from network
+rpki-client: https://rpkica.mckay.com/rrdp/notify.xml: notification file not modified
+rpki-client: https://rpkica.mckay.com/rrdp/notify.xml: loaded from network
+rpki-client: https://chloe.sobornost.net/rpki/news.xml: pulling from network
+rpki-client: https://rpki.xindi.eu/rrdp/notification.xml: pulling from network
+rpki-client: https://rpki.xindi.eu/rrdp/notification.xml: notification file not modified
+rpki-client: https://rpki.xindi.eu/rrdp/notification.xml: loaded from network
+rpki-client: https://ca.rg.net/rrdp/notify.xml: pulling from network
+rpki-client: https://ca.rg.net/rrdp/notify.xml: notification file not modified
+rpki-client: https://ca.rg.net/rrdp/notify.xml: loaded from network
+rpki-client: https://rpki.qs.nu/rrdp/notification.xml: pulling from network
+rpki-client: https://rpki.qs.nu/rrdp/notification.xml: notification file not modified
+rpki-client: https://rpki.qs.nu/rrdp/notification.xml: loaded from network
+rpki-client: Error retrieving chloe.sobornost.net: 404 Not Found
+rpki-client: https://chloe.sobornost.net/rpki/news-public.xml: load from network failed, fallback to rsync
+rpki-client: rsync/chloe.sobornost.net/rpki: pulling from rsync://chloe.sobornost.net/rpki
+rsync_timeout: DEADLINE=2021-06-10 17:07:15.594549 time_left=-2.099098 rsync -rt --no-motd --timeout 180 rsync://chloe.sobornost.net/rpki rsync/chloe.sobornost.net/rpki
+rpki-client: rsync rsync://chloe.sobornost.net/rpki failed
+rpki-client: rsync/chloe.sobornost.net/rpki: load from network failed, fallback to cache
+rpki-client: Error retrieving chloe.sobornost.net: 404 Not Found
+rpki-client: https://chloe.sobornost.net/rpki/news.xml: load from network failed, fallback to rsync
+rpki-client: rrdp/e810110740d0f365a8eff355cb18e40ce86e2a48f42b2e3a841d8b763ed3815d/rpkica.mckay.com/rpki/MCnet/Jp4Tjp_GB5I1RfeaOGhKZNlDmAQ.mft: mft expired on Aug 26 11:03:34 2020 GMT
+rpki-client: rrdp/e810110740d0f365a8eff355cb18e40ce86e2a48f42b2e3a841d8b763ed3815d/rpkica.mckay.com/rpki/MCnet/UEh2SAvdIgPsUFdv92RSSaNqBnY.mft: No such file or directory
+rpki-client: https://cb.rg.net/rrdp/notify.xml: pulling from network
+rpki-client: https://cc.rg.net/rrdp/notify.xml: pulling from network
+rpki-client: https://cc.rg.net/rrdp/notify.xml: notification file not modified
+rpki-client: https://cc.rg.net/rrdp/notify.xml: loaded from network
+rpki-client: https://cb.rg.net/rrdp/notify.xml: downloading 1 deltas
+rpki-client: https://cb.rg.net/rrdp/notify.xml: loaded from network
+rpki-client: rrdp/73885635ed28814800212d730ae80581fc5112c4b5804a08d55d6bda2afa1615/ca.rg.net/rpki/RGnet-OU/ovsCA/IOUcOeBGM_Tb4dwfvswY4bnNZYY.mft: No such file or directory
+rpki-client: all files parsed: generating output
+rpki-client: Route Origin Authorizations: 49131 (0 failed parse, 0 invalid)
+rpki-client: Certificates: 23404 (0 failed parse, 0 invalid)
+rpki-client: Trust Anchor Locators: 4
+rpki-client: Manifests: 23404 (6 failed parse, 3 stale)
+rpki-client: Certificate revocation lists: 23395
+rpki-client: Ghostbuster records: 2
+rpki-client: Repositories: 23228
+rpki-client: Cleanup: removed 23 files, 66 directories
+rpki-client: VRP Entries: 220141 (218322 unique)
+"

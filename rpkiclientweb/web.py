@@ -5,6 +5,7 @@ import logging
 import os
 import random
 from dataclasses import dataclass
+from rpkiclientweb.config import Configuration
 from typing import Dict, List, Optional
 
 from aiohttp import web
@@ -19,27 +20,17 @@ OUTPUT_BUFFER_SIZE = 8_388_608
 
 
 class RpkiClientWeb:
+    """rpki client wrapper webserver and orchestrator."""
     result: Optional[ExecutionResult] = None
-    conf: Dict
+    config: Configuration
     app: web.Application
 
-    host: str
-    port: int
-
-    interval: int
-    jitter: int
-
-    def __init__(self, conf: Dict) -> None:
+    def __init__(self, config: Configuration) -> None:
         self.app = web.Application()
 
-        self.interval = conf.pop("interval")
-        # default to the interval for jitter value
-        self.jitter = conf.pop("jitter")
-        self.host = conf.pop("host", "localhost")
-        self.port = conf.pop("port", 8080)
-        self.conf = conf
+        self.config = config
 
-        self.client = RpkiClient(**self.conf)
+        self.client = RpkiClient(self.config)
 
         self.app.add_routes(
             [
@@ -50,7 +41,7 @@ class RpkiClientWeb:
                 web.get("/objects/validated", self.validated_objects),
                 web.static(
                     "/cache",
-                    os.path.abspath(conf["cache_dir"]),
+                    self.config.cache_dir,
                     follow_symlinks=False,
                     show_index=True,
                 ),
@@ -74,10 +65,12 @@ class RpkiClientWeb:
         )
 
     async def config_response(self, req) -> web.Response:
-        return web.json_response(self.conf)
+        """return the configuration."""
+        return web.json_response(dataclasses.asdict(self.config))
 
     async def validated_objects(self, req) -> web.FileResponse:
-        path = os.path.join(os.path.abspath(self.conf["output_dir"]), "json")
+        """return the validated objects json."""
+        path = self.config.output_dir / "json"
         return web.FileResponse(path)
 
     async def call_client(self) -> None:
@@ -91,22 +84,26 @@ class RpkiClientWeb:
         return web.json_response(None, status=500)
 
     async def run(self):
-        LOG.info("starting webserver on %s:%d", self.host, self.port)
+        """Run rpki-client in loop."""
+        LOG.info("starting webserver on %s:%d", self.config.host, self.config.port)
         runner = web.AppRunner(self.app)
         await runner.setup()
-        site = web.TCPSite(runner, self.host, self.port)
+        site = web.TCPSite(runner, self.config.host, self.config.port)
 
-        asyncio.create_task(site.start())
+        site_task = asyncio.create_task(site.start())
 
-        if self.jitter:
-            jitter_delay = random.uniform(0, self.jitter)
+        if self.config.jitter:
+            jitter_delay = random.uniform(0, self.config.jitter)
             LOG.info(
                 "delaying by random delay of [0, %d] seconds of %f seconds",
-                self.jitter,
+                self.config.jitter,
                 jitter_delay,
             )
 
             await asyncio.sleep(jitter_delay)
 
         # Start the scheduling loop
-        return await repeat(self.interval, self.call_client)
+        return await asyncio.gather(
+            repeat(self.config.interval, self.call_client),
+            site_task
+        )

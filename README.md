@@ -84,6 +84,9 @@ docker run \
   tiesdekock/rpki-client-web
 ```
 
+Optionally you can add `--tmpfs [configured cache_dir]` to save on IO
+(recommended when running at a cloud provided with very limited IOPS).
+
 Endpoints
 =========
 

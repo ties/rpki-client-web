@@ -1,22 +1,20 @@
-import os.path
+"""Tests for config."""
 import tempfile
+from pathlib import Path
 import pytest
 
 from typing import Dict
 from yaml import Loader, dump, load
 
 from rpkiclientweb.rpki_client import RpkiClient
+from rpkiclientweb.config import Configuration
+from rpkiclientweb.util import load_yaml
 
 
 def load_sample_conf() -> Dict:
-    path = os.path.join(os.path.dirname(__file__), "sample.yml")
+    path = Path(__file__).parent / "sample.yml"
 
-    conf = load(open(path, "r"), Loader=Loader)
-    conf.pop("interval")
-    conf.pop("host")
-    conf.pop("port")
-
-    return conf
+    return load_yaml(path.open('r'))
 
 
 def test_config_checks_cache_dir():
@@ -27,8 +25,7 @@ def test_config_checks_cache_dir():
         conf["cache_dir"] = ".well-known-missing"
 
         with pytest.raises(ValueError):
-            client = RpkiClient(**conf)
-            client.args
+            Configuration(conf)
 
 
 def test_config_checks_output_dir():
@@ -39,8 +36,7 @@ def test_config_checks_output_dir():
         conf["output_dir"] = ".well-known-missing"
 
         with pytest.raises(ValueError):
-            client = RpkiClient(**conf)
-            client.args
+            Configuration(conf)
 
 
 def test_config_accepts_when_both_exist():
@@ -51,7 +47,7 @@ def test_config_accepts_when_both_exist():
             conf["cache_dir"] = dir_name
             conf["output_dir"] = another_dir_name
 
-            client = RpkiClient(**conf)
+            client = RpkiClient(Configuration(conf))
             client.args
 
 
@@ -60,10 +56,10 @@ def test_requires_rpki_client_present():
 
     conf["rpki_client"] = "/bin/bash"
 
-    client = RpkiClient(**conf)
+    client = RpkiClient(Configuration(conf))
     client.args
 
     with pytest.raises(ValueError):
         conf["rpki_client"] = "/.well-known-missing"
-        client = RpkiClient(**conf)
+        client = RpkiClient(Configuration(conf))
         client.args
