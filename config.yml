@@ -1,14 +1,35 @@
-cache_dir: ./cache
-output_dir: ./output
+cache_dir: ../cache
+output_dir: ../output
 
-timeout: 550
+# Interval between rpki-client runs
 interval: 600
+# Timeout before rpki-client is killed
+timeout: 550
+
+# Deadline
+# unix_timestamp(now) + deadline is passed to rpki-client process in the
+# DEADLINE environment variable.
+# Can be used with an rsync wrapper to timeout rsync processes.
+# -1 to disable.
+#
+# Note that it may take ~10s before rsync is actually started
+deadline: 30
 
 host: 0.0.0.0
 port: 8888
 
 rpki_client: /usr/sbin/rpki-client
+rsync_command: ./util/rsync_timeout
+
+additional_opts:
+  # Set `-r` to enable RRDP
+  - -r
 
 trust_anchor_locators:
+  - /etc/pki/tals/afrinic.tal
+  - /etc/pki/tals/apnic.tal
+  - /etc/pki/tals/lacnic.tal
   - /etc/pki/tals/ripe.tal
-    #  - /etc/pki/tals/afrinic.tal
+  # You need to supply your own copy of the ARIN tal
+  # If you agree to the ARIN RPA https://www.arin.net/resources/manage/rpki/tal/
+  # links to the TAL at https://www.arin.net/resources/manage/rpki/arin.tal

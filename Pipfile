@@ -7,12 +7,18 @@ verify_ssl = true
 black = "*"
 ipdb = "*"
 pre-commit = "*"
+tox = "*"
+flake8 = "*"
+pytest-xdist = "*"
+pylint = "*"
+jedi = "*"
 
 [packages]
 pyyaml = "*"
 aiohttp = "*"
 prometheus-async = {extras = ["aiohttp"],version = "*"}
 pytest = "*"
+voluptuous = "*"
 
 [requires]
 python_version = "3"

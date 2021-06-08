@@ -3,7 +3,9 @@ import asyncio
 import itertools
 import json
 import logging
+import os
 import os.path
+from rpkiclientweb.config import Configuration
 import time
 from dataclasses import dataclass, field
 from typing import List, Optional
@@ -21,10 +23,51 @@ LOG = logging.getLogger(__name__)
 
 OUTPUT_BUFFER_SIZE = 8_388_608
 
+# buckets from https://github.com/Netflix/rend/pull/93/files
 RPKI_CLIENT_DURATION = Histogram(
     "rpkiclient_duration_seconds",
     "Time spent calling rpki-client",
-    buckets=[1, 3, 6, 12, 18, 24, 30, 44, 60, 72, 84, 96, 108, 120, 150, 180, 240, 300],
+    buckets=[
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        16,
+        21,
+        26,
+        31,
+        36,
+        41,
+        46,
+        51,
+        56,
+        64,
+        85,
+        106,
+        127,
+        148,
+        169,
+        190,
+        211,
+        232,
+        256,
+        341,
+        426,
+        511,
+        596,
+        681,
+        766,
+    ],
 )
 RPKI_CLIENT_LAST_DURATION = Gauge(
     "rpkiclient_last_duration_seconds",
@@ -48,6 +91,11 @@ RPKI_CLIENT_PULLING = Gauge(
     "rpkiclient_pulling",
     "Last time pulling from this repository was started (referenced).",
     ["uri"],
+)
+RPKI_CLIENT_FETCH_ERROR = Counter(
+    "rpkiclient_fetch_error",
+    "fetch errors encountered by rpki-client.",
+    ["uri", "type"],
 )
 RPKI_CLIENT_PULLED = Gauge(
     "rpkiclient_pulled",
@@ -101,30 +149,29 @@ class ExecutionResult:
 
 @dataclass
 class RpkiClient:
-    """Maps onto the config.yml"""
-
-    rpki_client: str
-    cache_dir: str
-    output_dir: str
-    trust_anchor_locators: List[str] = field(default_factory=list)
-    timeout: Optional[int] = None
+    """Wrapper for rpki-client."""
+    config: Configuration
 
     warnings: List[WarningSummary] = field(default_factory=list)
     last_update_repos: List[str] = frozenset()
 
     @property
     def args(self) -> List[str]:
-        if not os.path.isfile(self.rpki_client):
-            raise ValueError(f"rpki_client: '{self.rpki_client}' does not exist")
+        """Build rpki-client arguments."""
+        if not os.path.isfile(self.config.rpki_client):
+            raise ValueError(f"rpki_client: '{self.config.rpki_client}' does not exist")
 
-        if not os.path.isdir(self.cache_dir):
-            raise ValueError(f"cache_dir: '{self.cache_dir}' is not a directory.")
+        if self.config.rsync_command and not os.path.isfile(self.config.rsync_command):
+            raise ValueError(f"rsync_command: '{self.config.rsync_command}' does not exist")
 
-        if not os.path.isdir(self.output_dir):
-            raise ValueError(f"output_dir: '{self.output_dir}' is not a directory.")
+        if not os.path.isdir(self.config.cache_dir):
+            raise ValueError(f"cache_dir: '{self.config.cache_dir}' is not a directory.")
 
-        if not (not self.timeout or self.timeout >= -1):
-            raise ValueError(f"illegal timeout: {self.timeout} -- should be >= -1")
+        if not os.path.isdir(self.config.output_dir):
+            raise ValueError(f"output_dir: '{self.config.output_dir}' is not a directory.")
+
+        if not (not self.config.timeout or self.config.timeout >= -1):
+            raise ValueError(f"illegal timeout: {self.config.timeout} -- should be >= -1")
 
         # Not using `-s [timeout]` for now because the timeout is managed from
         # this wrapping code.
@@ -132,37 +179,53 @@ class RpkiClient:
             "-v",  # verbose
             "-j",  # JSON output
             "-d",
-            os.path.abspath(self.cache_dir),
+            self.config.cache_dir,
         ]
 
-        for tal in zip(itertools.repeat("-t"), self.trust_anchor_locators):
+        # Add additional options - ensure they are strings
+        if self.config.additional_opts:
+            args.extend(map(str, self.config.additional_opts))
+
+        # Set rsync command if supplied
+        if self.config.rsync_command:
+            args.extend(["-e", self.config.rsync_command])
+
+        for tal in zip(itertools.repeat("-t"), self.config.trust_anchor_locators):
             args.extend(tal)
 
-        args.append(os.path.abspath(self.output_dir))
+        args.append(self.config.output_dir)
 
         return args
 
     @track_inprogress(RPKI_CLIENT_RUNNING)
     @time_metric(RPKI_CLIENT_DURATION)
     async def run(self) -> ExecutionResult:
-        LOG.info("executing %s %s", self.rpki_client, " ".join(self.args))
+        """Execute rpki-client."""
+        LOG.info("executing %s %s", self.config.rpki_client, self.args)
+
+        env = dict(os.environ)
+        if self.config.deadline and self.config.deadline > 0:
+            # Calculate and set deadline
+            env["DEADLINE"] = str(time.time() + self.config.deadline)
+
         t0 = time.monotonic()
 
         proc = await asyncio.create_subprocess_exec(
-            self.rpki_client,
+            self.config.rpki_client.name,
             *self.args,
             stdout=asyncio.subprocess.PIPE,
             stderr=asyncio.subprocess.PIPE,
             limit=OUTPUT_BUFFER_SIZE,
+            env=env,
         )
 
         try:
-            if self.timeout > 0:
-                await asyncio.wait_for(proc.wait(), self.timeout)
+            if self.config.timeout > 0:
+                await asyncio.wait_for(proc.wait(), self.config.timeout)
             else:
                 await proc.wait()
         except asyncio.TimeoutError:
-            LOG.error("timeout (%ds): killing %d", self.timeout, proc.pid)
+            LOG.error("timeout (%ds): killing %d", self.config.timeout, proc.pid)
             proc.kill()
 
         stdout, stderr = await proc.communicate()
@@ -210,6 +273,9 @@ class RpkiClient:
             RPKI_CLIENT_PULLING.labels(repo).set_to_current_time()
         for repo in parsed.pulled:
             RPKI_CLIENT_PULLED.labels(repo).set_to_current_time()
+
+        for fetch_status in parsed.fetch_status:
+            RPKI_CLIENT_FETCH_ERROR.labels(uri=fetch_status.uri, type=fetch_status.type).inc(fetch_status.count)
 
         RPKI_OBJECTS_COUNT.labels(type="vanished_files").set(len(parsed.vanished_files))
         RPKI_OBJECTS_COUNT.labels(type="vanished_directories").set(
@@ -264,9 +330,9 @@ class RpkiClient:
         }
         ```
         """
-        json_path = os.path.join(self.output_dir, "json")
+        json_path = self.config.output_dir / "json"
 
-        if not os.path.isfile(json_path):
+        if not json_path.is_file():
             LOG.warning("json output file (%s) is missing", json_path)
             return
 
@@ -288,5 +354,6 @@ class RpkiClient:
                     json.dumps(metadata),
                 )
 
+        # Any error before this point will cause the last_update to fail and thus be visible in metrics.
         if returncode == 0:
             RPKI_CLIENT_LAST_UPDATE.set_to_current_time()
