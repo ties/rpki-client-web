@@ -1,4 +1,5 @@
 from prometheus_client import Counter, Gauge, Histogram
+
 #
 # Metrics about how/when rpki-client was running
 #
@@ -94,6 +95,6 @@ RPKI_CLIENT_WARNINGS = Gauge(
 RPKI_OBJECTS_COUNT = Gauge("rpki_objects", "Number of objects by type", ["type"])
 RPKI_OBJECTS_MIN_EXPIRY = Gauge(
     "rpki_objects_min_expiry",
-    "First expiry time for file in exported objects by trust anchor",
-    ["ta"]
+    "First expiry time for file in exported objects by trust anchor (includes non-hosted repositories)",
+    ["ta"],
 )
