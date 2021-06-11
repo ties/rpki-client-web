@@ -27,8 +27,8 @@ def main():
         default=-1 if os.isatty(sys.stdout.fileno()) else 600,
         type=int,
         help="random delay of up to [jitter] before starting rpki-client for "
-             "the first time. Defaults to 0 when in an interactive terminal, "
-             "600 when non-interactive."
+        "the first time. Defaults to 0 when in an interactive terminal, "
+        "600 when non-interactive.",
     )
 
     args = parser.parse_args()

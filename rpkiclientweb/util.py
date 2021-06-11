@@ -6,7 +6,7 @@ import urllib.parse
 import time
 from dataclasses import asdict, is_dataclass
 from pathlib import Path
-from typing import Any, Callable, Awaitable, Dict, TextIO
+from typing import Any, Awaitable, Callable, Dict, Optional, TextIO
 from yaml import Loader, load
 
 LOG = logging.getLogger(__name__)
@@ -96,6 +96,6 @@ class CustomJSONEncoder(json.JSONEncoder):
         return json.JSONEncoder.default(self, obj)
 
 
-def json_dumps(obj: Any) -> str:
+def json_dumps(obj: Any, indent: Optional[int] = 2) -> str:
     """Dump configuration object to JSON string."""
-    return json.dumps(obj, indent=2, cls=CustomJSONEncoder)
+    return json.dumps(obj, indent=indent, cls=CustomJSONEncoder)

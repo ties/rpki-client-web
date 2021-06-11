@@ -23,8 +23,9 @@ from rpkiclientweb.metrics import (
     RPKI_CLIENT_REMOVED_UNREFERENCED,
     RPKI_CLIENT_WARNINGS,
     RPKI_OBJECTS_COUNT,
-    RPKI_OBJECTS_MIN_EXPIRY
+    RPKI_OBJECTS_MIN_EXPIRY,
 )
+from rpkiclientweb.util import json_dumps
 
 from rpkiclientweb.outputparser import (
     OutputParser,
@@ -35,7 +36,6 @@ from rpkiclientweb.outputparser import (
 LOG = logging.getLogger(__name__)
 
 OUTPUT_BUFFER_SIZE = 8_388_608
-
 
 
 METADATA_LABELS = (
@@ -75,6 +75,7 @@ OPTIONAL_METADATA_LABELS = frozenset(
 @dataclass
 class ExecutionResult:
     """Execution result (exit code + output)."""
+
     returncode: int
     stdout: str
     stderr: str
@@ -144,7 +145,11 @@ class RpkiClient:
     @time_metric(RPKI_CLIENT_DURATION)
     async def run(self) -> ExecutionResult:
         """Execute rpki-client."""
-        LOG.info("executing %s %s", self.config.rpki_client, self.args)
+        LOG.info(
+            "executing %s %s",
+            self.config.rpki_client,
+            json_dumps(self.args, indent=None),
+        )
 
         env = dict(os.environ)
         if self.config.deadline and self.config.deadline > 0:
@@ -252,17 +257,16 @@ class RpkiClient:
         min_expires_by_ta: Dict[str, int] = dict()
 
         for roa in roas:
-            ta = roa.get('ta', None)
-            expires = roa.get('expires', None)
+            ta = roa.get("ta", None)
+            expires = roa.get("expires", None)
             if ta is None or expires is None:
                 LOG.info("ROA '%s' does not contain 'ta' or 'expires', aborting.", roa)
                 return
             # take expires when not found, otherwise, min value.
-            min_expires_by_ta[ta] = min(min_expires_by-ta.get(ta, expires), expires)
+            min_expires_by_ta[ta] = min(min_expires_by_ta.get(ta, expires), expires)
 
         for ta, min_expires in min_expires_by_ta.items():
             RPKI_OBJECTS_MIN_EXPIRY.labels(ta=ta).set(min_expires)
-
 
     async def update_validated_objects_gauge(self, returncode: int) -> None:
         """
@@ -304,7 +308,7 @@ class RpkiClient:
         with json_path.open("r") as json_res:
             data = json.load(json_res)
 
-            self.__update_object_expiry(data['roas'])
+            self.__update_object_expiry(data["roas"])
 
             metadata = data["metadata"]
             missing_keys = set()
