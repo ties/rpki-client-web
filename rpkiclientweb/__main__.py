@@ -6,8 +6,6 @@ import logging
 import os
 import sys
 
-from yaml import Loader, dump, load
-
 from .web import RpkiClientWeb
 from .config import Configuration
 from .util import load_yaml
@@ -16,6 +14,7 @@ LOG = logging.getLogger(__name__)
 
 
 def main():
+    """rpki-client wrapper."""
     parser = argparse.ArgumentParser("rpki-client wrapper")
     parser.add_argument(
         "-c", "--config", default="config.yml", type=argparse.FileType("r")
@@ -27,16 +26,15 @@ def main():
         "--jitter",
         default=-1 if os.isatty(sys.stdout.fileno()) else 600,
         type=int,
-        help="random delay of up to [jitter] before starting rpki-client for the first time. Defaults to 0 when in an interactive terminal, 600 when non-interactive.",
+        help="random delay of up to [jitter] before starting rpki-client for "
+             "the first time. Defaults to 0 when in an interactive terminal, "
+             "600 when non-interactive."
     )
 
     args = parser.parse_args()
     config_file = load_yaml(args.config)
 
-    conf = Configuration(config_file,
-                         jitter=args.jitter,
-                         verbosity=args.verbose
-                        )
+    conf = Configuration(config_file, jitter=args.jitter, verbosity=args.verbose)
 
     logging.basicConfig(handlers=[logging.StreamHandler(sys.stdout)])
 

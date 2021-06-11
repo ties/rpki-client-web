@@ -24,11 +24,17 @@ PULLING_RE = re.compile(
 PULLED_RE = re.compile(r"rpki-client: (?!rpki-client:)(?P<uri>.*): loaded from network")
 
 RSYNC_LOAD_FAILED = re.compile(r"rpki-client: rsync (?P<uri>.*) failed$")
-RSYNC_FALLBACK = re.compile(r"rpki-client: (?P<uri>.*): load from network failed, fallback to rsync$")
+RSYNC_FALLBACK = re.compile(
+    r"rpki-client: (?P<uri>.*): load from network failed, fallback to rsync$"
+)
 
-RSYNC_RRDP_NOT_MODIFIED = re.compile(r"rpki-client: (?P<uri>.*): notification file not modified$")
+RSYNC_RRDP_NOT_MODIFIED = re.compile(
+    r"rpki-client: (?P<uri>.*): notification file not modified$"
+)
 RSYNC_RRDP_SNAPSHOT = re.compile(r"rpki-client: (?P<uri>.*): downloading snapshot$")
-RSYNC_RRDP_DELTAS = re.compile(r"rpki-client: (?P<uri>.*): downloading (?P<count>\d+) deltas$")
+RSYNC_RRDP_DELTAS = re.compile(
+    r"rpki-client: (?P<uri>.*): downloading (?P<count>\d+) deltas$"
+)
 
 RESOURCE_OVERCLAIMING = re.compile(
     r"rpki-client: (?P<path>.*): RFC 3779 resource not subset of parent's resources"
@@ -45,9 +51,10 @@ VANISHED_DIRECTORY_RE = re.compile(
 class FetchStatus(NamedTuple):
     """
     rpki-client fetch status for a repo.
-    
+
     Can be both positive or negative.
     """
+
     uri: str
     type: str
     count: int = 1
@@ -185,7 +192,9 @@ class OutputParser:
                     continue
                 not_modified = RSYNC_RRDP_NOT_MODIFIED.match(line)
                 if not_modified:
-                    yield FetchStatus(not_modified.group("uri"), "rrdp_notification_not_modified", 1)
+                    yield FetchStatus(
+                        not_modified.group("uri"), "rrdp_notification_not_modified", 1
+                    )
                     continue
                 snapshot = RSYNC_RRDP_SNAPSHOT.match(line)
                 if snapshot:
@@ -193,7 +202,9 @@ class OutputParser:
                     continue
                 deltas = RSYNC_RRDP_DELTAS.match(line)
                 if deltas:
-                    yield FetchStatus(deltas.group("uri"), "rrdp_delta", int(deltas.group("count")))
+                    yield FetchStatus(
+                        deltas.group("uri"), "rrdp_delta", int(deltas.group("count"))
+                    )
                     continue
             except:
                 LOG.exception("Exception while parsing lines.")

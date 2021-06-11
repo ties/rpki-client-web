@@ -5,6 +5,12 @@ Changes
 =======
 
 main:
+  * nothing yet
+
+2021-06-11 v0.8.0:
+  * rpki-client 7 support
+  * rrdp, rsync fallback, rsync error metrics
+  * container based on tini
   * Update readme to refer to `rpkiclientweb` module instead of `rpki_client`.
   * Patches to make it run on Python 3.7.x
 

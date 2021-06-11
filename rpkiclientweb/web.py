@@ -12,7 +12,7 @@ from aiohttp import web
 from prometheus_async import aio
 
 from rpkiclientweb.rpki_client import ExecutionResult, RpkiClient
-from rpkiclientweb.util import repeat
+from rpkiclientweb.util import json_dumps, repeat
 
 LOG = logging.getLogger(__name__)
 
@@ -21,6 +21,7 @@ OUTPUT_BUFFER_SIZE = 8_388_608
 
 class RpkiClientWeb:
     """rpki client wrapper webserver and orchestrator."""
+
     result: Optional[ExecutionResult] = None
     config: Configuration
     app: web.Application
@@ -66,7 +67,7 @@ class RpkiClientWeb:
 
     async def config_response(self, req) -> web.Response:
         """return the configuration."""
-        return web.json_response(dataclasses.asdict(self.config))
+        return web.json_response(self.config, dumps=json_dumps)
 
     async def validated_objects(self, req) -> web.FileResponse:
         """return the validated objects json."""
@@ -79,7 +80,7 @@ class RpkiClientWeb:
 
     async def json_result(self, req) -> web.Response:
         if self.result:
-            return web.json_response(dataclasses.asdict(self.result))
+            return web.json_response(self.result, dumps=json_dumps)
 
         return web.json_response(None, status=500)
 
@@ -104,6 +105,5 @@ class RpkiClientWeb:
 
         # Start the scheduling loop
         return await asyncio.gather(
-            repeat(self.config.interval, self.call_client),
-            site_task
+            repeat(self.config.interval, self.call_client), site_task
         )

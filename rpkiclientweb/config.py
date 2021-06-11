@@ -4,11 +4,12 @@ Config file support.
 TODO: Consider using https://pypi.org/project/voluptuous/ or
 https://docs.python-cerberus.org/en/stable/
 """
+import json
 import logging
 
-from dataclasses import dataclass, asdict, field
+from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import Dict, List, Optional
 
 from .util import validate
 
@@ -19,6 +20,7 @@ LOG = logging.getLogger(__name__)
 @dataclass
 class Configuration:
     """Configuration object."""
+
     jitter: int
     """verbosity."""
     verbosity: int
@@ -40,7 +42,7 @@ class Configuration:
 
     """ Path to rpki-client. """
     rpki_client: Path
-    
+
     """deadline: DEADLINE env var is passed with Unix timestamp of [deadline] after run starts"""
     deadline: Optional[int] = None
 
@@ -59,65 +61,66 @@ class Configuration:
         LOG.info("Configuration: %s", conf)
 
         if jitter is not None:
-            self.jitter = conf.get('jitter', 600) if jitter == -1 else jitter
+            self.jitter = conf.get("jitter", 600) if jitter == -1 else jitter
         else:
-            self.jitter = conf.get('jitter', 600)
+            self.jitter = conf.get("jitter", 600)
 
-        self.verbosity = int(conf.get('verbosity', 1) if not verbosity else verbosity)
+        self.verbosity = int(conf.get("verbosity", 1) if not verbosity else verbosity)
 
-        self.cache_dir = Path(conf['cache_dir']).resolve()
+        self.cache_dir = Path(conf["cache_dir"]).resolve()
         validate(
             self.cache_dir.is_dir(),
             "Cache directory '{}' is not a directory",
-            self.cache_dir
+            str(self.cache_dir),
         )
 
-        self.output_dir = Path(conf['output_dir']).resolve()
+        self.output_dir = Path(conf["output_dir"]).resolve()
         validate(
             self.output_dir.is_dir(),
             "Output directory '{}' is not a directory",
-            self.output_dir
+            str(self.output_dir),
         )
 
-        self.interval = conf.get('interval', None)
+        self.interval = conf.get("interval", None)
         validate(self.interval is not None, "interval needs to be set")
         validate(self.interval > 0, "Interval needs to be a positive integer")
 
-        self.deadline = conf.get('deadline', -1)
-        validate(self.deadline <= self.interval, f"deadline needs to be below interval ({self.interval}) or use missing or -1 to disable")
+        self.deadline = conf.get("deadline", -1)
+        validate(
+            self.deadline <= self.interval,
+            f"deadline needs to be below interval ({self.interval}) or use missing or -1 to disable",
+        )
 
-        self.timeout = conf.get('timeout', None)
+        self.timeout = conf.get("timeout", None)
         validate(self.timeout is not None, "timeout needs to be set")
         validate(self.timeout <= self.interval, "timeout needs to be below interval")
 
-        self.host = conf.get('host', 'localhost')
-        self.port = conf.get('port', 8888)
+        self.host = conf.get("host", "localhost")
+        self.port = conf.get("port", 8888)
         validate(self.port > 0, "Port should be > 0")
 
-        self.rpki_client = Path(conf['rpki_client']).resolve()
+        self.rpki_client = Path(conf["rpki_client"]).resolve()
         validate(
             self.rpki_client.is_file(),
             "rpki-client binary should be a file - {} is not.",
-            self.rpki_client
+            str(self.rpki_client),
         )
 
-        if conf.get('rsync_command', None):
-            self.rsync_command = Path(conf['rsync_command']).resolve()
+        if conf.get("rsync_command", None):
+            self.rsync_command = Path(conf["rsync_command"]).resolve()
             validate(
                 self.rsync_command.is_file(),
                 "rsync command ({}) should be a file",
-                self.rsync_command
+                str(self.rsync_command),
             )
 
-        self.additional_opts = conf.get('additional_opts', [])
-        
+        self.additional_opts = conf.get("additional_opts", [])
+
         self.trust_anchor_locators = [
-            Path(ta).resolve() for ta in conf.get('trust_anchor_locators', [])
+            Path(ta).resolve() for ta in conf.get("trust_anchor_locators", [])
         ]
         validate(
             len(self.trust_anchor_locators) > 0, "trust_anchor_locators are required."
         )
         for ta in self.trust_anchor_locators:
-            validate(
-                ta.is_file(), "trust anchor locator ({}) should be a file", ta
-            )
+            validate(ta.is_file(), "trust anchor locator ({}) should be a file", ta)
