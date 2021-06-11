@@ -13,11 +13,13 @@ include tox.ini appveyor.yml .travis.yml rtd.txt
 include contributing.md RELEASING.txt HACKING.txt TODO.txt
 include azure-pipelines.yml pytest.ini
 include Pipfile
+include util/rsync_timeout
 graft .github
 
 exclude requirements*
 exclude pyproject.toml .gitkeep .isort.cfg Pipfile.lock
 exclude Dockerfile .dockerignore docker/*
+exclude .vscode/*
 
 exclude venv
 exclude Vagrantfile

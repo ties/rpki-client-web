@@ -206,7 +206,7 @@ class OutputParser:
                         deltas.group("uri"), "rrdp_delta", int(deltas.group("count"))
                     )
                     continue
-            except:
+            except Exception:
                 LOG.exception("Exception while parsing lines.")
 
     @property
