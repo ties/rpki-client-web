@@ -69,14 +69,14 @@ class Configuration:
         validate(
             self.cache_dir.is_dir(),
             "Cache directory '{}' is not a directory",
-            self.cache_dir.name,
+            self.cache_dir
         )
 
         self.output_dir = Path(conf['output_dir']).resolve()
         validate(
             self.output_dir.is_dir(),
             "Output directory '{}' is not a directory",
-            self.output_dir.name,
+            self.output_dir
         )
 
         self.interval = conf.get('interval', None)

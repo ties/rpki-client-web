@@ -1,5 +1,5 @@
-cache_dir: ../cache
-output_dir: ../output
+cache_dir: cache
+output_dir: output
 
 # Interval between rpki-client runs
 interval: 600
@@ -13,17 +13,17 @@ timeout: 550
 # -1 to disable.
 #
 # Note that it may take ~10s before rsync is actually started
-deadline: 30
+# deadline: -1
 
 host: 0.0.0.0
 port: 8888
 
 rpki_client: /usr/sbin/rpki-client
-rsync_command: ./util/rsync_timeout
+# rsync_command: ./util/rsync_timeout
 
-additional_opts:
+additional_opts: []
   # Set `-r` to enable RRDP
-  - -r
+  #- -r
 
 trust_anchor_locators:
   - /etc/pki/tals/afrinic.tal
