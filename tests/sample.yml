@@ -11,5 +11,6 @@ port: 8888
 rpki_client: /bin/bash
 
 trust_anchor_locators:
-  - /etc/pki/tals/ripe.tal
-    #  - /etc/pki/tals/afrinic.tal
+  # no semantic check is done - but files are checked for existence.
+  # workaround for systems w/o tals
+  - /etc/hosts
