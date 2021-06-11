@@ -8,13 +8,13 @@ from yaml import Loader, dump, load
 
 from rpkiclientweb.rpki_client import RpkiClient
 from rpkiclientweb.config import Configuration
-from rpkiclientweb.util import load_yaml
+from rpkiclientweb.util import load_yaml, json_dumps
 
 
 def load_sample_conf() -> Dict:
     path = Path(__file__).parent / "sample.yml"
 
-    return load_yaml(path.open('r'))
+    return load_yaml(path.open("r"))
 
 
 def test_config_checks_cache_dir():
@@ -63,3 +63,19 @@ def test_requires_rpki_client_present():
         conf["rpki_client"] = "/.well-known-missing"
         client = RpkiClient(Configuration(conf))
         client.args
+
+
+def test_config_adds_defaults():
+    config_content = load_sample_conf()
+    conf = Configuration(config_content)
+
+    # Attribute that is not in the config, but has a default
+    assert conf.deadline == -1
+
+
+def test_json_serialize():
+    config_content = load_sample_conf()
+    conf = Configuration(config_content)
+
+    json = json_dumps(conf)
+    assert "deadline" in json

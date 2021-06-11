@@ -173,14 +173,18 @@ def test_rsync_errors():
     """Test a situation with many rsync errors."""
     res = parse_output_file("tests/20210610_sample_rsync_errors.txt")
 
-    assert FetchStatus("rsync://rpki.cnnic.cn/rpki", "rsync_load_failed", 1) in list(res.fetch_status)
+    assert FetchStatus("rsync://rpki.cnnic.cn/rpki", "rsync_load_failed", 1) in list(
+        res.fetch_status
+    )
 
 
 def test_rsync_fallback():
     """Test a situation with rsync fallback (from RRDP)."""
     res = parse_output_file("tests/20210610_rsync_fallback.txt")
 
-    assert FetchStatus("https://rrdp.ripe.net/notification.xml", "rrdp_rsync_fallback") in list(res.fetch_status)
+    assert FetchStatus(
+        "https://rrdp.ripe.net/notification.xml", "rrdp_rsync_fallback"
+    ) in list(res.fetch_status)
 
 
 def test_rrdp_not_modified():
@@ -188,18 +192,35 @@ def test_rrdp_not_modified():
     res = parse_output_file("tests/20210610_sample_deltas.txt")
     print(list(res.fetch_status))
 
-    assert FetchStatus("https://rrdp.lacnic.net/rrdp/notification.xml", "rrdp_notification_not_modified", 1) in list(res.fetch_status)
+    assert (
+        FetchStatus(
+            "https://rrdp.lacnic.net/rrdp/notification.xml",
+            "rrdp_notification_not_modified",
+            1,
+        )
+        in list(res.fetch_status)
+    )
+
 
 def test_rrdp_snapshots():
     """Test a situation with rsync fallback (from RRDP)."""
     res = parse_output_file("tests/20210610_sample_snapshot_dl.txt")
 
-    assert FetchStatus("https://rrdp.afrinic.net/notification.xml", "rrdp_snapshot", 1) in list(res.fetch_status)
-    assert FetchStatus("https://rrdp.apnic.net/notification.xml", "rrdp_snapshot", 1) in list(res.fetch_status)
+    assert FetchStatus(
+        "https://rrdp.afrinic.net/notification.xml", "rrdp_snapshot", 1
+    ) in list(res.fetch_status)
+    assert FetchStatus(
+        "https://rrdp.apnic.net/notification.xml", "rrdp_snapshot", 1
+    ) in list(res.fetch_status)
+
 
 def test_rrdp_deltas():
     """Test a situation with rsync fallback (from RRDP)."""
     res = parse_output_file("tests/20210610_sample_deltas.txt")
 
-    assert FetchStatus("https://rrdp.apnic.net/notification.xml", "rrdp_delta", 7) in list(res.fetch_status)
-    assert FetchStatus("https://rpki-repo.registro.br/rrdp/notification.xml", "rrdp_delta", 13) in list(res.fetch_status)
+    assert FetchStatus(
+        "https://rrdp.apnic.net/notification.xml", "rrdp_delta", 7
+    ) in list(res.fetch_status)
+    assert FetchStatus(
+        "https://rpki-repo.registro.br/rrdp/notification.xml", "rrdp_delta", 13
+    ) in list(res.fetch_status)

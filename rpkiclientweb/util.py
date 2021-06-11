@@ -1,16 +1,23 @@
 """Utilities."""
 import asyncio
+import json
 import logging
 import urllib.parse
 import time
-from typing import Awaitable, Dict, TextIO
+from dataclasses import asdict, is_dataclass
+from pathlib import Path
+from typing import Any, Callable, Awaitable, Dict, TextIO
 from yaml import Loader, load
 
 LOG = logging.getLogger(__name__)
 
 
 async def repeat(
-    interval: int, func: Awaitable, *args, initial_delay: float = 0.0, **kwargs
+    interval: int,
+    func: Callable[[Any], Awaitable[None]],
+    *args,
+    initial_delay: float = 0.0,
+    **kwargs,
 ):
     """Await func every interval seconds.
 
@@ -27,10 +34,11 @@ async def repeat(
         t_0 = time.time()
         try:
             await asyncio.wait_for(func(*args, **kwargs), interval)
-            elapsed = (time.time() - t_0)
+            elapsed = time.time() - t_0
             await asyncio.sleep(interval - elapsed)
         except asyncio.TimeoutError:
             LOG.debug("Timeout waiting for %s", func)
+
 
 def parse_host(incomplete_uri: str) -> str:
     """
@@ -65,8 +73,29 @@ def parse_host(incomplete_uri: str) -> str:
 def validate(should_be_true: bool, message: str, *args: str) -> None:
     """Validate that an assertion holds."""
     if not should_be_true:
-        raise ValueError(message.format(args))
+        raise ValueError(message.format(*args))
 
 
 def load_yaml(config_file: TextIO) -> Dict:
+    """load a yaml file."""
     return load(config_file, Loader=Loader)
+
+
+class CustomJSONEncoder(json.JSONEncoder):
+    """JSON encoder for configuration objects."""
+
+    def default(self, obj: Any) -> Any:
+        """Encode object"""
+        # Encode paths as their full name
+        if is_dataclass(obj):
+            return asdict(obj)
+        if isinstance(obj, Path):
+            return str(obj)
+        # Let the base class default method raise the TypeError if otherwise
+        # unknown)
+        return json.JSONEncoder.default(self, obj)
+
+
+def json_dumps(obj: Any) -> str:
+    """Dump configuration object to JSON string."""
+    return json.dumps(obj, indent=2, cls=CustomJSONEncoder)

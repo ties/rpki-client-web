@@ -1,8 +1,8 @@
 .tox
 dist
 build
-cache/*
-output/*
+cache
+output
 *.egg-info
 .git
 .metals

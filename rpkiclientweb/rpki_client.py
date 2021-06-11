@@ -4,14 +4,27 @@ import itertools
 import json
 import logging
 import os
-import os.path
-from rpkiclientweb.config import Configuration
 import time
-from dataclasses import dataclass, field
-from typing import List, Optional
 
+from dataclasses import dataclass, field
+from typing import Dict, FrozenSet, List
 from prometheus_async.aio import time as time_metric, track_inprogress
-from prometheus_client import Counter, Gauge, Histogram
+
+from rpkiclientweb.config import Configuration
+from rpkiclientweb.metrics import (
+    RPKI_CLIENT_DURATION,
+    RPKI_CLIENT_LAST_DURATION,
+    RPKI_CLIENT_LAST_UPDATE,
+    RPKI_CLIENT_UPDATE_COUNT,
+    RPKI_CLIENT_RUNNING,
+    RPKI_CLIENT_FETCH_ERROR,
+    RPKI_CLIENT_PULLED,
+    RPKI_CLIENT_PULLING,
+    RPKI_CLIENT_REMOVED_UNREFERENCED,
+    RPKI_CLIENT_WARNINGS,
+    RPKI_OBJECTS_COUNT,
+    RPKI_OBJECTS_MIN_EXPIRY
+)
 
 from rpkiclientweb.outputparser import (
     OutputParser,
@@ -23,89 +36,6 @@ LOG = logging.getLogger(__name__)
 
 OUTPUT_BUFFER_SIZE = 8_388_608
 
-# buckets from https://github.com/Netflix/rend/pull/93/files
-RPKI_CLIENT_DURATION = Histogram(
-    "rpkiclient_duration_seconds",
-    "Time spent calling rpki-client",
-    buckets=[
-        1,
-        2,
-        3,
-        4,
-        5,
-        6,
-        7,
-        8,
-        9,
-        10,
-        11,
-        12,
-        13,
-        14,
-        16,
-        21,
-        26,
-        31,
-        36,
-        41,
-        46,
-        51,
-        56,
-        64,
-        85,
-        106,
-        127,
-        148,
-        169,
-        190,
-        211,
-        232,
-        256,
-        341,
-        426,
-        511,
-        596,
-        681,
-        766,
-    ],
-)
-RPKI_CLIENT_LAST_DURATION = Gauge(
-    "rpkiclient_last_duration_seconds",
-    "Duration of the last call to rpki-client",
-)
-RPKI_CLIENT_LAST_UPDATE = Gauge(
-    "rpkiclient_last_update",
-    "Timestamp of the last successful call to rpki-client",
-)
-RPKI_CLIENT_UPDATE_COUNT = Counter(
-    "rpkiclient_update", "Number of rpki-client updates", ["returncode"]
-)
-RPKI_CLIENT_RUNNING = Gauge(
-    "rpkiclient_running", "Number of running rpki-client instances"
-)
-RPKI_OBJECTS_COUNT = Gauge("rpki_objects", "Number of objects by type", ["type"])
-RPKI_CLIENT_WARNINGS = Gauge(
-    "rpkiclient_warnings", "Warnings from rpki-client", ["hostname", "type"]
-)
-RPKI_CLIENT_PULLING = Gauge(
-    "rpkiclient_pulling",
-    "Last time pulling from this repository was started (referenced).",
-    ["uri"],
-)
-RPKI_CLIENT_FETCH_ERROR = Counter(
-    "rpkiclient_fetch_error",
-    "fetch errors encountered by rpki-client.",
-    ["uri", "type"],
-)
-RPKI_CLIENT_PULLED = Gauge(
-    "rpkiclient_pulled",
-    "Last time repo was pulled (before process ended due to timeout).",
-    ["uri"],
-)
-RPKI_CLIENT_REMOVED_UNREFERENCED = Counter(
-    "rpkiclient_removed_unreferenced",
-    "Number of removals of repositories that were no longer referenced.",
-)
 
 
 METADATA_LABELS = (
@@ -118,10 +48,13 @@ METADATA_LABELS = (
     "certificates",
     "failcertificates",
     "invalidcertificates",
+    "tals",
+    # ignore "talfiles" strings
     "manifests",
     "failedmanifests",
     "stalemanifests",
     "crls",
+    "gbrs",
     "repositories",
     "vrps",
     "uniquevrps",
@@ -141,6 +74,7 @@ OPTIONAL_METADATA_LABELS = frozenset(
 
 @dataclass
 class ExecutionResult:
+    """Execution result (exit code + output)."""
     returncode: int
     stdout: str
     stderr: str
@@ -150,28 +84,37 @@ class ExecutionResult:
 @dataclass
 class RpkiClient:
     """Wrapper for rpki-client."""
+
     config: Configuration
 
     warnings: List[WarningSummary] = field(default_factory=list)
-    last_update_repos: List[str] = frozenset()
+    last_update_repos: FrozenSet[str] = frozenset()
 
     @property
     def args(self) -> List[str]:
         """Build rpki-client arguments."""
-        if not os.path.isfile(self.config.rpki_client):
+        if not self.config.rpki_client.is_file():
             raise ValueError(f"rpki_client: '{self.config.rpki_client}' does not exist")
 
-        if self.config.rsync_command and not os.path.isfile(self.config.rsync_command):
-            raise ValueError(f"rsync_command: '{self.config.rsync_command}' does not exist")
+        if self.config.rsync_command and not self.config.rsync_command.is_file():
+            raise ValueError(
+                f"rsync_command: '{self.config.rsync_command}' does not exist"
+            )
 
-        if not os.path.isdir(self.config.cache_dir):
-            raise ValueError(f"cache_dir: '{self.config.cache_dir}' is not a directory.")
+        if not self.config.cache_dir.is_dir():
+            raise ValueError(
+                f"cache_dir: '{self.config.cache_dir}' is not a directory."
+            )
 
-        if not os.path.isdir(self.config.output_dir):
-            raise ValueError(f"output_dir: '{self.config.output_dir}' is not a directory.")
+        if not self.config.output_dir.is_dir():
+            raise ValueError(
+                f"output_dir: '{self.config.output_dir}' is not a directory."
+            )
 
         if not (not self.config.timeout or self.config.timeout >= -1):
-            raise ValueError(f"illegal timeout: {self.config.timeout} -- should be >= -1")
+            raise ValueError(
+                f"illegal timeout: {self.config.timeout} -- should be >= -1"
+            )
 
         # Not using `-s [timeout]` for now because the timeout is managed from
         # this wrapping code.
@@ -275,7 +218,9 @@ class RpkiClient:
             RPKI_CLIENT_PULLED.labels(repo).set_to_current_time()
 
         for fetch_status in parsed.fetch_status:
-            RPKI_CLIENT_FETCH_ERROR.labels(uri=fetch_status.uri, type=fetch_status.type).inc(fetch_status.count)
+            RPKI_CLIENT_FETCH_ERROR.labels(
+                uri=fetch_status.uri, type=fetch_status.type
+            ).inc(fetch_status.count)
 
         RPKI_OBJECTS_COUNT.labels(type="vanished_files").set(len(parsed.vanished_files))
         RPKI_OBJECTS_COUNT.labels(type="vanished_directories").set(
@@ -298,6 +243,26 @@ class RpkiClient:
         # And store
         self.warnings = new_warnings
         self.last_update_repos = new_pulling
+
+    # TODO: Update to TypedDict when only supporting 3.8+
+    def __update_object_expiry(self, roas: List[Dict]) -> None:
+        # roas may not be sorted by ta. Using `itertools.groupby` would require
+        # a sort - so just do this in code.
+        # ta name -> timestamp
+        min_expires_by_ta: Dict[str, int] = dict()
+
+        for roa in roas:
+            ta = roa.get('ta', None)
+            expires = roa.get('expires', None)
+            if ta is None or expires is None:
+                LOG.info("ROA '%s' does not contain 'ta' or 'expires', aborting.", roa)
+                return
+            # take expires when not found, otherwise, min value.
+            min_expires_by_ta[ta] = min(min_expires_by-ta.get(ta, expires), expires)
+
+        for ta, min_expires in min_expires_by_ta.items():
+            RPKI_OBJECTS_MIN_EXPIRY.labels(ta=ta).set(min_expires)
+
 
     async def update_validated_objects_gauge(self, returncode: int) -> None:
         """
@@ -336,8 +301,12 @@ class RpkiClient:
             LOG.warning("json output file (%s) is missing", json_path)
             return
 
-        with open(json_path, "r") as json_res:
-            metadata = json.load(json_res)["metadata"]
+        with json_path.open("r") as json_res:
+            data = json.load(json_res)
+
+            self.__update_object_expiry(data['roas'])
+
+            metadata = data["metadata"]
             missing_keys = set()
 
             for key in METADATA_LABELS:
@@ -354,6 +323,7 @@ class RpkiClient:
                     json.dumps(metadata),
                 )
 
-        # Any error before this point will cause the last_update to fail and thus be visible in metrics.
+        # Any error before this point will cause the last_update to fail and
+        # thus be visible in metrics.
         if returncode == 0:
             RPKI_CLIENT_LAST_UPDATE.set_to_current_time()
