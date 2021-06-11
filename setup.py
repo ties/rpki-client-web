@@ -22,7 +22,7 @@ setup(
     entry_points={"console_scripts": ["rpki-client-web = rpkiclientweb.__main__:main"]},
     install_requires=["aiohttp", "pyyaml", "prometheus-async"],
     include_package_data=True,
-    python_requires=">=3.8",
+    python_requires=">=3.7",
     license="MIT",
     keywords="rpki rpki-client validator",
     packages=find_packages(exclude=["tests", "tests.*"]),
