@@ -9,11 +9,11 @@ trigger:
     include:
     - rc
     - dev
-    - master
+    - main
 pr:
   - rc
   - dev
-  - master
+  - main
 
 resources:
   containers:
@@ -96,3 +96,15 @@ stages:
       inputs:
         targetPath: 'dist'
 
+- stage: 'Package'
+  dependsOn: 'Dist'
+  jobs:
+  - job: 'DockerBuild'
+    steps:
+    - task: Docker@2
+      inputs:
+        containerRegistry: 'dockerhub-tiesdekock'
+        repository: 'tiesdekock/rpki-client-web'
+        command: 'buildAndPush'
+        Dockerfile: '**/Dockerfile'
+        tags: 'development'
