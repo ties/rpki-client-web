@@ -10,13 +10,11 @@ max(time left/2, time left-0.5)s before deadline.
 """
 import os
 import sys
-import time
 import datetime
-import sys
 
 
-deadline = os.environ.get('DEADLINE', None)
-rsync_bin = os.environ.get('RSYNC_BINARY', '/usr/bin/rsync')
+deadline = os.environ.get("DEADLINE", None)
+rsync_bin = os.environ.get("RSYNC_BINARY", "/usr/bin/rsync")
 if deadline is not None:
     sys_args = sys.argv[1:]
 
@@ -24,25 +22,24 @@ if deadline is not None:
     now = datetime.datetime.now()
     # calculate time to deadline in seconds
     time_left = (then - now).total_seconds()
-    print(f"rsync_timeout: DEADLINE={then} time_left={time_left} rsync {' '.join(sys_args)}", file=sys.stderr)
+    print(
+        f"rsync_timeout: DEADLINE={then} time_left={time_left} "
+        f"rsync {' '.join(sys_args)}",
+        file=sys.stderr,
+    )
 
     if time_left > 1:
         # Sigterm at max 0.5s before deadline
-        sigterm_in = max(time_left / 2, time_left-0.5)
+        sigterm_in = max(time_left / 2, time_left - 0.5)
 
         # timeout defaults to seconds for the unit
-        args = [
-            "--preserve-status",
-            "-k", str(time_left),
-            str(sigterm_in),
-            rsync_bin
-        ]
+        args = ["--preserve-status", "-k", str(time_left), str(sigterm_in), rsync_bin]
         args.extend(sys_args)
-        os.execv('/usr/bin/timeout', args)
+        os.execv("/usr/bin/timeout", args)
     else:
-        print("Skipping execution, post deadline")
+        print("rsync_timeout: Skipping execution, post deadline")
         # man rsync, exit code 20: Received SIGUSR1 or SIGIN
         sys.exit(20)
 else:
-    print("no deadline - about to execve " + " ".join(sys.argv))
+    print("rsync_timeout: no deadline - about to execve " + " ".join(sys.argv))
     os.execv(rsync_bin, sys.argv)
