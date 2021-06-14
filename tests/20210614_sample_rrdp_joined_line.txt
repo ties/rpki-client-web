@@ -1,0 +1,72 @@
+rpki-client: ta/ripe: pulling from https://rpki.ripe.net/ta/ripe-ncc-ta.cer
+rpki-client: ta/ripe: loaded from network
+rpki-client: https://rrdp.ripe.net/notification.xml: pulling from network
+rpki-client: https://rrdp.ripe.net/notification.xml: notification file not modified
+rpki-client: https://rrdp.ripe.net/notification.xml: loaded from network
+rpki-client: https://rpki1.terratransit.de/rrdp/notification.xml: pulling from network
+rpki-client: https://rpki1.terratransit.de/rrdp/notification.xml: repository not modified
+rpki-client: https://rpki1.terratransit.de/rrdp/notification.xml: loaded from network
+rpki-client: https://nostromo.heficed.net/rrdp/notification.xml: pulling from network
+rpki-client: https://nostromo.heficed.net/rrdp/notification.xml: notification file not modified
+rpki-client: https://nostromo.heficed.net/rrdp/notification.xml: loaded from network
+rpki-client: https://rpki.multacom.com/rrdp/notification.xml: pulling from network
+rpki-client: https://rpki.e15f.net/rrdp/notification.xml: pulling from network
+rpki-client: https://rpki.multacom.com/rrdp/notification.xml: notification file not modified
+rpki-client: https://rpki.multacom.com/rrdp/notification.xml: loaded from network
+rpki-client: https://rpki.e15f.net/rrdp/notification.xml: downloading 1 deltas
+rpki-client: https://rpki.e15f.net/rrdp/notification.xml: loaded from network
+rpki-client: https://rpki.as207960.net/rrdp/notification.xml: pulling from network
+rpki-client: https://rpki.as207960.net/rrdp/notification.xml: repository not modified
+rpki-client: https://rpki.as207960.net/rrdp/notification.xml: loaded from network
+rpki-client: https://rrdp.rpki.nlnetlabs.nl/rrdp/notification.xml: pulling from network
+rpki-client: https://rrdp.rpki.nlnetlabs.nl/rrdp/notification.xml: notification file not modified
+rpki-client: https://rrdp.rpki.nlnetlabs.nl/rrdp/notification.xml: loaded from network
+rpki-client: https://rpki.roa.net/rrdp/notification.xml: pulling from network
+rpki-client: https://rpki.roa.net/rrdp/notification.xml: notification file not modified
+rpki-client: https://rpki.roa.net/rrdp/notification.xml: loaded from network
+rpki-client: https://rpki.admin.freerangecloud.com/rrdp/notification.xml: pulling from network
+rpki-client: https://rpki.admin.freerangecloud.com/rrdp/notification.xml: notification file not modified
+rpki-client: https://rpki.admin.freerangecloud.com/rrdp/notification.xml: loaded from network
+rpki-client: https://rpki.rpkitest.ml/rrdp/notification.xml: pulling from network
+rpki-client: https://rpki.rpkitest.ml/rrdp/notification.xml: notification file not modified
+rpki-client: https://rpki.rpkitest.ml/rrdp/notification.xml: loaded from network
+rpki-client: https://chloe.sobornost.net/rpki/news-public.xml: pulling from network
+rpki-client: Error retrieving chloe.sobornost.net: 404 Not Found
+rpki-client: https://chloe.sobornost.net/rpki/news-public.xml: load from network failed, fallback to rsync
+rpki-client: rsync/chloe.sobornost.net/rpki: pulling from rsync://chloe.sobornost.net/rpki
+rsync_timeout: DEADLINE=2021-06-12 08:44:25.298712 time_left=282.923065 rsync -rt --no-motd --timeout 180 rsync://chloe.sobornost.net/rpki rsync/chloe.sobornost.net/rpki
+rpki-client: rsync/chloe.sobornost.net/rpki: loaded from network
+rpki-client: https://rpkica.mckay.com/rrdp/notify.xml: pulling from network
+rpki-client: https://rpkica.mckay.com/rrdp/notify.xml: notification file not modified
+rpki-client: https://rpkica.mckay.com/rrdp/notify.xml: loaded from network
+rpki-client: https://chloe.sobornost.net/rpki/news.xml: pulling from network
+rpki-client: Error retrieving chloe.sobornost.net: 404 Not Found
+rpki-client: https://chloe.sobornost.net/rpki/news.xml: load from network failed, fallback to rsync
+rpki-client: https://rpki.xindi.eu/rrdp/notification.xml: pulling from network
+rpki-client: https://rpki.xindi.eu/rrdp/notification.xml: notification file not modified
+rpki-client: https://rpki.xindi.eu/rrdp/notification.xml: loaded from network
+rpki-client: https://ca.rg.net/rrdp/notify.xml: pulling from network
+rpki-client: https://ca.rg.net/rrdp/notify.xml: notification file not modified
+rpki-client: https://ca.rg.net/rrdp/notify.xml: loaded from network
+rpki-client: https://rpki.qs.nu/rrdp/notification.xml: pulling from network
+rpki-client: https://rpki.qs.nu/rrdp/notification.xml: notification file not modified
+rpki-client: https://rpki.qs.nu/rrdp/notification.xml: loaded from network
+rpki-client: rrdp/e810110740d0f365a8eff355cb18e40ce86e2a48f42b2e3a841d8b763ed3815d/rpkica.mckay.com/rpki/MCnet/Jp4Tjp_GB5I1RfeaOGhKZNlDmAQ.mft: mft expired on Aug 26 11:03:34 2020 GMT
+rpki-client: rrdp/e810110740d0f365a8eff355cb18e40ce86e2a48f42b2e3a841d8b763ed3815d/rpkica.mckay.com/rpki/MCnet/UEh2SAvdIgPsUFdv92RSSaNqBnY.mft: No such file or directory
+rpki-client: https://cb.rg.net/rrdp/notify.xml: pulling from network
+rpki-client: https://cc.rg.net/rrdp/notify.xml: pulling from network
+rpki-client: https://cb.rg.net/rrdp/notify.xml: notification file not modified
+rpki-client: rpki-client: https://cc.rg.net/rrdp/notify.xml: downloading 1 deltas
+https://cb.rg.net/rrdp/notify.xml: loaded from network
+rpki-client: https://cc.rg.net/rrdp/notify.xml: loaded from network
+rpki-client: all files parsed: generating output
+rpki-client: Route Origin Authorizations: 24232 (0 failed parse, 0 invalid)
+rpki-client: Certificates: 15101 (0 failed parse, 0 invalid)
+rpki-client: Trust Anchor Locators: 1
+rpki-client: Manifests: 15101 (1 failed parse, 1 stale)
+rpki-client: Certificate revocation lists: 15099
+rpki-client: Ghostbuster records: 2
+rpki-client: Repositories: 15100
+rpki-client: Cleanup: removed 6 files, 30 directories
+rpki-client: VRP Entries: 128886 (128884 unique)
+
