@@ -4,6 +4,7 @@ from prometheus_client import Counter, Gauge, Histogram
 # Metrics about how/when rpki-client was running
 #
 # buckets from https://github.com/Netflix/rend/pull/93/files
+# with a number of added buckets at frequent durations.
 RPKI_CLIENT_DURATION = Histogram(
     "rpkiclient_duration_seconds",
     "Time spent calling rpki-client",
@@ -32,8 +33,11 @@ RPKI_CLIENT_DURATION = Histogram(
         51,
         56,
         64,
+        74,  # added
         85,
+        95,  # added
         106,
+        116, # added
         127,
         148,
         169,
