@@ -95,6 +95,7 @@ def test_intertwined_lines():
     for line in parser.pulled:
         assert "rpki-client:" not in line
         assert len(line) < 35
+        assert len(line) < 35
 
 
 def test_overclaiming_line():
@@ -224,3 +225,14 @@ def test_rrdp_deltas():
     assert FetchStatus(
         "https://rpki-repo.registro.br/rrdp/notification.xml", "rrdp_delta", 13
     ) in list(res.fetch_status)
+
+
+def test_intertwined_rrdp_lines():
+    """Parse a file that contains lines that have mixed output for RRDP."""
+    res = parse_output_file(
+        "tests/20210614_sample_rrdp_joined_line.txt"
+    )
+
+    for status in res.fetch_status:
+        assert "rpki-client:" not in status.uri
+        assert "rpki-client:" not in status.type

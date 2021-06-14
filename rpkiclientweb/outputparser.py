@@ -9,11 +9,20 @@ from rpkiclientweb.util import parse_host
 
 LOG = logging.getLogger(__name__)
 
+#
+# Regular expressions matching log lines.
+# Keep in mind that `rpki-client:` can be written from multiple processes
+# (without flush) so any message that starts with a capture group needs to
+# reject those 'intertwined' lines (e.g. use `(?!rpki-client:)`).
+#
+# The lines are like:
+# `rpki-client: rpki-client: https://cc.rg.net/rrdp/notify.xml: downloading 1 deltas`
+#
 BAD_MESSAGE_DIGEST_RE = re.compile(
-    r"rpki-client: (?P<path>.*): bad message digest for (?P<object>.*)"
+    r"rpki-client: (?!rpki-client:)(?P<path>.*): bad message digest for (?P<object>.*)"
 )
 EXPIRED_MANIFEST_RE = re.compile(
-    r"rpki-client: (?P<path>.*): mft expired on (?P<expiry>.*)"
+    r"rpki-client: (?!rpki-client:)(?P<path>.*): mft expired on (?P<expiry>.*)"
 )
 MISSING_FILE_RE = re.compile(
     r"rpki-client: (?!rpki-client:)(?P<path>.*): No such file or directory"
@@ -25,19 +34,19 @@ PULLED_RE = re.compile(r"rpki-client: (?!rpki-client:)(?P<uri>.*): loaded from n
 
 RSYNC_LOAD_FAILED = re.compile(r"rpki-client: rsync (?P<uri>.*) failed$")
 RSYNC_FALLBACK = re.compile(
-    r"rpki-client: (?P<uri>.*): load from network failed, fallback to rsync$"
+    r"rpki-client: (?!rpki-client:)(?P<uri>.*): load from network failed, fallback to rsync$"
 )
 
 RSYNC_RRDP_NOT_MODIFIED = re.compile(
-    r"rpki-client: (?P<uri>.*): notification file not modified$"
+    r"rpki-client: (?!rpki-client:)(?P<uri>.*): notification file not modified$"
 )
-RSYNC_RRDP_SNAPSHOT = re.compile(r"rpki-client: (?P<uri>.*): downloading snapshot$")
+RSYNC_RRDP_SNAPSHOT = re.compile(r"rpki-client: (?!rpki-client:)(?P<uri>.*): downloading snapshot$")
 RSYNC_RRDP_DELTAS = re.compile(
-    r"rpki-client: (?P<uri>.*): downloading (?P<count>\d+) deltas$"
+    r"rpki-client: (?!rpki-client:)(?P<uri>.*): downloading (?P<count>\d+) deltas$"
 )
 
 RESOURCE_OVERCLAIMING = re.compile(
-    r"rpki-client: (?P<path>.*): RFC 3779 resource not subset of parent's resources"
+    r"rpki-client: (?!rpki-client:)(?P<path>.*): RFC 3779 resource not subset of parent's resources"
 )
 REVOKED_CERTIFICATE = re.compile(
     r"rpki-client: (?!rpki-client:)(?P<path>.*): certificate revoked"
