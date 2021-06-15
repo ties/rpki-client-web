@@ -102,3 +102,12 @@ RPKI_OBJECTS_MIN_EXPIRY = Gauge(
     "First expiry time for file in exported objects by trust anchor (includes non-hosted repositories)",
     ["ta"],
 )
+
+#
+# Metrics about rpki-client-web
+#
+RPKI_CLIENT_WEB_PARSE_ERROR = Counter(
+    "rpkiclientweb_parse_error",
+    "Number of pare errors encountered by rpki-client-web",
+    ["type"],
+)
