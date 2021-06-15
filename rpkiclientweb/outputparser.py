@@ -5,6 +5,7 @@ from datetime import datetime
 from typing import FrozenSet, Generator, List, NamedTuple, Union
 
 from rpkiclientweb.util import parse_host
+from rpkiclientweb.metrics import RPKI_CLIENT_WEB_PARSE_ERROR
 
 
 LOG = logging.getLogger(__name__)
@@ -162,7 +163,8 @@ class OutputParser:
             try:
                 yield from parse_maybe_warning_line(line)
             except (ValueError, IndexError) as e:
-                LOG.info(f"Parse error in '{line}', {e}")
+                LOG.info("Parse error in '%s', %s", line, e)
+                RPKI_CLIENT_WEB_PARSE_ERROR.labels(type='parse_warnings').inc()
 
     @property
     def pulling(self) -> FrozenSet[str]:
@@ -217,6 +219,7 @@ class OutputParser:
                     continue
             except Exception:
                 LOG.exception("Exception while parsing lines.")
+                RPKI_CLIENT_WEB_PARSE_ERROR.labels(type='parse_fetch_status').inc()
 
     @property
     def vanished_directories(self) -> FrozenSet[str]:
