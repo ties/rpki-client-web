@@ -100,7 +100,7 @@ Endpoints
 /config             - output the current config
 /result             - exit code, stdout, and stderr of last rpki-client run
 /metrics            - prometheus metrics
-/validated/objects  - validated RPKI objects
+/objects/validated  - validated RPKI objects
 ```
 
 Installation
