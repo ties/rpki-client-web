@@ -7,7 +7,7 @@ Changes
 main:
   * nothing yet
 
-2021-06-11 v0.8.0:
+2021-06-24 v0.8.0:
   * rpki-client 7 support
   * rrdp, rsync fallback, rsync error metrics
   * container based on tini
