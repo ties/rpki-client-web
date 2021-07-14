@@ -4,8 +4,9 @@ via a HTTP API.
 Changes
 =======
 
-main:
-  * nothing yet
+dev:
+  * rename `rpkiclient_fetch_error` metric to `rpkiclient_fetch_status` since it
+    includes non-error statuses (fixes #26).
 
 2021-06-24 v0.8.0:
   * rpki-client 7 support
