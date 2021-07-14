@@ -37,7 +37,7 @@ RPKI_CLIENT_DURATION = Histogram(
         85,
         95,  # added
         106,
-        116, # added
+        116,  # added
         127,
         148,
         169,

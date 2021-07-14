@@ -72,9 +72,7 @@ class RpkiClientWeb:
     async def validated_objects(self, req) -> web.FileResponse:
         """return the validated objects json."""
         path = self.config.output_dir / "json"
-        return web.FileResponse(path,
-                                headers={'Content-Type': 'application/json'}
-        )
+        return web.FileResponse(path, headers={"Content-Type": "application/json"})
 
     async def call_client(self) -> None:
         """Run the rpki-client wrapper again."""
