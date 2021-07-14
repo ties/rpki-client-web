@@ -8,6 +8,7 @@ dev:
   * rename `rpkiclient_fetch_error` metric to `rpkiclient_fetch_status` since it
     includes non-error statuses (fixes #26).
   * aiohttp >= 3.7.4.
+  * more resilient rejection of intertwined lines.
 
 2021-06-24 v0.8.0:
   * rpki-client 7 support

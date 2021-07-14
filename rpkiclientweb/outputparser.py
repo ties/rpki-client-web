@@ -12,6 +12,45 @@ LOG = logging.getLogger(__name__)
 
 #
 # Regular expressions matching log lines.
+#
+BAD_MESSAGE_DIGEST_RE = re.compile(
+    r"rpki-client: (?P<path>.*): bad message digest for (?P<object>.*)"
+)
+EXPIRED_MANIFEST_RE = re.compile(
+    r"rpki-client: (?P<path>.*): mft expired on (?P<expiry>.*)"
+)
+MISSING_FILE_RE = re.compile(
+    r"rpki-client: (?P<path>.*): No such file or directory"
+)
+PULLING_RE = re.compile(
+    r"rpki-client: (?P<uri>.*): pulling from network"
+)
+PULLED_RE = re.compile(r"rpki-client: (?P<uri>.*): loaded from network")
+
+RSYNC_LOAD_FAILED = re.compile(r"rpki-client: rsync (?P<uri>.*) failed$")
+RSYNC_FALLBACK = re.compile(
+    r"rpki-client: (?P<uri>.*): load from network failed, fallback to rsync$"
+)
+
+RSYNC_RRDP_NOT_MODIFIED = re.compile(
+    r"rpki-client: (?P<uri>.*): notification file not modified$"
+)
+RSYNC_RRDP_SNAPSHOT = re.compile(r"rpki-client: (?P<uri>.*): downloading snapshot$")
+RSYNC_RRDP_DELTAS = re.compile(
+    r"rpki-client: (?P<uri>.*): downloading (?P<count>\d+) deltas$"
+)
+
+RESOURCE_OVERCLAIMING = re.compile(
+    r"rpki-client: (?P<path>.*): RFC 3779 resource not subset of parent's resources"
+)
+REVOKED_CERTIFICATE = re.compile(
+    r"rpki-client: (?P<path>.*): certificate revoked"
+)
+VANISHED_FILE_RE = re.compile(r"file has vanished: \"(?P<path>.*)\" \(in repo\)")
+VANISHED_DIRECTORY_RE = re.compile(
+    r"directory has vanished: \"(?P<path>.*)\" \(in repo\)"
+)
+#
 # Keep in mind that `rpki-client:` can be written from multiple processes
 # (without flush) so any message that starts with a capture group needs to
 # reject those 'intertwined' lines (e.g. use `(?!rpki-client:)`).
@@ -19,43 +58,7 @@ LOG = logging.getLogger(__name__)
 # The lines are like:
 # `rpki-client: rpki-client: https://cc.rg.net/rrdp/notify.xml: downloading 1 deltas`
 #
-BAD_MESSAGE_DIGEST_RE = re.compile(
-    r"rpki-client: (?!rpki-client:)(?P<path>.*): bad message digest for (?P<object>.*)"
-)
-EXPIRED_MANIFEST_RE = re.compile(
-    r"rpki-client: (?!rpki-client:)(?P<path>.*): mft expired on (?P<expiry>.*)"
-)
-MISSING_FILE_RE = re.compile(
-    r"rpki-client: (?!rpki-client:)(?P<path>.*): No such file or directory"
-)
-PULLING_RE = re.compile(
-    r"rpki-client: (?!rpki-client:)(?P<uri>.*): pulling from network"
-)
-PULLED_RE = re.compile(r"rpki-client: (?!rpki-client:)(?P<uri>.*): loaded from network")
-
-RSYNC_LOAD_FAILED = re.compile(r"rpki-client: rsync (?P<uri>.*) failed$")
-RSYNC_FALLBACK = re.compile(
-    r"rpki-client: (?!rpki-client:)(?P<uri>.*): load from network failed, fallback to rsync$"
-)
-
-RSYNC_RRDP_NOT_MODIFIED = re.compile(
-    r"rpki-client: (?!rpki-client:)(?P<uri>.*): notification file not modified$"
-)
-RSYNC_RRDP_SNAPSHOT = re.compile(r"rpki-client: (?!rpki-client:)(?P<uri>.*): downloading snapshot$")
-RSYNC_RRDP_DELTAS = re.compile(
-    r"rpki-client: (?!rpki-client:)(?P<uri>.*): downloading (?P<count>\d+) deltas$"
-)
-
-RESOURCE_OVERCLAIMING = re.compile(
-    r"rpki-client: (?!rpki-client:)(?P<path>.*): RFC 3779 resource not subset of parent's resources"
-)
-REVOKED_CERTIFICATE = re.compile(
-    r"rpki-client: (?!rpki-client:)(?P<path>.*): certificate revoked"
-)
-VANISHED_FILE_RE = re.compile(r"file has vanished: \"(?P<path>.*)\" \(in repo\)")
-VANISHED_DIRECTORY_RE = re.compile(
-    r"directory has vanished: \"(?P<path>.*)\" \(in repo\)"
-)
+INTERTWINED_LINE_RE = re.compile(r"^rpki-client: .*rpki-client: .*$")
 
 
 class FetchStatus(NamedTuple):
@@ -154,7 +157,10 @@ class OutputParser:
     lines: List[str]
 
     def __init__(self, stderr_output: str):
-        self.lines = stderr_output.split("\n")
+        self.lines = [
+            line for line in stderr_output.split("\n")
+            if not INTERTWINED_LINE_RE.match(line)
+        ]
 
     @property
     def warnings(self) -> Generator[RPKIClientWarning, None, None]:
