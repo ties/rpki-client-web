@@ -15,7 +15,7 @@ jedi = "*"
 
 [packages]
 pyyaml = "*"
-aiohttp = "*"
+aiohttp = ">=3.7.4"
 prometheus-async = {extras = ["aiohttp"],version = "*"}
 pytest = "*"
 voluptuous = "*"
