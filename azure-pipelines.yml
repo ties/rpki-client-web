@@ -13,6 +13,7 @@ trigger:
 
 variables:
   isMain: $[eq(variables['Build.SourceBranch'], 'refs/heads/main')]
+  isDev: $[eq(variables['Build.SourceBranch'], 'refs/heads/dev')]
 
 pr:
   - rc
@@ -111,7 +112,7 @@ stages:
     steps:
     # Build image tagged with correct tag
     - task: Docker@2
-      condition: and(succeeded(), eq(variables.isMain, false))
+      condition: and(succeeded(), eq(variables.isDev, true))
       inputs:
         containerRegistry: 'dockerhub-tiesdekock'
         repository: 'tiesdekock/rpki-client-web'
