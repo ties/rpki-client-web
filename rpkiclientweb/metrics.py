@@ -71,9 +71,9 @@ RPKI_CLIENT_RUNNING = Gauge(
 #
 # Metrics about retrieval behaviour
 #
-RPKI_CLIENT_FETCH_ERROR = Counter(
-    "rpkiclient_fetch_error",
-    "fetch errors encountered by rpki-client.",
+RPKI_CLIENT_FETCH_STATUS = Counter(
+    "rpkiclient_fetch_status",
+    "count of fetch status per repository and type encountered by rpki-client.",
     ["uri", "type"],
 )
 RPKI_CLIENT_PULLED = Gauge(

@@ -17,7 +17,7 @@ from rpkiclientweb.metrics import (
     RPKI_CLIENT_LAST_UPDATE,
     RPKI_CLIENT_UPDATE_COUNT,
     RPKI_CLIENT_RUNNING,
-    RPKI_CLIENT_FETCH_ERROR,
+    RPKI_CLIENT_FETCH_STATUS,
     RPKI_CLIENT_PULLED,
     RPKI_CLIENT_PULLING,
     RPKI_CLIENT_REMOVED_UNREFERENCED,
@@ -223,7 +223,7 @@ class RpkiClient:
             RPKI_CLIENT_PULLED.labels(repo).set_to_current_time()
 
         for fetch_status in parsed.fetch_status:
-            RPKI_CLIENT_FETCH_ERROR.labels(
+            RPKI_CLIENT_FETCH_STATUS.labels(
                 uri=fetch_status.uri, type=fetch_status.type
             ).inc(fetch_status.count)
 
