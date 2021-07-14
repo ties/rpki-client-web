@@ -19,12 +19,8 @@ BAD_MESSAGE_DIGEST_RE = re.compile(
 EXPIRED_MANIFEST_RE = re.compile(
     r"rpki-client: (?P<path>.*): mft expired on (?P<expiry>.*)"
 )
-MISSING_FILE_RE = re.compile(
-    r"rpki-client: (?P<path>.*): No such file or directory"
-)
-PULLING_RE = re.compile(
-    r"rpki-client: (?P<uri>.*): pulling from network"
-)
+MISSING_FILE_RE = re.compile(r"rpki-client: (?P<path>.*): No such file or directory")
+PULLING_RE = re.compile(r"rpki-client: (?P<uri>.*): pulling from network")
 PULLED_RE = re.compile(r"rpki-client: (?P<uri>.*): loaded from network")
 
 RSYNC_LOAD_FAILED = re.compile(r"rpki-client: rsync (?P<uri>.*) failed$")
@@ -43,9 +39,7 @@ RSYNC_RRDP_DELTAS = re.compile(
 RESOURCE_OVERCLAIMING = re.compile(
     r"rpki-client: (?P<path>.*): RFC 3779 resource not subset of parent's resources"
 )
-REVOKED_CERTIFICATE = re.compile(
-    r"rpki-client: (?P<path>.*): certificate revoked"
-)
+REVOKED_CERTIFICATE = re.compile(r"rpki-client: (?P<path>.*): certificate revoked")
 VANISHED_FILE_RE = re.compile(r"file has vanished: \"(?P<path>.*)\" \(in repo\)")
 VANISHED_DIRECTORY_RE = re.compile(
     r"directory has vanished: \"(?P<path>.*)\" \(in repo\)"
@@ -158,7 +152,8 @@ class OutputParser:
 
     def __init__(self, stderr_output: str):
         self.lines = [
-            line for line in stderr_output.split("\n")
+            line
+            for line in stderr_output.split("\n")
             if not INTERTWINED_LINE_RE.match(line)
         ]
 
@@ -170,7 +165,7 @@ class OutputParser:
                 yield from parse_maybe_warning_line(line)
             except (ValueError, IndexError) as e:
                 LOG.info("Parse error in '%s', %s", line, e)
-                RPKI_CLIENT_WEB_PARSE_ERROR.labels(type='parse_warnings').inc()
+                RPKI_CLIENT_WEB_PARSE_ERROR.labels(type="parse_warnings").inc()
 
     @property
     def pulling(self) -> FrozenSet[str]:
@@ -225,7 +220,7 @@ class OutputParser:
                     continue
             except Exception:
                 LOG.exception("Exception while parsing lines.")
-                RPKI_CLIENT_WEB_PARSE_ERROR.labels(type='parse_fetch_status').inc()
+                RPKI_CLIENT_WEB_PARSE_ERROR.labels(type="parse_fetch_status").inc()
 
     @property
     def vanished_directories(self) -> FrozenSet[str]:
