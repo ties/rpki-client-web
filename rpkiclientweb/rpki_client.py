@@ -6,6 +6,7 @@ import logging
 import os
 import time
 
+from collections import Counter
 from dataclasses import dataclass, field
 from typing import Dict, FrozenSet, List
 from prometheus_async.aio import time as time_metric, track_inprogress
@@ -22,6 +23,7 @@ from rpkiclientweb.metrics import (
     RPKI_CLIENT_PULLING,
     RPKI_CLIENT_REMOVED_UNREFERENCED,
     RPKI_CLIENT_WARNINGS,
+    RPKI_OBJECTS_VRPS_BY_TA,
     RPKI_OBJECTS_COUNT,
     RPKI_OBJECTS_MIN_EXPIRY,
 )
@@ -255,6 +257,7 @@ class RpkiClient:
         # a sort - so just do this in code.
         # ta name -> timestamp
         min_expires_by_ta: Dict[str, int] = dict()
+        vrps_by_ta: Dict[str, int] = Counter()
 
         for roa in roas:
             ta = roa.get("ta", None)
@@ -264,9 +267,13 @@ class RpkiClient:
                 return
             # take expires when not found, otherwise, min value.
             min_expires_by_ta[ta] = min(min_expires_by_ta.get(ta, expires), expires)
+            vrps_by_ta[ta] += 1
 
         for ta, min_expires in min_expires_by_ta.items():
             RPKI_OBJECTS_MIN_EXPIRY.labels(ta=ta).set(min_expires)
+
+        for ta, vrp_count in vrps_by_ta.items():
+            RPKI_OBJECTS_VRPS_BY_TA.labels(ta=ta).set(vrp_count)
 
     async def update_validated_objects_gauge(self, returncode: int) -> None:
         """

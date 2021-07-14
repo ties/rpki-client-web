@@ -103,11 +103,17 @@ RPKI_OBJECTS_MIN_EXPIRY = Gauge(
     ["ta"],
 )
 
+RPKI_OBJECTS_VRPS_BY_TA = Gauge(
+    "rpki_vrps",
+    "Number of exported Validated Roa Payloads by Trust Anchor",
+    ["ta"],
+)
+
 #
 # Metrics about rpki-client-web
 #
 RPKI_CLIENT_WEB_PARSE_ERROR = Counter(
     "rpkiclientweb_parse_error",
-    "Number of pare errors encountered by rpki-client-web",
+    "Number of parse errors encountered by rpki-client-web",
     ["type"],
 )

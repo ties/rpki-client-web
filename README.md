@@ -5,7 +5,8 @@ Changes
 =======
 
 dev:
-  * rename `rpkiclient_fetch_error` metric to `rpkiclient_fetch_status` since it
+  * Add a metric for the number of VRPs per trust anchor locator.
+  * Rename `rpkiclient_fetch_error` metric to `rpkiclient_fetch_status` since it
     includes non-error statuses (fixes #26).
   * aiohttp >= 3.7.4.
   * more resilient rejection of intertwined lines.
