@@ -8,7 +8,7 @@ dev:
 
 
 2021-08-24 0.8.1:
-  ** Includes rpki-client 7.2 in the container**
+** Includes rpki-client 7.2 in the container**
   * Add a metric for the number of VRPs per trust anchor locator.
   * Rename `rpkiclient_fetch_error` metric to `rpkiclient_fetch_status` since it
     includes non-error statuses (fixes #26).
