@@ -1,6 +1,36 @@
 This repository contains a utility that exposes the results of [rpki-client](https://www.rpki-client.org/)
 via a HTTP API.
 
+Usage
+=====
+
+Create a `config.yml` file and run the utility with `python -m rpkiclientweb -v -c [config_file_name]`.
+Note that the default config only contains the RIPE NCC tal for ease of use during testing
+
+Or run a docker container:
+```
+# edit ./config.yml and put in ./config/config.yml
+docker run \
+  -p 8888:8888 \
+  --detach \
+  --name rpki-client-web \
+  -v ./config:/config \
+  tiesdekock/rpki-client-web
+```
+
+Optionally you can add `--tmpfs [configured cache_dir]` to save on IO
+(recommended when running at a cloud provided with very limited IOPS).
+
+Endpoints
+=========
+
+```
+/config             - output the current config
+/result             - exit code, stdout, and stderr of last rpki-client run
+/metrics            - prometheus metrics
+/objects/validated  - validated RPKI objects
+```
+
 Changes
 =======
 
@@ -81,36 +111,6 @@ dev:
 2020-07-27 v0.3.0:
 
   * Metric names start with `rpkiclient` instead of `rpki_client`.
-
-Usage
-=====
-
-Create a `config.yml` file and run the utility with `python -m rpkiclientweb -v -c [config_file_name]`.
-Note that the default config only contains the RIPE NCC tal for ease of use during testing
-
-Or run a docker container:
-```
-# edit ./config.yml and put in ./config/config.yml
-docker run \
-  -p 8888:8888 \
-  --detach \
-  --name rpki-client-web \
-  -v ./config:/config \
-  tiesdekock/rpki-client-web
-```
-
-Optionally you can add `--tmpfs [configured cache_dir]` to save on IO
-(recommended when running at a cloud provided with very limited IOPS).
-
-Endpoints
-=========
-
-```
-/config             - output the current config
-/result             - exit code, stdout, and stderr of last rpki-client run
-/metrics            - prometheus metrics
-/objects/validated  - validated RPKI objects
-```
 
 Installation
 ============
