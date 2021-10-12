@@ -5,48 +5,49 @@ import json
 import logging
 import os
 import time
-
 from collections import Counter
 from dataclasses import dataclass, field
 from typing import Dict, FrozenSet, List
-from prometheus_async.aio import time as time_metric, track_inprogress
+
+from prometheus_async.aio import time as time_metric
+from prometheus_async.aio import track_inprogress
 
 from rpkiclientweb.config import Configuration
-from rpkiclientweb.metrics import (
-    RPKI_CLIENT_DURATION,
-    RPKI_CLIENT_LAST_DURATION,
-    RPKI_CLIENT_LAST_UPDATE,
-    RPKI_CLIENT_UPDATE_COUNT,
-    RPKI_CLIENT_RUNNING,
-    RPKI_CLIENT_FETCH_STATUS,
-    RPKI_CLIENT_PULLED,
-    RPKI_CLIENT_PULLING,
-    RPKI_CLIENT_REMOVED_UNREFERENCED,
-    RPKI_CLIENT_WARNINGS,
-    RPKI_OBJECTS_VRPS_BY_TA,
-    RPKI_OBJECTS_COUNT,
-    RPKI_OBJECTS_MIN_EXPIRY,
-)
+from rpkiclientweb.metrics import (RPKI_CLIENT_DURATION,
+                                   RPKI_CLIENT_FETCH_STATUS,
+                                   RPKI_CLIENT_LAST_DURATION,
+                                   RPKI_CLIENT_LAST_UPDATE, RPKI_CLIENT_PULLED,
+                                   RPKI_CLIENT_PULLING,
+                                   RPKI_CLIENT_REMOVED_UNREFERENCED,
+                                   RPKI_CLIENT_RUNNING,
+                                   RPKI_CLIENT_UPDATE_COUNT,
+                                   RPKI_CLIENT_WARNINGS, RPKI_OBJECTS_COUNT,
+                                   RPKI_OBJECTS_MIN_EXPIRY,
+                                   RPKI_OBJECTS_VRPS_BY_TA)
+from rpkiclientweb.outputparser import (OutputParser, WarningSummary,
+                                        missing_labels)
 from rpkiclientweb.util import json_dumps
 
-from rpkiclientweb.outputparser import (
-    OutputParser,
-    WarningSummary,
-    missing_labels,
-)
-
 LOG = logging.getLogger(__name__)
+LOG_STDOUT = LOG.getChild("stdout")
+LOG_STDERR = LOG.getChild("stderr")
 
 OUTPUT_BUFFER_SIZE = 8_388_608
 
-
+#
+# Authoratitive source for what labels exist:
+# http://cvsweb.openbsd.org/cgi-bin/cvsweb/~checkout~/src/usr.sbin/rpki-client/output-json.c
+#
 METADATA_LABELS = (
+    # ignore "buildmachine"
     "elapsedtime",
     "usertime",
     "systemtime",
     "roas",
     "failedroas",
     "invalidroas",
+    "bgpsec_router_keys",
+    "invalidbgpsec_router_keys",
     "certificates",
     "failcertificates",
     "invalidcertificates",
@@ -70,6 +71,12 @@ OPTIONAL_METADATA_LABELS = frozenset(
         "failcertificates",
         "invalidcertificates",
         "stalemanifests",
+        # not present on 7.3 on fedora:
+        "bgpsec_router_keys",
+        "invalidbgpsec_router_keys",
+        "gbrs",
+        "cachedir_del_files",
+        "cachedir_del_dirs",
     ]
 )
 
@@ -184,9 +191,14 @@ class RpkiClient:
             "[%d] exited with %d in %f seconds", proc.pid, proc.returncode, duration
         )
 
-        if LOG.isEnabledFor(logging.DEBUG):
-            LOG.debug("stdout: %s", stdout)
-            LOG.debug("stderr: %s", stderr)
+        # log lines to separate lines - requested feature because some setups
+        # truncate log output.
+        if LOG_STDOUT.isEnabledFor(logging.DEBUG):
+            for line in stdout.decode(errors="replace").splitlines():
+                LOG_STDOUT.debug(line)
+        if LOG_STDERR.isEnabledFor(logging.DEBUG):
+            for line in stderr.decode(errors="replace").splitlines():
+                LOG_STDERR.debug(line)
 
         RPKI_CLIENT_UPDATE_COUNT.labels(returncode=proc.returncode).inc()
         RPKI_CLIENT_LAST_DURATION.set(duration)
@@ -263,7 +275,10 @@ class RpkiClient:
             ta = roa.get("ta", None)
             expires = roa.get("expires", None)
             if ta is None or expires is None:
-                LOG.info("ROA '%s' does not contain 'ta' or 'expires', aborting.", roa)
+                LOG.info(
+                    "ROA '%s' does not contain 'ta' or 'expires' (likely due to rpki-client version) - not updating first object to expire metric.",
+                    roa,
+                )
                 return
             # take expires when not found, otherwise, min value.
             min_expires_by_ta[ta] = min(min_expires_by_ta.get(ta, expires), expires)
@@ -323,8 +338,9 @@ class RpkiClient:
             for key in METADATA_LABELS:
                 value = metadata.get(key, None)
 
-                RPKI_OBJECTS_COUNT.labels(type=key).set(value)
-                if key not in OPTIONAL_METADATA_LABELS and value is None:
+                if value is not None:
+                    RPKI_OBJECTS_COUNT.labels(type=key).set(value)
+                elif key not in OPTIONAL_METADATA_LABELS:
                     missing_keys.add(key)
 
             if missing_keys:

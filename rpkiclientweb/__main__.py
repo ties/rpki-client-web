@@ -1,16 +1,16 @@
 """rpki-client wrapper with webserver and metrics."""
 import argparse
-import dataclasses
 import asyncio
+import dataclasses
 import logging
 import os
 import sys
 
-from .web import RpkiClientWeb
 from .config import Configuration
 from .util import load_yaml
+from .web import RpkiClientWeb
 
-LOG = logging.getLogger(__name__)
+LOG = logging.getLogger("rpkiclientweb.__main__")
 
 
 def main():
