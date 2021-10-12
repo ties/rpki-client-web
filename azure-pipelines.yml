@@ -38,7 +38,7 @@ stages:
     pool:
       vmImage: 'ubuntu-latest'
     strategy:
-      maxParallel: 3
+      maxParallel: 4
       matrix:
         Python37:
           containerResource: py37
@@ -46,6 +46,8 @@ stages:
           containerResource: py38
         Python39:
           containerResource: py39
+        Python310:
+          containerResource: py310
 
     container: $[ variables['containerResource']]
 
