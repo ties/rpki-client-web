@@ -2,11 +2,12 @@
 import asyncio
 import json
 import logging
-import urllib.parse
 import time
+import urllib.parse
 from dataclasses import asdict, is_dataclass
 from pathlib import Path
 from typing import Any, Awaitable, Callable, Dict, Optional, TextIO
+
 from yaml import Loader, load
 
 LOG = logging.getLogger(__name__)

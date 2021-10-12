@@ -1,14 +1,14 @@
 """Tests for config."""
 import tempfile
 from pathlib import Path
-import pytest
-
 from typing import Dict
+
+import pytest
 from yaml import Loader, dump, load
 
-from rpkiclientweb.rpki_client import RpkiClient
 from rpkiclientweb.config import Configuration
-from rpkiclientweb.util import load_yaml, json_dumps
+from rpkiclientweb.rpki_client import RpkiClient
+from rpkiclientweb.util import json_dumps, load_yaml
 
 
 def load_sample_conf() -> Dict:

@@ -1,18 +1,19 @@
 """Tests for the output parser."""
 import os
-import pytest
 from typing import List
 
+import pytest
+
 from rpkiclientweb.outputparser import (
-    FetchStatus,
-    OutputParser,
-    missing_labels,
-    LabelWarning,
     ExpirationWarning,
-    WarningSummary,
-    RPKIClientWarning,
+    FetchStatus,
+    LabelWarning,
     ManifestObjectWarning,
     MissingLabel,
+    OutputParser,
+    RPKIClientWarning,
+    WarningSummary,
+    missing_labels,
 )
 
 
@@ -229,17 +230,18 @@ def test_rrdp_deltas():
 
 def test_intertwined_rrdp_lines_20210614():
     """Parse a file that contains lines that have mixed output for RRDP."""
-    res = parse_output_file(
-        "tests/20210614_sample_rrdp_joined_line.txt"
-    )
+    res = parse_output_file("tests/20210614_sample_rrdp_joined_line.txt")
 
     for status in res.fetch_status:
         assert "rpki-client:" not in status.uri
         assert "rpki-client:" not in status.type
 
+
 def test_intertwined_rrdp_lines_20210712():
     """Parse a string that contains mixed output for RRDP."""
-    res = OutputParser("rpki-client: https://rpki.multacom.com/rrdp/notification.xml: notification file not modifiedrpki-client: https://rrdp.rpki.nlnetlabs.nl/rrdp/notification.xml: loaded from network")
+    res = OutputParser(
+        "rpki-client: https://rpki.multacom.com/rrdp/notification.xml: notification file not modifiedrpki-client: https://rrdp.rpki.nlnetlabs.nl/rrdp/notification.xml: loaded from network"
+    )
 
     for line in res.pulled:
         assert "rpki-client:" not in line

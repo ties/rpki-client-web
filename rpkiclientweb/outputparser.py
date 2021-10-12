@@ -4,9 +4,8 @@ from collections import Counter
 from datetime import datetime
 from typing import FrozenSet, Generator, List, NamedTuple, Union
 
-from rpkiclientweb.util import parse_host
 from rpkiclientweb.metrics import RPKI_CLIENT_WEB_PARSE_ERROR
-
+from rpkiclientweb.util import parse_host
 
 LOG = logging.getLogger(__name__)
 
