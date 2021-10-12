@@ -28,6 +28,8 @@ resources:
     image: python:3.8
   - container: py39
     image: python:3.9
+  - container: py310
+    image: python:3.10
 
 stages:
 - stage: 'Test'
