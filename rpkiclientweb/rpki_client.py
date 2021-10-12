@@ -13,19 +13,22 @@ from prometheus_async.aio import time as time_metric
 from prometheus_async.aio import track_inprogress
 
 from rpkiclientweb.config import Configuration
-from rpkiclientweb.metrics import (RPKI_CLIENT_DURATION,
-                                   RPKI_CLIENT_FETCH_STATUS,
-                                   RPKI_CLIENT_LAST_DURATION,
-                                   RPKI_CLIENT_LAST_UPDATE, RPKI_CLIENT_PULLED,
-                                   RPKI_CLIENT_PULLING,
-                                   RPKI_CLIENT_REMOVED_UNREFERENCED,
-                                   RPKI_CLIENT_RUNNING,
-                                   RPKI_CLIENT_UPDATE_COUNT,
-                                   RPKI_CLIENT_WARNINGS, RPKI_OBJECTS_COUNT,
-                                   RPKI_OBJECTS_MIN_EXPIRY,
-                                   RPKI_OBJECTS_VRPS_BY_TA)
-from rpkiclientweb.outputparser import (OutputParser, WarningSummary,
-                                        missing_labels)
+from rpkiclientweb.metrics import (
+    RPKI_CLIENT_DURATION,
+    RPKI_CLIENT_FETCH_STATUS,
+    RPKI_CLIENT_LAST_DURATION,
+    RPKI_CLIENT_LAST_UPDATE,
+    RPKI_CLIENT_PULLED,
+    RPKI_CLIENT_PULLING,
+    RPKI_CLIENT_REMOVED_UNREFERENCED,
+    RPKI_CLIENT_RUNNING,
+    RPKI_CLIENT_UPDATE_COUNT,
+    RPKI_CLIENT_WARNINGS,
+    RPKI_OBJECTS_COUNT,
+    RPKI_OBJECTS_MIN_EXPIRY,
+    RPKI_OBJECTS_VRPS_BY_TA,
+)
+from rpkiclientweb.outputparser import OutputParser, WarningSummary, missing_labels
 from rpkiclientweb.util import json_dumps
 
 LOG = logging.getLogger(__name__)
@@ -274,21 +277,18 @@ class RpkiClient:
         for roa in roas:
             ta = roa.get("ta", None)
             expires = roa.get("expires", None)
-            if ta is None or expires is None:
-                LOG.info(
-                    "ROA '%s' does not contain 'ta' or 'expires' (likely due to rpki-client version) - not updating first object to expire metric.",
-                    roa,
-                )
-                return
-            # take expires when not found, otherwise, min value.
-            min_expires_by_ta[ta] = min(min_expires_by_ta.get(ta, expires), expires)
-            vrps_by_ta[ta] += 1
-
-        for ta, min_expires in min_expires_by_ta.items():
-            RPKI_OBJECTS_MIN_EXPIRY.labels(ta=ta).set(min_expires)
+            if ta is not None:
+                vrps_by_ta[ta] += 1
+            if expires is not None:
+                # take expires when not found, otherwise, min value.
+                min_expires_by_ta[ta] = min(min_expires_by_ta.get(ta, expires), expires)
 
         for ta, vrp_count in vrps_by_ta.items():
             RPKI_OBJECTS_VRPS_BY_TA.labels(ta=ta).set(vrp_count)
+
+        # Might be an empty loop - which is no problem
+        for ta, min_expires in min_expires_by_ta.items():
+            RPKI_OBJECTS_MIN_EXPIRY.labels(ta=ta).set(min_expires)
 
     async def update_validated_objects_gauge(self, returncode: int) -> None:
         """
