@@ -5,12 +5,12 @@ import logging
 import os
 import random
 from dataclasses import dataclass
-from rpkiclientweb.config import Configuration
 from typing import Dict, List, Optional
 
 from aiohttp import web
 from prometheus_async import aio
 
+from rpkiclientweb.config import Configuration
 from rpkiclientweb.rpki_client import ExecutionResult, RpkiClient
 from rpkiclientweb.util import json_dumps, repeat
 
