@@ -279,9 +279,11 @@ class RpkiClient:
             expires = roa.get("expires", None)
             if ta is not None:
                 vrps_by_ta[ta] += 1
-            if expires is not None:
-                # take expires when not found, otherwise, min value.
-                min_expires_by_ta[ta] = min(min_expires_by_ta.get(ta, expires), expires)
+                if expires is not None:
+                    # take expires when not found, otherwise, min value.
+                    min_expires_by_ta[ta] = min(
+                        min_expires_by_ta.get(ta, expires), expires
+                    )
 
         for ta, vrp_count in vrps_by_ta.items():
             RPKI_OBJECTS_VRPS_BY_TA.labels(ta=ta).set(vrp_count)
