@@ -7,15 +7,12 @@ repos:
       - id: black
         language_version: python3.9
   -   repo: https://gitlab.com/pycqa/flake8
-      rev: 3.8.4
+      rev: 4.0.1
       hooks:
       -   id: flake8
-  -   repo: https://github.com/asottile/seed-isort-config
-      rev: v2.2.0
-      hooks:
-      -   id: seed-isort-config
   -   repo: https://github.com/timothycrosley/isort
-      rev: '5.5.1'  # Use the revision sha / tag you want to point at
+      rev: '5.9.3'  # Use the revision sha / tag you want to point at
       hooks:
       - id: isort
         additional_dependencies: [toml]
+        args: ["--profile", "black", "--filter-files"]
