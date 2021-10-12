@@ -36,6 +36,11 @@ Changes
 
 dev:
 
+2021-10-12 0.9.0:
+** Includes rpki-client 7.3 in the container**
+  * Log rpki-client output line-by line
+  * Add a metric for router certificates
+  * Improve message when rejecting a metric update to prevent confusion.
 
 2021-08-24 0.8.1:
 ** Includes rpki-client 7.2 in the container**
