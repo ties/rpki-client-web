@@ -15,5 +15,6 @@ Vagrant.configure("2") do |config|
   config.vm.provision "shell", inline: <<-SHELL
     dnf upgrade -y --refresh
     dnf install -y rpki-client pipenv
+    wget https://www.arin.net/resources/manage/rpki/arin.tal -O /etc/pki/tals/arin.tal
   SHELL
 end
