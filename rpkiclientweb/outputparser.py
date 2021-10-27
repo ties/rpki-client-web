@@ -2,18 +2,23 @@ import logging
 import re
 from collections import Counter
 from datetime import datetime
-from typing import FrozenSet, Generator, List, NamedTuple, Union
+from typing import FrozenSet, Generator, List
 
 from rpkiclientweb.metrics import RPKI_CLIENT_WEB_PARSE_ERROR
+from rpkiclientweb.models import (FetchStatus, LabelWarning, ExpirationWarning, ManifestObjectWarning, WarningSummary, MissingLabel, RPKIClientWarning)
 from rpkiclientweb.util import parse_host
 
 LOG = logging.getLogger(__name__)
 
 #
 # Regular expressions matching log lines.
+# for manifest warnings: https://github.com/rpki-client/rpki-client-openbsd/blob/5c54a1817a8e31c3ce857d6fe04bdd0fc35691b6/src/usr.sbin/rpki-client/filemode.c
 #
 FILE_BAD_MESSAGE_DIGEST_RE = re.compile(
     r"rpki-client: (?P<path>.*): bad message digest for (?P<object>.*)"
+)
+FILE_UNSUPPORTED_FILETYPE_RE = re.compile(
+    r"rpki-client: (?P<path>.*): unsupported file type for (?P<object>.*)"
 )
 FILE_EXPIRED_MANIFEST_RE = re.compile(
     r"rpki-client: (?P<path>.*): mft expired on (?P<expiry>.*)"
@@ -21,9 +26,13 @@ FILE_EXPIRED_MANIFEST_RE = re.compile(
 FILE_NO_MANIFEST_AVAILABLE_RE = re.compile(
     r"rpki-client: (?P<path>.*): no valid mft available"
 )
-FILE_MISSING_FILE_RE = re.compile(
-    r"rpki-client: (?P<path>.*): No such file or directory"
+FILE_NOT_YET_VALID_RE = re.compile(
+    r"rpki-client: (?P<path>.*): mft not yet valid (?P<expiry>.*)"
 )
+FILE_BAD_UPDATE_INTERVAL_RE = re.compile(
+    r"rpki-client: (?P<path>.*): bad update interval.*"
+)
+FILE_MISSING_FILE_RE = re.compile(r"rpki-client: (?P<path>.*): No such file or directory")
 
 PULLING_RE = re.compile(r"rpki-client: (?P<uri>.*): pulling from network")
 PULLED_RE = re.compile(r"rpki-client: (?P<uri>.*): loaded from network")
@@ -74,6 +83,8 @@ VANISHED_FILE_RE = re.compile(r"file has vanished: \"(?P<path>.*)\" \(in repo\)"
 VANISHED_DIRECTORY_RE = re.compile(
     r"directory has vanished: \"(?P<path>.*)\" \(in repo\)"
 )
+
+
 #
 # Keep in mind that `rpki-client:` can be written from multiple processes
 # (without flush) so any message that starts with a capture group needs to
@@ -83,59 +94,6 @@ VANISHED_DIRECTORY_RE = re.compile(
 # `rpki-client: rpki-client: https://cc.rg.net/rrdp/notify.xml: downloading 1 deltas`
 #
 INTERTWINED_LINE_RE = re.compile(r"^rpki-client: .*rpki-client: .*$")
-
-
-class FetchStatus(NamedTuple):
-    """
-    rpki-client fetch status for a repo.
-
-    Can be both positive or negative.
-    """
-
-    uri: str
-    type: str
-    count: int = 1
-
-
-class LabelWarning(NamedTuple):
-    """rpki-client warning about a file."""
-
-    warning_type: str
-    uri: str
-
-
-class ExpirationWarning(NamedTuple):
-    """rpki-client warning about an expiration."""
-
-    warning_type: str
-    uri: str
-    expiration: datetime
-
-
-class ManifestObjectWarning(NamedTuple):
-    """rpki-client warning about a file on a manifest."""
-
-    warning_type: str
-    uri: str
-    object_name: str
-
-
-class WarningSummary(NamedTuple):
-    """Summary of warnings of a type for a host."""
-
-    warning_type: str
-    hostname: str
-    count: int
-
-
-class MissingLabel(NamedTuple):
-    """A missing label."""
-
-    warning_type: str
-    hostname: str
-
-
-RPKIClientWarning = Union[LabelWarning, ExpirationWarning, ManifestObjectWarning]
 
 
 def parse_maybe_warning_line(line) -> Generator[RPKIClientWarning, None, None]:
@@ -153,6 +111,11 @@ def parse_maybe_warning_line(line) -> Generator[RPKIClientWarning, None, None]:
     if revoked_cert:
         yield LabelWarning("revoked_certificate", revoked_cert.group("path"))
 
+    unsupported_filetype = FILE_UNSUPPORTED_FILETYPE_RE.match(line)
+    if unsupported_filetype:
+        yield ManifestObjectWarning("unsupported_filetype", unsupported_filetype.group("path"), unsupported_filetype.group("object"))
+
+
     no_valid_mft = FILE_NO_MANIFEST_AVAILABLE_RE.match(line)
     if no_valid_mft:
         yield LabelWarning("no_valid_mft_available", no_valid_mft.group("path"))
@@ -161,13 +124,27 @@ def parse_maybe_warning_line(line) -> Generator[RPKIClientWarning, None, None]:
     if missing_sia:
         yield LabelWarning("missing_sia", missing_sia.group("path"))
 
-    # Follow with more specific warnings
+    # manifest time-related checks
+    bad_update_interval = FILE_BAD_UPDATE_INTERVAL_RE.match(line)
+    if bad_update_interval:
+        yield Labelwarning(
+            "bad_manifest_update_interval",
+            bad_message_digest.group("path")
+        )
 
     expired_manifest = FILE_EXPIRED_MANIFEST_RE.match(line)
     if expired_manifest:
         expiry = expired_manifest.group("expiry")
         yield ExpirationWarning(
             "expired_manifest",
+            expired_manifest.group("path"),
+            datetime.strptime(expiry, "%b %d %H:%M:%S %Y GMT"),
+        )
+    not_yet_valid_manifest = FILE_NOT_YET_VALID_RE.match(line)
+    if not_yet_valid_manifest:
+        expiry = not_yet_valid_manifest.group("expiry")
+        yield ExpirationWarning(
+            "not_yet_valid_manifest",
             expired_manifest.group("path"),
             datetime.strptime(expiry, "%b %d %H:%M:%S %Y GMT"),
         )

@@ -317,7 +317,6 @@ def test_intertwined_rrdp_lines_20210712():
     for line in res.pulled:
         assert "rpki-client:" not in line
 
-
 def test_rrdp_parse_failed():
     """Parse a string that contains the output on an invalid RRDP repo."""
     res = OutputParser(
@@ -364,3 +363,17 @@ def test_rrdp_serial_decreated():
         in list(res.fetch_status)
     )
 
+
+def test_unsupported_filetype():
+    parser = OutputParser("rpki-client: rrdp/198613f16d61d95b77329eb7acdb3e1f8d1f0ec2b75e9510a7f7eacc7c3ebe19/rpki-repo.registro.br/repo/CdwCiTUGWyooJPMS1kEENXCA3aBaR67C8gcsvCd5HFU1/0/CBC415E956186D9CC61972979D5AC7B197F563BB.mft: unsupported file type for 3137372e38352e3136342e302f32322d3234203d3e203532373433.inv\n")
+
+    print(list(parser.warnings))
+
+    assert (
+        ManifestObjectWarning(
+            warning_type="unsupported_filetype",
+            uri="rrdp/198613f16d61d95b77329eb7acdb3e1f8d1f0ec2b75e9510a7f7eacc7c3ebe19/rpki-repo.registro.br/repo/CdwCiTUGWyooJPMS1kEENXCA3aBaR67C8gcsvCd5HFU1/0/CBC415E956186D9CC61972979D5AC7B197F563BB.mft",
+            object_name="3137372e38352e3136342e302f32322d3234203d3e203532373433.inv",
+        )
+        in list(parser.warnings)
+    )
