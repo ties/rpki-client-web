@@ -4,6 +4,8 @@ WORKDIR /opt/rpkiclientweb
 
 # Use dependencies from fedora as much as possible, saves building them and build deps.
 RUN dnf --setopt=install_weak_deps=False --best install -y rpki-client python3-aiohttp python3-pyyaml python3-pip python3-wrapt git\
+	&& echo "Temporarily enabling the Fedora security advisory for rpki-client 7.5" \
+  && dnf update -y --enablerepo=updates-testing --advisory=FEDORA-2021-c9852f0be4 \
 	&& dnf clean all \
 	&& rm -rf /var/cache/yum
 
