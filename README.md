@@ -15,7 +15,7 @@ docker run \
   --detach \
   --name rpki-client-web \
   -v ./config:/config \
-  tiesdekock/rpki-client-web
+  ghcr.io/ties/rpki-client-web:latest
 ```
 
 Optionally you can add `--tmpfs [configured cache_dir]` to save on IO
