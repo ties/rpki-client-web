@@ -35,6 +35,8 @@ Changes
 =======
 
 dev:
+
+2021-11-14 0.9.1:
 ** Includes rpki-client 7.5 in the container**
   * Fedora 35 as base image
 
