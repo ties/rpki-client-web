@@ -108,26 +108,3 @@ stages:
     - task: PublishPipelineArtifact@1
       inputs:
         targetPath: 'dist'
-
-- stage: 'Package'
-  dependsOn: 'Dist'
-  jobs:
-  - job: 'DockerBuild'
-    steps:
-    # Build image tagged with correct tag
-    - task: Docker@2
-      condition: and(succeeded(), eq(variables.isDev, true))
-      inputs:
-        containerRegistry: 'dockerhub-tiesdekock'
-        repository: 'tiesdekock/rpki-client-web'
-        command: 'buildAndPush'
-        Dockerfile: '**/Dockerfile'
-        tags: 'development'
-    - task: Docker@2
-      condition: and(succeeded(), eq(variables.isMain, true))
-      inputs:
-        containerRegistry: 'dockerhub-tiesdekock'
-        repository: 'tiesdekock/rpki-client-web'
-        command: 'buildAndPush'
-        Dockerfile: '**/Dockerfile'
-        tags: 'latest'
