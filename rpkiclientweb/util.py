@@ -6,9 +6,11 @@ import time
 import urllib.parse
 from dataclasses import asdict, is_dataclass
 from pathlib import Path
-from typing import Any, Awaitable, Callable, Dict, Optional, TextIO
+from typing import Any, Awaitable, Callable, Dict, Optional, TextIO, Tuple
 
 from yaml import Loader, load
+
+from rpkiclientweb.model import LabelWarning
 
 LOG = logging.getLogger(__name__)
 
@@ -69,6 +71,16 @@ def parse_host(incomplete_uri: str) -> str:
 
     # without // it is interpreted as relative
     return urllib.parse.urlparse(f"//{'/'.join(uri_tokens)}").netloc
+        
+def warning_to_tuple(warning: LabelWarning) -> Tuple[str, str]:
+    try:
+        if warning.warning_type == 'io_error':
+            return (warning.warning_type, warning.uri)
+        else:
+            return (warning.warning_type, parse_host(warning.uri))
+    except ValueError as e:
+        LOG.warn("error parsing %s: %s", warning.uri, str(e))
+
 
 
 def validate(should_be_true: bool, message: str, *args: str) -> None:

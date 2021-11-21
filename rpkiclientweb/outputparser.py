@@ -2,17 +2,57 @@ import logging
 import re
 from collections import Counter
 from datetime import datetime
+<<<<<<< Updated upstream
 from typing import FrozenSet, Generator, List, NamedTuple, Union
+||||||| constructed merge base
+from typing import FrozenSet, Generator, List
+=======
+<<<<<<< Updated upstream
+from typing import FrozenSet, Generator, List
+||||||| constructed merge base
+from typing import FrozenSet, Generator, List, NamedTuple, Union
+=======
+from typing import FrozenSet, Generator, List, NamedTuple, Union, Tuple
+>>>>>>> Stashed changes
+>>>>>>> Stashed changes
 
 from rpkiclientweb.metrics import RPKI_CLIENT_WEB_PARSE_ERROR
+<<<<<<< Updated upstream
+||||||| constructed merge base
+from rpkiclientweb.models import (FetchStatus, LabelWarning, ExpirationWarning, ManifestObjectWarning, WarningSummary, MissingLabel, RPKIClientWarning)
+=======
+<<<<<<< Updated upstream
+from rpkiclientweb.models import (FetchStatus, LabelWarning, ExpirationWarning, ManifestObjectWarning, WarningSummary, MissingLabel, RPKIClientWarning)
+>>>>>>> Stashed changes
 from rpkiclientweb.util import parse_host
+||||||| constructed merge base
+from rpkiclientweb.util import parse_host
+=======
+from rpkiclientweb.model import *
+from rpkiclientweb.util import warning_to_tuple
+>>>>>>> Stashed changes
 
 LOG = logging.getLogger(__name__)
 
 #
 # Regular expressions matching log lines.
 #
+<<<<<<< Updated upstream
 BAD_MESSAGE_DIGEST_RE = re.compile(
+||||||| constructed merge base
+MANIFEST_BAD_MESSAGE_DIGEST_RE = re.compile(
+=======
+<<<<<<< Updated upstream
+MANIFEST_BAD_MESSAGE_DIGEST_RE = re.compile(
+||||||| constructed merge base
+BAD_MESSAGE_DIGEST_RE = re.compile(
+=======
+IO_ERROR_RE = re.compile(
+    r"rpki-client: (mkpath|fts_read|mkostemp:) (?P<path>.*):.*"
+)
+BAD_MESSAGE_DIGEST_RE = re.compile(
+>>>>>>> Stashed changes
+>>>>>>> Stashed changes
     r"rpki-client: (?P<path>.*): bad message digest for (?P<object>.*)"
 )
 EXPIRED_MANIFEST_RE = re.compile(
@@ -54,6 +94,7 @@ VANISHED_DIRECTORY_RE = re.compile(
 INTERTWINED_LINE_RE = re.compile(r"^rpki-client: .*rpki-client: .*$")
 
 
+<<<<<<< Updated upstream
 class FetchStatus(NamedTuple):
     """
     rpki-client fetch status for a repo.
@@ -107,10 +148,87 @@ class MissingLabel(NamedTuple):
 RPKIClientWarning = Union[LabelWarning, ExpirationWarning, ManifestObjectWarning]
 
 
+||||||| constructed merge base
+=======
+<<<<<<< Updated upstream
+||||||| constructed merge base
+class FetchStatus(NamedTuple):
+    """
+    rpki-client fetch status for a repo.
+
+    Can be both positive or negative.
+    """
+
+    uri: str
+    type: str
+    count: int = 1
+
+
+class LabelWarning(NamedTuple):
+    """rpki-client warning about a file."""
+
+    warning_type: str
+    uri: str
+
+
+class ExpirationWarning(NamedTuple):
+    """rpki-client warning about an expiration."""
+
+    warning_type: str
+    uri: str
+    expiration: datetime
+
+
+class ManifestObjectWarning(NamedTuple):
+    """rpki-client warning about a file on a manifest."""
+
+    warning_type: str
+    uri: str
+    object_name: str
+
+
+class WarningSummary(NamedTuple):
+    """Summary of warnings of a type for a host."""
+
+    warning_type: str
+    hostname: str
+    count: int
+
+
+class MissingLabel(NamedTuple):
+    """A missing label."""
+
+    warning_type: str
+    hostname: str
+
+
+RPKIClientWarning = Union[LabelWarning, ExpirationWarning, ManifestObjectWarning]
+
+
+=======
+
+>>>>>>> Stashed changes
+>>>>>>> Stashed changes
 def parse_maybe_warning_line(line) -> Generator[RPKIClientWarning, None, None]:
     """Parse a line for warnings - may be empty."""
     # LabelWarning (<type, file> tuples) first
+<<<<<<< Updated upstream
     missing_file = MISSING_FILE_RE.match(line)
+||||||| constructed merge base
+    missing_file = MANIFEST_MISSING_FILE_RE.match(line)
+=======
+<<<<<<< Updated upstream
+    missing_file = MANIFEST_MISSING_FILE_RE.match(line)
+||||||| constructed merge base
+    missing_file = MISSING_FILE_RE.match(line)
+=======
+    io_error = IO_ERROR_RE.match(line)
+    if io_error:
+        yield LabelWarning("io_error", io_error.group("path"))
+
+    missing_file = MISSING_FILE_RE.match(line)
+>>>>>>> Stashed changes
+>>>>>>> Stashed changes
     if missing_file:
         yield LabelWarning("missing_file", missing_file.group("path"))
 
@@ -245,9 +363,7 @@ class OutputParser:
 
     def statistics_by_host(self) -> List[WarningSummary]:
         """Group the output by host by type."""
-        c = Counter(
-            (warning.warning_type, parse_host(warning.uri)) for warning in self.warnings
-        )
+        c = Counter(map(warning_to_tuple, self.warnings))
 
         return [
             WarningSummary(warning_type, host, count)
