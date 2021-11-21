@@ -26,6 +26,8 @@ class RpkiClientWeb:
     config: Configuration
     app: web.Application
 
+    finished_initial_run: bool = False
+
     def __init__(self, config: Configuration) -> None:
         self.app = web.Application()
 
@@ -72,11 +74,28 @@ class RpkiClientWeb:
     async def validated_objects(self, req) -> web.FileResponse:
         """return the validated objects json."""
         path = self.config.output_dir / "json"
-        return web.FileResponse(path, headers={"Content-Type": "application/json"})
+        if path.is_file():
+            return web.FileResponse(path, headers={"Content-Type": "application/json"})
+
+        status = (
+            "validated objects JSON file is not available at the moment."
+            if self.finished_initial_run
+            else "initial validation run has not finished yet.",
+        )
+        raise web.HTTPServiceUnavailable(
+            text=json_dumps(
+                {
+                    "status": status,
+                    "output": self.result,
+                }
+            ),
+            content_type="application/json",
+        )
 
     async def call_client(self) -> None:
         """Run the rpki-client wrapper again."""
         self.result = await self.client.run()
+        self.finished_initial_run = True
 
     async def json_result(self, req) -> web.Response:
         if self.result:
