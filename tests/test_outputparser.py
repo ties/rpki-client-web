@@ -188,6 +188,19 @@ def test_rpki_object_no_valid_mft_available():
     )
 
 
+def test_rpki_object_missing_sia():
+    """No valid manifest available errors."""
+    res = parse_output_file("tests/20220122_missing_sia.txt")
+
+    assert (
+        LabelWarning(
+            warning_type="missing_sia",
+            uri="rrdp/436fc6bd7b32853e42fce5fd95b31d5e3ec1c32c46b7518c2067d568e7eac119/chloe.sobornost.net/rpki/RIPE-nljobsnijders/voibVdC3Nzl9dcSfSFuFj6mK0R8.cer",
+        )
+        in res.warnings
+    )
+
+
 def test_rsync_errors():
     """Test a situation with many rsync errors."""
     res = parse_output_file("tests/20210610_sample_rsync_errors.txt")

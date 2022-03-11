@@ -1,0 +1,2 @@
+rpki-client: rrdp/436fc6bd7b32853e42fce5fd95b31d5e3ec1c32c46b7518c2067d568e7eac119/chloe.sobornost.net/rpki/RIPE-nljobsnijders/XUJQ4tgdREjYop786R0p_wdeyeI.cer: RFC 6487 section 4.8.8: missing SIA
+rpki-client: rrdp/436fc6bd7b32853e42fce5fd95b31d5e3ec1c32c46b7518c2067d568e7eac119/chloe.sobornost.net/rpki/RIPE-nljobsnijders/voibVdC3Nzl9dcSfSFuFj6mK0R8.cer: RFC 6487 section 4.8.8: missing SIA
