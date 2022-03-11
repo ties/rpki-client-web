@@ -22,8 +22,7 @@ rpki_client: /usr/sbin/rpki-client
 # rsync_command: ./util/rsync_timeout
 
 additional_opts: []
-  # Set `-r` to enable RRDP
-  #- -r
+  # use -R to disable RRDP on recent rpki-client versions.
 
 trust_anchor_locators:
   - /etc/pki/tals/afrinic.tal
