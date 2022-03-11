@@ -61,6 +61,10 @@ def test_parse_sample_aggregated():
         )
         in parser.warnings
     )
+    #  rpki-client: nostromo.heficed.net/repo: load from network failed, fallback to cache
+    assert FetchStatus("nostromo.heficed.net/repo", "sync_fallback_to_cache") in list(
+        parser.fetch_status
+    )
 
 
 def test_twnic_revoked_objects():

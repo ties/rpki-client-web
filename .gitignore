@@ -8,3 +8,4 @@ pip-wheel-metadata
 .vagrant
 .autoenv.zsh
 __pycache__
+.DS_Store

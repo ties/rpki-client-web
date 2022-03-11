@@ -22,16 +22,21 @@ MISSING_FILE_RE = re.compile(r"rpki-client: (?P<path>.*): No such file or direct
 PULLING_RE = re.compile(r"rpki-client: (?P<uri>.*): pulling from network")
 PULLED_RE = re.compile(r"rpki-client: (?P<uri>.*): loaded from network")
 
-RSYNC_LOAD_FAILED = re.compile(r"rpki-client: rsync (?P<uri>.*) failed$")
-RSYNC_FALLBACK = re.compile(
+SYNC_RSYNC_LOAD_FAILED = re.compile(r"rpki-client: rsync (?P<uri>.*) failed$")
+SYNC_RSYNC_FALLBACK = re.compile(
     r"rpki-client: (?P<uri>.*): load from network failed, fallback to rsync$"
 )
+SYNC_CACHE_FALLBACK = re.compile(
+    r"rpki-client: (?P<uri>.*): load from network failed, fallback to cache$"
+)
 
-RSYNC_RRDP_NOT_MODIFIED = re.compile(
+SYNC_RSYNC_RRDP_NOT_MODIFIED = re.compile(
     r"rpki-client: (?P<uri>.*): notification file not modified$"
 )
-RSYNC_RRDP_SNAPSHOT = re.compile(r"rpki-client: (?P<uri>.*): downloading snapshot$")
-RSYNC_RRDP_DELTAS = re.compile(
+SYNC_RSYNC_RRDP_SNAPSHOT = re.compile(
+    r"rpki-client: (?P<uri>.*): downloading snapshot$"
+)
+SYNC_RSYNC_RRDP_DELTAS = re.compile(
     r"rpki-client: (?P<uri>.*): downloading (?P<count>\d+) deltas$"
 )
 SYNC_RRDP_PARSE_ABORTED = re.compile(
@@ -208,25 +213,33 @@ class OutputParser:
                     yield FetchStatus("<unknown>", "rrdp_parse_error_file_too_big")
                     continue
 
-                fallback = RSYNC_FALLBACK.match(line)
+                fallback = SYNC_RSYNC_FALLBACK.match(line)
                 if fallback:
                     yield FetchStatus(fallback.group("uri"), "rrdp_rsync_fallback", 1)
                     continue
-                load_failed = RSYNC_LOAD_FAILED.match(line)
+
+                cache_fallback = SYNC_CACHE_FALLBACK.match(line)
+                if cache_fallback:
+                    yield FetchStatus(
+                        cache_fallback.group("uri"), "sync_fallback_to_cache"
+                    )
+                    continue
+
+                load_failed = SYNC_RSYNC_LOAD_FAILED.match(line)
                 if load_failed:
                     yield FetchStatus(load_failed.group("uri"), "rsync_load_failed", 1)
                     continue
-                not_modified = RSYNC_RRDP_NOT_MODIFIED.match(line)
+                not_modified = SYNC_RSYNC_RRDP_NOT_MODIFIED.match(line)
                 if not_modified:
                     yield FetchStatus(
                         not_modified.group("uri"), "rrdp_notification_not_modified", 1
                     )
                     continue
-                snapshot = RSYNC_RRDP_SNAPSHOT.match(line)
+                snapshot = SYNC_RSYNC_RRDP_SNAPSHOT.match(line)
                 if snapshot:
                     yield FetchStatus(snapshot.group("uri"), "rrdp_snapshot", 1)
                     continue
-                deltas = RSYNC_RRDP_DELTAS.match(line)
+                deltas = SYNC_RSYNC_RRDP_DELTAS.match(line)
                 if deltas:
                     yield FetchStatus(
                         deltas.group("uri"), "rrdp_delta", int(deltas.group("count"))

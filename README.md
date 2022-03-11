@@ -42,6 +42,7 @@ dev:
   * Add new `.metadata` keys from the json, and use buildtime in a separate metric.
   * Return HTTP 503 Service Unavailable when JSON output does not exist.
   * Include console output in web index page
+  * "fallback to cache" is included in metrics
 
 2021-11-14 0.9.1:
 ** Includes rpki-client 7.5 in the container**
