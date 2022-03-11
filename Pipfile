@@ -12,16 +12,16 @@ flake8 = "*"
 pytest-xdist = "*"
 pylint = "*"
 jedi = "*"
+pytest = "*"
 
 [packages]
 pyyaml = "*"
 aiohttp = ">=3.7.4"
 prometheus-async = {extras = ["aiohttp"],version = "*"}
-pytest = "*"
 voluptuous = "*"
 
 [requires]
 python_version = "3"
 
 [pipenv]
-allow_prereleases = true
+allow_prereleases = false

@@ -1,0 +1,7 @@
+rpki-client: ta/ta-example-org: loaded from network
+rpki-client: https://rrdp.example.org/notification.xml: pulling from network
+rpki-client: https://rrdp.example.org/notification.xml: downloading snapshot
+rpki-client: parse failed - content too big
+rpki-client: https://rrdp.example.org/notification.xml: parse error at line 109209: parsing aborted
+rpki-client: https://rrdp.example.org/notification.xml: load from network failed, fallback to rsync
+rpki-client: rsync/rpki.example.org/repository: pulling from rsync://rpki.example.org/repository

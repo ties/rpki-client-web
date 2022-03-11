@@ -34,6 +34,10 @@ RSYNC_RRDP_SNAPSHOT = re.compile(r"rpki-client: (?P<uri>.*): downloading snapsho
 RSYNC_RRDP_DELTAS = re.compile(
     r"rpki-client: (?P<uri>.*): downloading (?P<count>\d+) deltas$"
 )
+SYNC_RRDP_PARSE_ABORTED = re.compile(
+    r"rpki-client: (?P<uri>.*): parse error at line [0-9]+: parsing aborted"
+)
+SYNC_RRDP_CONTENT_TOO_BIG = re.compile(r"rpki-client: parse failed - content too big")
 
 RESOURCE_OVERCLAIMING = re.compile(
     r"rpki-client: (?P<path>.*): RFC 3779 resource not subset of parent's resources"
@@ -193,6 +197,17 @@ class OutputParser:
         """Get the fetch errors from the log."""
         for line in self.lines:
             try:
+                rrdp_parse_aborted = SYNC_RRDP_PARSE_ABORTED.match(line)
+                if rrdp_parse_aborted:
+                    yield FetchStatus(
+                        rrdp_parse_aborted.group("uri"), "rrdp_parse_aborted"
+                    )
+                    continue
+                rrdp_content_too_big = SYNC_RRDP_CONTENT_TOO_BIG.match(line)
+                if rrdp_content_too_big:
+                    yield FetchStatus("<unknown>", "rrdp_parse_error_file_too_big")
+                    continue
+
                 fallback = RSYNC_FALLBACK.match(line)
                 if fallback:
                     yield FetchStatus(fallback.group("uri"), "rrdp_rsync_fallback", 1)
