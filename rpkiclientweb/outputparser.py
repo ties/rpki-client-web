@@ -12,16 +12,19 @@ LOG = logging.getLogger(__name__)
 #
 # Regular expressions matching log lines.
 #
-BAD_MESSAGE_DIGEST_RE = re.compile(
+FILE_BAD_MESSAGE_DIGEST_RE = re.compile(
     r"rpki-client: (?P<path>.*): bad message digest for (?P<object>.*)"
 )
-EXPIRED_MANIFEST_RE = re.compile(
+FILE_EXPIRED_MANIFEST_RE = re.compile(
     r"rpki-client: (?P<path>.*): mft expired on (?P<expiry>.*)"
 )
-NO_MANIFEST_AVAILABLE_RE = re.compile(
+FILE_NO_MANIFEST_AVAILABLE_RE = re.compile(
     r"rpki-client: (?P<path>.*): no valid mft available"
 )
-MISSING_FILE_RE = re.compile(r"rpki-client: (?P<path>.*): No such file or directory")
+FILE_MISSING_FILE_RE = re.compile(
+    r"rpki-client: (?P<path>.*): No such file or directory"
+)
+
 PULLING_RE = re.compile(r"rpki-client: (?P<uri>.*): pulling from network")
 PULLED_RE = re.compile(r"rpki-client: (?P<uri>.*): loaded from network")
 
@@ -47,10 +50,16 @@ SYNC_RRDP_PARSE_ABORTED = re.compile(
 )
 SYNC_RRDP_CONTENT_TOO_BIG = re.compile(r"rpki-client: parse failed - content too big")
 
-RESOURCE_OVERCLAIMING = re.compile(
+FILE_MISSING_SIA_RE = re.compile(
+    r"rpki-client: (?P<path>.*): RFC 6487 section 4.8.8: missing SIA"
+)
+FILE_RESOURCE_OVERCLAIMING_RE = re.compile(
     r"rpki-client: (?P<path>.*): RFC 3779 resource not subset of parent's resources"
 )
-REVOKED_CERTIFICATE = re.compile(r"rpki-client: (?P<path>.*): certificate revoked")
+FILE_REVOKED_CERTIFICATE_RE = re.compile(
+    r"rpki-client: (?P<path>.*): certificate revoked"
+)
+
 VANISHED_FILE_RE = re.compile(r"file has vanished: \"(?P<path>.*)\" \(in repo\)")
 VANISHED_DIRECTORY_RE = re.compile(
     r"directory has vanished: \"(?P<path>.*)\" \(in repo\)"
@@ -122,25 +131,29 @@ RPKIClientWarning = Union[LabelWarning, ExpirationWarning, ManifestObjectWarning
 def parse_maybe_warning_line(line) -> Generator[RPKIClientWarning, None, None]:
     """Parse a line for warnings - may be empty."""
     # LabelWarning (<type, file> tuples) first
-    missing_file = MISSING_FILE_RE.match(line)
+    missing_file = FILE_MISSING_FILE_RE.match(line)
     if missing_file:
         yield LabelWarning("missing_file", missing_file.group("path"))
 
-    overclaiming = RESOURCE_OVERCLAIMING.match(line)
+    overclaiming = FILE_RESOURCE_OVERCLAIMING_RE.match(line)
     if overclaiming:
         yield LabelWarning("overclaiming", overclaiming.group("path"))
 
-    revoked_cert = REVOKED_CERTIFICATE.match(line)
+    revoked_cert = FILE_REVOKED_CERTIFICATE_RE.match(line)
     if revoked_cert:
         yield LabelWarning("revoked_certificate", revoked_cert.group("path"))
 
-    no_valid_mft = NO_MANIFEST_AVAILABLE_RE.match(line)
+    no_valid_mft = FILE_NO_MANIFEST_AVAILABLE_RE.match(line)
     if no_valid_mft:
         yield LabelWarning("no_valid_mft_available", no_valid_mft.group("path"))
 
+    missing_sia = FILE_MISSING_SIA_RE.match(line)
+    if missing_sia:
+        yield LabelWarning("missing_sia", missing_sia.group("path"))
+
     # Follow with more specific warnings
 
-    expired_manifest = EXPIRED_MANIFEST_RE.match(line)
+    expired_manifest = FILE_EXPIRED_MANIFEST_RE.match(line)
     if expired_manifest:
         expiry = expired_manifest.group("expiry")
         yield ExpirationWarning(
@@ -151,7 +164,7 @@ def parse_maybe_warning_line(line) -> Generator[RPKIClientWarning, None, None]:
 
     # likely cause: A partial read, one object is updated while another
     # is not.
-    bad_message_digest = BAD_MESSAGE_DIGEST_RE.match(line)
+    bad_message_digest = FILE_BAD_MESSAGE_DIGEST_RE.match(line)
     if bad_message_digest:
         yield ManifestObjectWarning(
             "bad_message_digest",

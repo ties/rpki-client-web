@@ -44,6 +44,7 @@ dev:
   * Include console output in web index page
   * "fallback to cache" is included in the metrics
   * "no valid mft available" warning is included in the metrics
+  * "missing SIA" warning is included in the metrics.
 
 2021-11-14 0.9.1:
 ** Includes rpki-client 7.5 in the container**
