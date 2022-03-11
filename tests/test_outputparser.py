@@ -175,6 +175,19 @@ def test_missing_labels():
     assert missing_labels(after, before) == frozenset()
 
 
+def test_rpki_object_no_valid_mft_available():
+    """No valid manifest available errors."""
+    res = parse_output_file("tests/20220223_no_valid_mft_available.txt")
+
+    assert (
+        LabelWarning(
+            warning_type="no_valid_mft_available",
+            uri="0.sb/repo/sb/30/F8CE54A4C62E61B125423FA90CA3F9D8350C7D3D.mft",
+        )
+        in res.warnings
+    )
+
+
 def test_rsync_errors():
     """Test a situation with many rsync errors."""
     res = parse_output_file("tests/20210610_sample_rsync_errors.txt")
@@ -252,6 +265,16 @@ def test_rsync_fallback():
     assert FetchStatus(
         "https://rrdp.ripe.net/notification.xml", "rrdp_rsync_fallback"
     ) in list(res.fetch_status)
+
+
+def test_fallback_to_cache():
+    """Test the situation where a repo falls back to cache."""
+    parser = parse_output_file("tests/sample_aggregated_output.txt")
+
+    #  rpki-client: nostromo.heficed.net/repo: load from network failed, fallback to cache
+    assert FetchStatus("nostromo.heficed.net/repo", "sync_fallback_to_cache") in list(
+        parser.fetch_status
+    )
 
 
 def test_intertwined_rrdp_lines_20210614():

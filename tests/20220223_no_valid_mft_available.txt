@@ -1,0 +1,6 @@
+rpki-client: .rsync/0.sb/repo: load from network failed, fallback to cache
+rpki-client: 0.sb/repo/sb/30/F8CE54A4C62E61B125423FA90CA3F9D8350C7D3D.mft: no valid mft available
+rpki-client: 0.sb/repo/sb/15/DFB459F0D5057F7F3E19ADFCDA1765EE0603ACF7.mft: no valid mft available
+rpki-client: 0.sb/repo/sb/23/C56EB66B96238B09E2EBD0F8687F9A08FE325C94.mft: no valid mft available
+rpki-client: 0.sb/repo/sb/13/CD64F5400AFD2E66A071A72AE1F44827183AFBA1.mft: no valid mft available
+rpki-client: all files parsed: generating output

@@ -18,6 +18,9 @@ BAD_MESSAGE_DIGEST_RE = re.compile(
 EXPIRED_MANIFEST_RE = re.compile(
     r"rpki-client: (?P<path>.*): mft expired on (?P<expiry>.*)"
 )
+NO_MANIFEST_AVAILABLE_RE = re.compile(
+    r"rpki-client: (?P<path>.*): no valid mft available"
+)
 MISSING_FILE_RE = re.compile(r"rpki-client: (?P<path>.*): No such file or directory")
 PULLING_RE = re.compile(r"rpki-client: (?P<uri>.*): pulling from network")
 PULLED_RE = re.compile(r"rpki-client: (?P<uri>.*): loaded from network")
@@ -130,6 +133,10 @@ def parse_maybe_warning_line(line) -> Generator[RPKIClientWarning, None, None]:
     revoked_cert = REVOKED_CERTIFICATE.match(line)
     if revoked_cert:
         yield LabelWarning("revoked_certificate", revoked_cert.group("path"))
+
+    no_valid_mft = NO_MANIFEST_AVAILABLE_RE.match(line)
+    if no_valid_mft:
+        yield LabelWarning("no_valid_mft_available", no_valid_mft.group("path"))
 
     # Follow with more specific warnings
 
