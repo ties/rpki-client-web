@@ -47,6 +47,7 @@ dev:
   * "fallback to cache" is included in the metrics
   * "no valid mft available" warning is included in the metrics
   * "missing SIA" warning is included in the metrics.
+  * Track "tls certificate verification failed" errors for RRDP
 
 2021-11-14 0.9.1:
 

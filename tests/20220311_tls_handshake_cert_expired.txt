@@ -1,0 +1,4 @@
+rpki-client: https://rpki.blade.sh/rrdp/notification.xml: pulling from network
+rpki-client: https://rpki.akrn.net/rrdp/notification.xml: downloading snapshot
+rpki-client: https://rpki.blade.sh/rrdp/notification.xml: TLS handshake: certificate verification failed: certificate has expired
+rpki-client: https://rpki.blade.sh/rrdp/notification.xml: load from network failed, fallback to rsync
