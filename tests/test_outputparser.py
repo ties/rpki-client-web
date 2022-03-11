@@ -219,6 +219,15 @@ def test_rsync_fallback():
     ) in list(res.fetch_status)
 
 
+def test_rrdp_tls_cert_expired():
+    """TLS certificate has expired."""
+    res = parse_output_file("tests/20220311_tls_handshake_cert_expired.txt")
+
+    assert FetchStatus(
+        "https://rpki.blade.sh/rrdp/notification.xml", "rrdp_tls_certificate_verification_failed"
+    ) in list(res.fetch_status)
+
+
 def test_rrdp_not_modified():
     """Test a situation with rsync fallback (from RRDP)."""
     res = parse_output_file("tests/20210610_sample_deltas.txt")

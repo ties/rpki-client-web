@@ -48,6 +48,9 @@ SYNC_RSYNC_RRDP_DELTAS = re.compile(
 SYNC_RRDP_PARSE_ABORTED = re.compile(
     r"rpki-client: (?P<uri>.*): parse error at line [0-9]+: parsing aborted"
 )
+SYNC_RRDP_TLS_CERTIFICATE_VERIFICATION_FAILED = re.compile(
+    r"rpki-client: (?P<uri>.*): TLS handshake: certificate verification failed:.*"
+)
 SYNC_RRDP_CONTENT_TOO_BIG = re.compile(r"rpki-client: parse failed - content too big")
 
 FILE_MISSING_SIA_RE = re.compile(
@@ -222,6 +225,16 @@ class OutputParser:
         """Get the fetch errors from the log."""
         for line in self.lines:
             try:
+                tls_cert_verification = (
+                    SYNC_RRDP_TLS_CERTIFICATE_VERIFICATION_FAILED.match(line)
+                )
+                if tls_cert_verification:
+                    yield FetchStatus(
+                        tls_cert_verification.group("uri"),
+                        "rrdp_tls_certificate_verification_failed",
+                    )
+                    continue
+
                 rrdp_parse_aborted = SYNC_RRDP_PARSE_ABORTED.match(line)
                 if rrdp_parse_aborted:
                     yield FetchStatus(
