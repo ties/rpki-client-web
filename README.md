@@ -35,6 +35,9 @@ Changes
 =======
 
 dev:
+** Includes rpki-client 7.6 in the container, raising the object size limit**
+  * Add `rrdp_parse_aborted` and `rrdp_parse_error_file_too_big` to `rpkiclient_fetch_status_total` metric.
+    Fixes #48.
 
 2021-11-14 0.9.1:
 ** Includes rpki-client 7.5 in the container**

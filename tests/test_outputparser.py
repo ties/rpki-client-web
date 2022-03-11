@@ -228,6 +228,28 @@ def test_rrdp_deltas():
     ) in list(res.fetch_status)
 
 
+def test_rrdp_parse_aborted():
+    """Test a situation where parsing is aborted for rsync."""
+    res = parse_output_file("tests/20220311_sample_rrdp_rejected_file_too_large.txt")
+    fetch_status = list(res.fetch_status)
+
+    assert (
+        FetchStatus("https://rrdp.example.org/notification.xml", "rrdp_parse_aborted")
+        in fetch_status
+    )
+
+    assert FetchStatus("<unknown>", "rrdp_parse_error_file_too_big") in fetch_status
+
+
+def test_rsync_fallback():
+    """Test a situation with rsync fallback (from RRDP)."""
+    res = parse_output_file("tests/20210610_rsync_fallback.txt")
+
+    assert FetchStatus(
+        "https://rrdp.ripe.net/notification.xml", "rrdp_rsync_fallback"
+    ) in list(res.fetch_status)
+
+
 def test_intertwined_rrdp_lines_20210614():
     """Parse a file that contains lines that have mixed output for RRDP."""
     res = parse_output_file("tests/20210614_sample_rrdp_joined_line.txt")
