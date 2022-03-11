@@ -39,6 +39,7 @@ dev:
   * Add `rrdp_parse_aborted` and `rrdp_parse_error_file_too_big` to `rpkiclient_fetch_status_total` metric.
     Fixes #48.
   * Update interval to 1200s in the sample config
+  * Add new `.metadata` keys from the json, and use buildtime in a separate metric.
 
 2021-11-14 0.9.1:
 ** Includes rpki-client 7.5 in the container**

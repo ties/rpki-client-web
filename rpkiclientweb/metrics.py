@@ -96,6 +96,9 @@ RPKI_CLIENT_REMOVED_UNREFERENCED = Counter(
 RPKI_CLIENT_WARNINGS = Gauge(
     "rpkiclient_warnings", "Warnings from rpki-client", ["hostname", "type"]
 )
+RPKI_OBJECTS_BUILD_TIME = Gauge(
+    "rpki_objects_buildtime", "Time at which the JSON was generated"
+)
 RPKI_OBJECTS_COUNT = Gauge("rpki_objects", "Number of objects by type", ["type"])
 RPKI_OBJECTS_MIN_EXPIRY = Gauge(
     "rpki_objects_min_expiry",
