@@ -53,7 +53,7 @@ class RpkiClientWeb:
 
     async def index(self, req) -> web.Response:
         return web.Response(
-            text="""<html>
+            text=f"""<html>
             <head><title>rpki-client wrapper</title></head>
             <body>
                 <h1>rpki-client wrapper</h1>
@@ -62,6 +62,9 @@ class RpkiClientWeb:
                 <p><a href="/metrics">Metrics</a></p>
                 <p><a href="/objects/validated">Validated objects</a></p>
                 <p><a href="/result">Result</a></p>
+                <p>{f"Process exited with {self.result.returncode} in {self.result.duration}s" if self.result else "No output available (yet)"}</p>
+                {f"<p><h3>stdout</h3></p><p><pre>{self.result.stdout}</pre></p>" if self.result else ""}
+                {f"<p><h3>stderr</h3></p><p><pre>{self.result.stderr}</pre></p>" if self.result else ""}
             </body>
         </html>""",
             content_type="text/html",

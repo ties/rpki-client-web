@@ -41,6 +41,7 @@ dev:
   * Update interval to 1200s in the sample config
   * Add new `.metadata` keys from the json, and use buildtime in a separate metric.
   * Return HTTP 503 Service Unavailable when JSON output does not exist.
+  * Include console output in web index page
 
 2021-11-14 0.9.1:
 ** Includes rpki-client 7.5 in the container**
