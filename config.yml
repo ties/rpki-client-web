@@ -2,9 +2,9 @@ cache_dir: cache
 output_dir: output
 
 # Interval between rpki-client runs
-interval: 600
+interval: 1200
 # Timeout before rpki-client is killed
-timeout: 550
+timeout: 1175
 
 # Deadline
 # unix_timestamp(now) + deadline is passed to rpki-client process in the
