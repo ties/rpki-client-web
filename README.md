@@ -35,7 +35,9 @@ Changes
 =======
 
 dev:
+
 ** Includes rpki-client 7.6 in the container, raising the object size limit**
+
   * Add `rrdp_parse_aborted` and `rrdp_parse_error_file_too_big` to `rpkiclient_fetch_status_total` metric.
     Fixes #48.
   * Update interval to 1200s in the sample config
@@ -47,17 +49,23 @@ dev:
   * "missing SIA" warning is included in the metrics.
 
 2021-11-14 0.9.1:
+
 ** Includes rpki-client 7.5 in the container**
+
   * Fedora 35 as base image
 
 2021-10-12 0.9.0:
+
 ** Includes rpki-client 7.3 in the container**
+
   * Log rpki-client output line-by line
   * Add a metric for router certificates
   * Improve message when rejecting a metric update to prevent confusion.
 
 2021-08-24 0.8.1:
+
 ** Includes rpki-client 7.2 in the container**
+
   * Add a metric for the number of VRPs per trust anchor locator.
   * Rename `rpkiclient_fetch_error` metric to `rpkiclient_fetch_status` since it
     includes non-error statuses (fixes #26).
