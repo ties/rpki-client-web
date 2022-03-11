@@ -1,5 +1,6 @@
 """Wrapper for rpki-client"""
 import asyncio
+import datetime
 import itertools
 import json
 import logging
@@ -24,6 +25,8 @@ from rpkiclientweb.metrics import (
     RPKI_CLIENT_RUNNING,
     RPKI_CLIENT_UPDATE_COUNT,
     RPKI_CLIENT_WARNINGS,
+    RPKI_OBJECTS_VRPS_BY_TA,
+    RPKI_OBJECTS_BUILD_TIME,
     RPKI_OBJECTS_COUNT,
     RPKI_OBJECTS_MIN_EXPIRY,
     RPKI_OBJECTS_VRPS_BY_TA,
@@ -41,8 +44,11 @@ OUTPUT_BUFFER_SIZE = 8_388_608
 # Authoratitive source for what labels exist:
 # http://cvsweb.openbsd.org/cgi-bin/cvsweb/~checkout~/src/usr.sbin/rpki-client/output-json.c
 #
+
+BUILDTIME_KEY = "buildtime"
 METADATA_LABELS = (
     # ignore "buildmachine"
+    "buildtime",
     "elapsedtime",
     "usertime",
     "systemtime",
@@ -51,6 +57,7 @@ METADATA_LABELS = (
     "invalidroas",
     "bgpsec_router_keys",
     "invalidbgpsec_router_keys",
+    "bgpsec_pubkeys",
     "certificates",
     "failcertificates",
     "invalidcertificates",
@@ -65,10 +72,13 @@ METADATA_LABELS = (
     "vrps",
     "uniquevrps",
     "cachedir_del_files",
+    "cachedir_superfluous_files",
     "cachedir_del_dirs",
 )
 OPTIONAL_METADATA_LABELS = frozenset(
     [
+        # recent attribute (2022-03-11)
+        "bgpsec_pubkeys",
         "failedroas",
         "invalidroas",
         "failcertificates",
@@ -80,6 +90,8 @@ OPTIONAL_METADATA_LABELS = frozenset(
         "gbrs",
         "cachedir_del_files",
         "cachedir_del_dirs",
+        # recent attribute (2022-03-11)
+        "cachedir_superfluous_files",
     ]
 )
 
@@ -297,29 +309,36 @@ class RpkiClient:
         Get statistics from `.metadata` of validated objects. Example output:
         ```
         {
-          "buildmachine": "localhost.localdomain",
-          "buildtime": "2020-05-28T09:45:59Z",
-          "elapsedtime": "223",
-          "usertime": "46",
-          "systemtime": "57",
-
-          "roas": 16245,
-          "failedroas": 0,
+          "buildmachine": "fedora35.localdomain",
+          "buildtime": "2022-03-11T10:42:02Z",
+          "elapsedtime": "139",
+          "usertime": "129",
+          "systemtime": "9",
+          "roas": 62544,
+          "failedroas": 1,
           "invalidroas": 0,
-          "certificates": 11835,
-          "failcertificates": 0,
+          "bgpsec_pubkeys": 2,
+          "certificates": 27355,
           "invalidcertificates": 0,
-          "tals": 1,
-          "talfiles": "/etc/pki/tals/ripe.tal",
-          "manifests": 11835,
-          "failedmanifests": 2,
-          "stalemanifests": 0,
-          "crls": 11833,
-          "repositories": 13,
-          "vrps": 87978,
-          "uniquevrps": 87978,
-          "cachedir_del_files": 105,
-          "cachedir_del_dirs": 31
+          "tals": 4,
+          "invalidtals": 0,
+          "talfiles": [
+            "/etc/pki/tals/afrinic.tal",
+            "/etc/pki/tals/apnic.tal",
+            "/etc/pki/tals/lacnic.tal",
+            "/etc/pki/tals/ripe.tal"
+          ],
+          "manifests": 27353,
+          "failedmanifests": 5,
+          "stalemanifests": 7,
+          "crls": 27341,
+          "gbrs": 2,
+          "repositories": 44,
+          "vrps": 270611,
+          "uniquevrps": 267623,
+          "cachedir_del_files": 28,
+          "cachedir_superfluous_files": 4965,
+          "cachedir_del_dirs": 1346
         }
         ```
         """
@@ -340,7 +359,12 @@ class RpkiClient:
             for key in METADATA_LABELS:
                 value = metadata.get(key, None)
 
-                if value is not None:
+                if key == BUILDTIME_KEY and value is not None:
+                    # format from
+                    # https://github.com/rpki-client/rpki-client-openbsd/blob/92e173c2a0accb425e1130192655d1b57928d986/src/usr.sbin/rpki-client/output-json.c#L36
+                    buildtime = datetime.datetime.strptime(value, "%Y-%m-%dT%H:%M:%SZ")
+                    RPKI_OBJECTS_BUILD_TIME.set(buildtime.timestamp())
+                elif value is not None:
                     RPKI_OBJECTS_COUNT.labels(type=key).set(value)
                 elif key not in OPTIONAL_METADATA_LABELS:
                     missing_keys.add(key)
