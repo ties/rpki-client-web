@@ -37,6 +37,8 @@ Changes
 dev:
 **Includes rpki-client 7.9 in the container**
 
+  * aiohttp 3.8.1
+
 2022-04-13 0.10.0:
 **Includes rpki-client 7.8 in the container, raising the object size limit**
 
