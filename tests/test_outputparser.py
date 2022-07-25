@@ -316,3 +316,16 @@ def test_intertwined_rrdp_lines_20210712():
 
     for line in res.pulled:
         assert "rpki-client:" not in line
+
+
+def test_rrdp_parse_failed():
+    """Parse a string that contains the output on an invalid RRDP repo."""
+    res = OutputParser(
+        "rpki-client: parse failed - serial mismatch\n"
+        "rpki-client: https://host.example.org/notification.xml: parse error at line 1: parsing aborted\n"
+        "rpki-client: https://host.example.org/notification.xml: load from network failed, fallback to rsync\n"
+    )
+
+    assert FetchStatus("https://host.example.org/notification.xml", "rrdp_parse_aborted") in list(
+        res.fetch_status
+    )
