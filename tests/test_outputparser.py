@@ -332,7 +332,7 @@ def test_rrdp_parse_failed():
 
 
 def test_rrdp_repository_not_modified():
-    """Parse a string that contains the output on an invalid RRDP repo."""
+    """Parse a string that contains the output on an repository that did not change."""
     res = OutputParser(
         "rpki-client: https://rrdp.example.org/rrdp/notification.xml: pulling from network\n"
         "rpki-client: https://rrdp.example.org/rrdp/notification.xml: repository not modified\n"
@@ -344,6 +344,22 @@ def test_rrdp_repository_not_modified():
             "https://rrdp.example.org/rrdp/notification.xml",
             "rrdp_repository_not_modified",
             1,
+        )
+        in list(res.fetch_status)
+    )
+
+
+def test_rrdp_serial_decreated():
+    """Parse a string that contains the output when RRDP serial reverts for same serial."""
+    res = OutputParser(
+        "rpki-client: https://rrdp.example.org/rrdp/notification.xml: serial number decreased from 42 to 10\n"
+    )
+
+    assert (
+        FetchStatus(
+            "https://rrdp.example.org/rrdp/notification.xml",
+            "rrdp_serial_decreased",
+            42-10,
         )
         in list(res.fetch_status)
     )
