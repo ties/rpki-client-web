@@ -39,6 +39,10 @@ SYNC_CACHE_FALLBACK = re.compile(
 SYNC_RSYNC_RRDP_NOT_MODIFIED = re.compile(
     r"rpki-client: (?P<uri>.*): notification file not modified$"
 )
+SYNC_RRDP_REPOSITORY_NOT_MODIFIED = re.compile(
+    r"rpki-client: (?P<uri>.*): repository not modified$"
+)
+
 SYNC_RSYNC_RRDP_SNAPSHOT = re.compile(
     r"rpki-client: (?P<uri>.*): downloading snapshot$"
 )
@@ -266,6 +270,12 @@ class OutputParser:
                 if not_modified:
                     yield FetchStatus(
                         not_modified.group("uri"), "rrdp_notification_not_modified", 1
+                    )
+                    continue
+                repository_not_modified = SYNC_RRDP_REPOSITORY_NOT_MODIFIED.match(line)
+                if repository_not_modified:
+                    yield FetchStatus(
+                        repository_not_modified.group("uri"), "rrdp_repository_not_modified", 1
                     )
                     continue
                 snapshot = SYNC_RSYNC_RRDP_SNAPSHOT.match(line)
