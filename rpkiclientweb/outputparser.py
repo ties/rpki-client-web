@@ -52,6 +52,9 @@ SYNC_RSYNC_RRDP_DELTAS = re.compile(
 SYNC_RRDP_PARSE_ABORTED = re.compile(
     r"rpki-client: (?P<uri>.*): parse error at line [0-9]+: parsing aborted"
 )
+SYNC_RRDP_SERIAL_DECREASED = re.compile(
+    r"rpki-client: (?P<uri>.*): serial number decreased from (?P<previous>[0-9]+) to (?P<current>[0-9]+)"
+)
 SYNC_RRDP_TLS_CERTIFICATE_VERIFICATION_FAILED = re.compile(
     r"rpki-client: (?P<uri>.*): TLS handshake: certificate verification failed:.*"
 )
@@ -286,6 +289,14 @@ class OutputParser:
                 if deltas:
                     yield FetchStatus(
                         deltas.group("uri"), "rrdp_delta", int(deltas.group("count"))
+                    )
+                    continue
+                serial_decreased = SYNC_RRDP_SERIAL_DECREASED.match(line)
+                if serial_decreased:
+                    delta = int(serial_decreased.group("previous")) - int(serial_decreased.group("current"))
+
+                    yield FetchStatus(
+                        serial_decreased.group("uri"), "rrdp_serial_decreased", delta
                     )
                     continue
             except Exception:
