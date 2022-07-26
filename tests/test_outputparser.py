@@ -329,3 +329,22 @@ def test_rrdp_parse_failed():
     assert FetchStatus("https://host.example.org/notification.xml", "rrdp_parse_aborted") in list(
         res.fetch_status
     )
+
+
+def test_rrdp_repository_not_modified():
+    """Parse a string that contains the output on an invalid RRDP repo."""
+    res = OutputParser(
+        "rpki-client: https://rrdp.example.org/rrdp/notification.xml: pulling from network\n"
+        "rpki-client: https://rrdp.example.org/rrdp/notification.xml: repository not modified\n"
+        "rpki-client: https://rrdp.example.org/rrdp/notification.xml: loaded from network\n"
+    )
+
+    assert (
+        FetchStatus(
+            "https://rrdp.example.org/rrdp/notification.xml",
+            "rrdp_repository_not_modified",
+            1,
+        )
+        in list(res.fetch_status)
+    )
+
