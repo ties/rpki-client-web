@@ -41,6 +41,7 @@ dev:
   * track rrdp serial decrease in metric
   * track repository not modified message
   * improve output of rsync_timeout
+  * **Behavioural change**: use rpki-client `-s` timeout set to the kill timeout.
 
 2022-04-13 0.10.0:
 **Includes rpki-client 7.8 in the container, raising the object size limit**
