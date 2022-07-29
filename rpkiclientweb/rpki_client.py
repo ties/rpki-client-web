@@ -141,11 +141,11 @@ class RpkiClient:
                 f"illegal timeout: {self.config.timeout} -- should be >= -1"
             )
 
-        # Not using `-s [timeout]` for now because the timeout is managed from
-        # this wrapping code.
         args = [
             "-v",  # verbose
             "-j",  # JSON output
+            # repositories can take 1/4th of this time before rpki-client aborts
+            "-s", str(self.config.timeout),
             "-d",
             self.config.cache_dir,
         ]
