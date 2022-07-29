@@ -1,7 +1,7 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 Vagrant.configure("2") do |config|
-  config.vm.box = "generic/fedora35"
+  config.vm.box = "generic/fedora36"
 
   config.vm.network "forwarded_port", guest: 8888, host: 8888, host_ip: "127.0.0.1"
 
