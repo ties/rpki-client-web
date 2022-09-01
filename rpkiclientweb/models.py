@@ -37,6 +37,13 @@ class ManifestObjectWarning(NamedTuple):
     object_name: str
 
 
+class MissingLabel(NamedTuple):
+    """A missing label."""
+
+    warning_type: str
+    hostname: str
+
+
 class WarningSummary(NamedTuple):
     """Summary of warnings of a type for a host."""
 
@@ -45,11 +52,12 @@ class WarningSummary(NamedTuple):
     count: int
 
 
-class MissingLabel(NamedTuple):
-    """A missing label."""
+class RpkiClientError(NamedTuple):
+    """Error messages from rpki-client."""
 
     warning_type: str
-    hostname: str
 
 
-RPKIClientWarning = Union[LabelWarning, ExpirationWarning, ManifestObjectWarning]
+RPKIClientWarning = Union[
+    FetchStatus, LabelWarning, ExpirationWarning, ManifestObjectWarning
+]

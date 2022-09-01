@@ -7,8 +7,8 @@ from rpkiclientweb.models import (
     FetchStatus,
     LabelWarning,
     ManifestObjectWarning,
+    RpkiClientError,
     RPKIClientWarning,
-    WarningSummary,
 )
 
 #
@@ -41,6 +41,7 @@ SYNC_RSYNC_LOAD_FAILED = re.compile(r"rpki-client: rsync (?P<uri>.*) failed$")
 SYNC_RSYNC_FALLBACK = re.compile(
     r"rpki-client: (?P<uri>.*): load from network failed, fallback to rsync$"
 )
+SYNC_BAD_MESSAGE_DIGEST = re.compile(r"rpki-client: (?P<uri>.*): bad message digest")
 SYNC_CACHE_FALLBACK = re.compile(
     r"rpki-client: (?P<uri>.*): load from network failed, fallback to cache$"
 )
@@ -77,6 +78,18 @@ FILE_RESOURCE_OVERCLAIMING_RE = re.compile(
 )
 FILE_REVOKED_CERTIFICATE_RE = re.compile(
     r"rpki-client: (?P<path>.*): certificate revoked"
+)
+#
+# Error states hit by rpki-client
+#
+RPKI_CLIENT_ASSERTION_FAILED = re.compile(
+    r"rpki-client: .*\.c:[0-9]+: .*Assertion.*failed."
+)
+
+RPKI_CLIENT_TERMINATED = re.compile(r"rpki-client: (?P<module>.*) terminated signal .*")
+
+RPKI_CLIENT_NOT_ALL_FILES = re.compile(
+    r"rpki-client: not all files processed, giving up"
 )
 
 
@@ -185,10 +198,16 @@ def parse_fetch_status(line: str) -> Generator[RPKIClientWarning, None, None]:
         yield FetchStatus(cache_fallback.group("uri"), "sync_fallback_to_cache")
         return
 
+    bad_message_digest = SYNC_BAD_MESSAGE_DIGEST.match(line)
+    if bad_message_digest:
+        yield FetchStatus(bad_message_digest.group("uri"), "bad_message_digest")
+        return
+
     load_failed = SYNC_RSYNC_LOAD_FAILED.match(line)
     if load_failed:
         yield FetchStatus(load_failed.group("uri"), "rsync_load_failed", 1)
         return
+
     not_modified = SYNC_RSYNC_RRDP_NOT_MODIFIED.match(line)
     if not_modified:
         yield FetchStatus(
@@ -216,4 +235,22 @@ def parse_fetch_status(line: str) -> Generator[RPKIClientWarning, None, None]:
         )
 
         yield FetchStatus(serial_decreased.group("uri"), "rrdp_serial_decreased", delta)
+        return
+
+
+def parse_rpki_client_error(line) -> Generator[RpkiClientError, None, None]:
+    """Errors output by rpki-client."""
+    assertion_failed = RPKI_CLIENT_ASSERTION_FAILED.match(line)
+    if assertion_failed:
+        yield RpkiClientError("assertion_failed")
+        return
+
+    not_all_files = RPKI_CLIENT_NOT_ALL_FILES.match(line)
+    if not_all_files:
+        yield RpkiClientError("not_all_files_processed")
+        return
+
+    terminated = RPKI_CLIENT_TERMINATED.match(line)
+    if terminated:
+        yield RpkiClientError(f"{terminated.group('module')}_terminated")
         return

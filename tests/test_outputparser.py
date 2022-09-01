@@ -4,17 +4,16 @@ from typing import List
 
 import pytest
 
-from rpkiclientweb.outputparser import (
+from rpkiclientweb.models import (
     ExpirationWarning,
     FetchStatus,
     LabelWarning,
     ManifestObjectWarning,
     MissingLabel,
-    OutputParser,
-    RPKIClientWarning,
+    RpkiClientError,
     WarningSummary,
-    missing_labels,
 )
+from rpkiclientweb.outputparser import OutputParser, missing_labels
 
 
 def parse_output_file(name: str) -> OutputParser:
@@ -353,10 +352,28 @@ def test_unsupported_filetype():
         "rpki-client: rrdp/198613f16d61d95b77329eb7acdb3e1f8d1f0ec2b75e9510a7f7eacc7c3ebe19/rpki-repo.registro.br/repo/CdwCiTUGWyooJPMS1kEENXCA3aBaR67C8gcsvCd5HFU1/0/CBC415E956186D9CC61972979D5AC7B197F563BB.mft: unsupported file type for 3137372e38352e3136342e302f32322d3234203d3e203532373433.inv\n"
     )
 
-    print(list(parser.warnings))
-
     assert ManifestObjectWarning(
         warning_type="unsupported_filetype",
         uri="rrdp/198613f16d61d95b77329eb7acdb3e1f8d1f0ec2b75e9510a7f7eacc7c3ebe19/rpki-repo.registro.br/repo/CdwCiTUGWyooJPMS1kEENXCA3aBaR67C8gcsvCd5HFU1/0/CBC415E956186D9CC61972979D5AC7B197F563BB.mft",
         object_name="3137372e38352e3136342e302f32322d3234203d3e203532373433.inv",
     ) in list(parser.warnings)
+
+
+def test_rpki_client_warnings():
+    """Parse a file that contains lines with warnings from rpki-client itself."""
+    res = parse_output_file("tests/20220901_http_chunked_assertion_error.txt")
+    # rpki-client: http.c:715: http_done: Assertion `conn->bufpos == 0' failed.
+    # rpki-client: https://rrdp.example.org/notification.xml: bad message digest
+    # rpki-client: http terminated signal 6
+    # rpki-client: not all files processed, giving up
+
+    warnings = list(res.rpki_client_errors)
+    print(warnings)
+
+    assert RpkiClientError("http_terminated") in warnings
+    assert RpkiClientError("not_all_files_processed") in warnings
+    assert RpkiClientError("assertion_failed") in warnings
+
+    assert FetchStatus(
+        "https://rrdp.example.org/notification.xml", "bad_message_digest"
+    ) in list(res.fetch_status)

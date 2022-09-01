@@ -5,16 +5,20 @@ from typing import FrozenSet, Generator, List
 
 from rpkiclientweb.metrics import RPKI_CLIENT_WEB_PARSE_ERROR
 from rpkiclientweb.models import (
-    ExpirationWarning,
     FetchStatus,
-    LabelWarning,
-    ManifestObjectWarning,
     MissingLabel,
+    RpkiClientError,
     RPKIClientWarning,
     WarningSummary,
 )
-from rpkiclientweb.parsing import parse_fetch_status, parse_maybe_warning_line
+from rpkiclientweb.parsing import (
+    parse_fetch_status,
+    parse_maybe_warning_line,
+    parse_rpki_client_error,
+)
 from rpkiclientweb.util import parse_host
+
+__all__ = ["OutputParser", "missing_labels"]
 
 LOG = logging.getLogger(__name__)
 
@@ -89,8 +93,8 @@ class OutputParser:
         for line in self.lines:
             try:
                 yield from parse_fetch_status(line)
-            except Exception:
-                LOG.exception("Exception while parsing lines.")
+            except Exception as e:
+                LOG.info("Parse error in '%s', %s", line, e)
                 RPKI_CLIENT_WEB_PARSE_ERROR.labels(type="parse_fetch_status").inc()
 
     @property
@@ -102,7 +106,7 @@ class OutputParser:
             if vanished_dir:
                 res.add(vanished_dir.group("path"))
 
-        return res
+        return frozenset(res)
 
     @property
     def vanished_files(self) -> FrozenSet[str]:
@@ -125,6 +129,18 @@ class OutputParser:
             WarningSummary(warning_type, host, count)
             for (warning_type, host), count in c.items()
         ]
+
+    @property
+    def rpki_client_errors(self) -> Generator[RpkiClientError, None, None]:
+        """Parse warnings."""
+        for line in self.lines:
+            try:
+                yield from parse_rpki_client_error(line)
+            except Exception as e:
+                LOG.info("Parse error in '%s', %s", line, e)
+                RPKI_CLIENT_WEB_PARSE_ERROR.labels(
+                    type="parse_rpki_client_warnings"
+                ).inc()
 
 
 def missing_labels(

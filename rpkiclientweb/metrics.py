@@ -115,6 +115,11 @@ RPKI_OBJECTS_VRPS_BY_TA = Gauge(
 #
 # Metrics about rpki-client-web or rpki-client
 #
+RPKI_CLIENT_ERRORS = Counter(
+    "rpkiclientweb_rpki_client_errors",
+    "Number of warnings/errors about rpki-client itself",
+    ["type"],
+)
 RPKI_CLIENT_WEB_PARSE_ERROR = Counter(
     "rpkiclientweb_parse_error",
     "Number of parse errors encountered by rpki-client-web",

@@ -1,0 +1,8 @@
+rpki-client: ta/example: pulling from rsync://rpki.example.org/example.cer
+rpki-client: ta/example: loaded from network
+rpki-client: https://rrdp.example.org/notification.xml: pulling from network
+rpki-client: https://rrdp.example.org/notification.xml: downloading 9 deltas
+rpki-client: http.c:715: http_done: Assertion `conn->bufpos == 0' failed.
+rpki-client: https://rrdp.example.org/notification.xml: bad message digest
+rpki-client: http terminated signal 6
+rpki-client: not all files processed, giving up
