@@ -224,7 +224,8 @@ def test_rrdp_tls_cert_expired():
     res = parse_output_file("tests/20220311_tls_handshake_cert_expired.txt")
 
     assert FetchStatus(
-        "https://rpki.blade.sh/rrdp/notification.xml", "rrdp_tls_certificate_verification_failed"
+        "https://rpki.blade.sh/rrdp/notification.xml",
+        "rrdp_tls_certificate_verification_failed",
     ) in list(res.fetch_status)
 
 
@@ -233,14 +234,11 @@ def test_rrdp_not_modified():
     res = parse_output_file("tests/20210610_sample_deltas.txt")
     print(list(res.fetch_status))
 
-    assert (
-        FetchStatus(
-            "https://rrdp.lacnic.net/rrdp/notification.xml",
-            "rrdp_notification_not_modified",
-            1,
-        )
-        in list(res.fetch_status)
-    )
+    assert FetchStatus(
+        "https://rrdp.lacnic.net/rrdp/notification.xml",
+        "rrdp_notification_not_modified",
+        1,
+    ) in list(res.fetch_status)
 
 
 def test_rrdp_snapshots():
@@ -280,15 +278,6 @@ def test_rrdp_parse_aborted():
     assert FetchStatus("<unknown>", "rrdp_parse_error_file_too_big") in fetch_status
 
 
-def test_rsync_fallback():
-    """Test a situation with rsync fallback (from RRDP)."""
-    res = parse_output_file("tests/20210610_rsync_fallback.txt")
-
-    assert FetchStatus(
-        "https://rrdp.ripe.net/notification.xml", "rrdp_rsync_fallback"
-    ) in list(res.fetch_status)
-
-
 def test_fallback_to_cache():
     """Test the situation where a repo falls back to cache."""
     parser = parse_output_file("tests/sample_aggregated_output.txt")
@@ -317,6 +306,7 @@ def test_intertwined_rrdp_lines_20210712():
     for line in res.pulled:
         assert "rpki-client:" not in line
 
+
 def test_rrdp_parse_failed():
     """Parse a string that contains the output on an invalid RRDP repo."""
     res = OutputParser(
@@ -325,9 +315,9 @@ def test_rrdp_parse_failed():
         "rpki-client: https://host.example.org/notification.xml: load from network failed, fallback to rsync\n"
     )
 
-    assert FetchStatus("https://host.example.org/notification.xml", "rrdp_parse_aborted") in list(
-        res.fetch_status
-    )
+    assert FetchStatus(
+        "https://host.example.org/notification.xml", "rrdp_parse_aborted"
+    ) in list(res.fetch_status)
 
 
 def test_rrdp_repository_not_modified():
@@ -338,14 +328,11 @@ def test_rrdp_repository_not_modified():
         "rpki-client: https://rrdp.example.org/rrdp/notification.xml: loaded from network\n"
     )
 
-    assert (
-        FetchStatus(
-            "https://rrdp.example.org/rrdp/notification.xml",
-            "rrdp_repository_not_modified",
-            1,
-        )
-        in list(res.fetch_status)
-    )
+    assert FetchStatus(
+        "https://rrdp.example.org/rrdp/notification.xml",
+        "rrdp_repository_not_modified",
+        1,
+    ) in list(res.fetch_status)
 
 
 def test_rrdp_serial_decreated():
@@ -354,26 +341,22 @@ def test_rrdp_serial_decreated():
         "rpki-client: https://rrdp.example.org/rrdp/notification.xml: serial number decreased from 42 to 10\n"
     )
 
-    assert (
-        FetchStatus(
-            "https://rrdp.example.org/rrdp/notification.xml",
-            "rrdp_serial_decreased",
-            42-10,
-        )
-        in list(res.fetch_status)
-    )
+    assert FetchStatus(
+        "https://rrdp.example.org/rrdp/notification.xml",
+        "rrdp_serial_decreased",
+        42 - 10,
+    ) in list(res.fetch_status)
 
 
 def test_unsupported_filetype():
-    parser = OutputParser("rpki-client: rrdp/198613f16d61d95b77329eb7acdb3e1f8d1f0ec2b75e9510a7f7eacc7c3ebe19/rpki-repo.registro.br/repo/CdwCiTUGWyooJPMS1kEENXCA3aBaR67C8gcsvCd5HFU1/0/CBC415E956186D9CC61972979D5AC7B197F563BB.mft: unsupported file type for 3137372e38352e3136342e302f32322d3234203d3e203532373433.inv\n")
+    parser = OutputParser(
+        "rpki-client: rrdp/198613f16d61d95b77329eb7acdb3e1f8d1f0ec2b75e9510a7f7eacc7c3ebe19/rpki-repo.registro.br/repo/CdwCiTUGWyooJPMS1kEENXCA3aBaR67C8gcsvCd5HFU1/0/CBC415E956186D9CC61972979D5AC7B197F563BB.mft: unsupported file type for 3137372e38352e3136342e302f32322d3234203d3e203532373433.inv\n"
+    )
 
     print(list(parser.warnings))
 
-    assert (
-        ManifestObjectWarning(
-            warning_type="unsupported_filetype",
-            uri="rrdp/198613f16d61d95b77329eb7acdb3e1f8d1f0ec2b75e9510a7f7eacc7c3ebe19/rpki-repo.registro.br/repo/CdwCiTUGWyooJPMS1kEENXCA3aBaR67C8gcsvCd5HFU1/0/CBC415E956186D9CC61972979D5AC7B197F563BB.mft",
-            object_name="3137372e38352e3136342e302f32322d3234203d3e203532373433.inv",
-        )
-        in list(parser.warnings)
-    )
+    assert ManifestObjectWarning(
+        warning_type="unsupported_filetype",
+        uri="rrdp/198613f16d61d95b77329eb7acdb3e1f8d1f0ec2b75e9510a7f7eacc7c3ebe19/rpki-repo.registro.br/repo/CdwCiTUGWyooJPMS1kEENXCA3aBaR67C8gcsvCd5HFU1/0/CBC415E956186D9CC61972979D5AC7B197F563BB.mft",
+        object_name="3137372e38352e3136342e302f32322d3234203d3e203532373433.inv",
+    ) in list(parser.warnings)
