@@ -93,7 +93,7 @@ RPKI_CLIENT_REMOVED_UNREFERENCED = Counter(
 #
 # Metrics about RPKI objects
 #
-RPKI_CLIENT_WARNINGS = Gauge(
+RPKI_CLIENT_HOST_WARNINGS = Gauge(
     "rpkiclient_warnings", "Warnings from rpki-client", ["hostname", "type"]
 )
 RPKI_OBJECTS_BUILD_TIME = Gauge(
@@ -113,7 +113,7 @@ RPKI_OBJECTS_VRPS_BY_TA = Gauge(
 )
 
 #
-# Metrics about rpki-client-web
+# Metrics about rpki-client-web or rpki-client
 #
 RPKI_CLIENT_WEB_PARSE_ERROR = Counter(
     "rpkiclientweb_parse_error",

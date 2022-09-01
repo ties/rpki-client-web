@@ -17,6 +17,7 @@ from rpkiclientweb.config import Configuration
 from rpkiclientweb.metrics import (
     RPKI_CLIENT_DURATION,
     RPKI_CLIENT_FETCH_STATUS,
+    RPKI_CLIENT_HOST_WARNINGS,
     RPKI_CLIENT_LAST_DURATION,
     RPKI_CLIENT_LAST_UPDATE,
     RPKI_CLIENT_PULLED,
@@ -24,8 +25,6 @@ from rpkiclientweb.metrics import (
     RPKI_CLIENT_REMOVED_UNREFERENCED,
     RPKI_CLIENT_RUNNING,
     RPKI_CLIENT_UPDATE_COUNT,
-    RPKI_CLIENT_WARNINGS,
-    RPKI_OBJECTS_VRPS_BY_TA,
     RPKI_OBJECTS_BUILD_TIME,
     RPKI_OBJECTS_COUNT,
     RPKI_OBJECTS_MIN_EXPIRY,
@@ -145,7 +144,8 @@ class RpkiClient:
             "-v",  # verbose
             "-j",  # JSON output
             # repositories can take 1/4th of this time before rpki-client aborts
-            "-s", str(self.config.timeout),
+            "-s",
+            str(self.config.timeout),
             "-d",
             self.config.cache_dir,
         ]
@@ -265,13 +265,13 @@ class RpkiClient:
         # Set 'missing' metric-label values to 0 since missing values are
         # confusing (they disappear in prometheus and grafana)
         for missing in missing_labels(self.warnings, new_warnings):
-            RPKI_CLIENT_WARNINGS.labels(
+            RPKI_CLIENT_HOST_WARNINGS.labels(
                 type=missing.warning_type, hostname=missing.hostname
             ).set(0)
 
         # Set new values
         for warning in new_warnings:
-            RPKI_CLIENT_WARNINGS.labels(
+            RPKI_CLIENT_HOST_WARNINGS.labels(
                 type=warning.warning_type, hostname=warning.hostname
             ).set(warning.count)
         # And store

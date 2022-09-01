@@ -36,7 +36,10 @@ if deadline is not None:
         args.extend(sys_args)
         os.execv("/usr/bin/timeout", args)
     else:
-        print(f"rsync_timeout: Skipping execution, post deadline. Arguments: {' '.join(sys_args)}", file=sys.stderr)
+        print(
+            f"rsync_timeout: Skipping execution, post deadline. Arguments: {' '.join(sys_args)}",
+            file=sys.stderr,
+        )
         # man rsync, exit code 20: Received SIGUSR1 or SIGIN
         sys.exit(20)
 else:
