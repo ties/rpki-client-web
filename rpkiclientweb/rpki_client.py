@@ -16,6 +16,7 @@ from prometheus_async.aio import track_inprogress
 from rpkiclientweb.config import Configuration
 from rpkiclientweb.metrics import (
     RPKI_CLIENT_DURATION,
+    RPKI_CLIENT_ERRORS,
     RPKI_CLIENT_FETCH_STATUS,
     RPKI_CLIENT_HOST_WARNINGS,
     RPKI_CLIENT_LAST_DURATION,
@@ -255,6 +256,9 @@ class RpkiClient:
             RPKI_CLIENT_FETCH_STATUS.labels(
                 uri=fetch_status.uri, type=fetch_status.type
             ).inc(fetch_status.count)
+
+        for rpki_client_error in parsed.rpki_client_errors:
+            RPKI_CLIENT_ERRORS.labels(type=rpki_client_error.warning_type).inc()
 
         RPKI_OBJECTS_COUNT.labels(type="vanished_files").set(len(parsed.vanished_files))
         RPKI_OBJECTS_COUNT.labels(type="vanished_directories").set(
