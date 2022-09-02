@@ -40,6 +40,8 @@ dev:
   * aiohttp 3.8.1, prometheus-async 22.2.0
   * track rrdp serial decrease in metric
   * track repository not modified message
+  * track rrdp bad message digest error (mostly caused by incorrect state on
+    disk)
   * improve output of rsync_timeout
   * **Behavioural change**: use rpki-client `-s` timeout set to the kill timeout.
   * Track more messages for errors during manifest parsing
