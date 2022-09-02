@@ -1,9 +1,4 @@
 """Tests for the output parser."""
-import os
-from typing import List
-
-import pytest
-
 from rpkiclientweb.models import (
     ExpirationWarning,
     FetchStatus,
@@ -21,7 +16,7 @@ def parse_output_file(name: str) -> OutputParser:
         return OutputParser(f.read())
 
 
-def test_parse_sample_stderr_missing_files():
+def test_parse_sample_stderr_missing_files() -> None:
     parser = parse_output_file("tests/sample_stderr_regular.txt")
 
     assert (
@@ -34,7 +29,7 @@ def test_parse_sample_stderr_missing_files():
     assert any(map(lambda r: isinstance(r, ExpirationWarning), parser.warnings))
 
 
-def test_parse_sample_aggregated():
+def test_parse_sample_aggregated() -> None:
     """
     Parse output aggregated from multiple rpki-client runs, to make sure all
     types of warnings are accepted.
@@ -66,7 +61,7 @@ def test_parse_sample_aggregated():
     )
 
 
-def test_twnic_revoked_objects():
+def test_twnic_revoked_objects() -> None:
     """
     Parse the output on 2021-2-3 that contains revoked objects.
     """
@@ -81,7 +76,7 @@ def test_twnic_revoked_objects():
     )
 
 
-def test_intertwined_lines():
+def test_intertwined_lines() -> None:
     """
     Parse a file that contains lines that have mixed output.
 
@@ -102,7 +97,7 @@ def test_intertwined_lines():
         assert len(line) < 35
 
 
-def test_overclaiming_line():
+def test_overclaiming_line() -> None:
     parser = OutputParser(
         "rpki-client: ca.rg.net/rpki/RGnet-OU/_XrQ8TKGekuqYxq7Ev1ZflcIsWM.roa: RFC 3779 resource not subset of parent's resources"
     )
@@ -116,7 +111,7 @@ def test_overclaiming_line():
     )
 
 
-def test_pulling_lines():
+def test_pulling_lines() -> None:
     """Test that the correct pulling lines are listed."""
     parser = parse_output_file("tests/sample_stderr_regular.txt")
 
@@ -127,7 +122,7 @@ def test_pulling_lines():
     assert "rpki.ripe.net/repository" in parser.pulled
 
 
-def test_vanished_lines():
+def test_vanished_lines() -> None:
     """Test that the vanished file lines are detected."""
     parser = parse_output_file("tests/20210206_sample_twnic_pre_incident_missing.txt")
 
@@ -145,7 +140,7 @@ def test_vanished_lines():
     assert len(directories) > 190 and len(directories) < 210
 
 
-def test_statistics_by_host():
+def test_statistics_by_host() -> None:
     """Test the grouping of warnings by host."""
     parser = parse_output_file("tests/sample_aggregated_output.txt")
 
@@ -157,7 +152,7 @@ def test_statistics_by_host():
     assert WarningSummary("bad_message_digest", "rpki.ripe.net", 1) in stats
 
 
-def test_missing_labels():
+def test_missing_labels() -> None:
     """Test the diffing of sets of labels."""
     after = parse_output_file("tests/sample_stderr_regular.txt").statistics_by_host()
     before = parse_output_file(
@@ -174,7 +169,7 @@ def test_missing_labels():
     assert missing_labels(after, before) == frozenset()
 
 
-def test_rpki_object_no_valid_mft_available():
+def test_rpki_object_no_valid_mft_available() -> None:
     """No valid manifest available errors."""
     res = parse_output_file("tests/20220223_no_valid_mft_available.txt")
 
@@ -187,7 +182,7 @@ def test_rpki_object_no_valid_mft_available():
     )
 
 
-def test_rpki_object_missing_sia():
+def test_rpki_object_missing_sia() -> None:
     """No valid manifest available errors."""
     res = parse_output_file("tests/20220122_missing_sia.txt")
 
@@ -200,7 +195,7 @@ def test_rpki_object_missing_sia():
     )
 
 
-def test_rsync_errors():
+def test_rsync_errors() -> None:
     """Test a situation with many rsync errors."""
     res = parse_output_file("tests/20210610_sample_rsync_errors.txt")
 
@@ -209,7 +204,7 @@ def test_rsync_errors():
     )
 
 
-def test_rsync_fallback():
+def test_rsync_fallback() -> None:
     """Test a situation with rsync fallback (from RRDP)."""
     res = parse_output_file("tests/20210610_rsync_fallback.txt")
 
@@ -218,7 +213,7 @@ def test_rsync_fallback():
     ) in list(res.fetch_status)
 
 
-def test_rrdp_tls_cert_expired():
+def test_rrdp_tls_cert_expired() -> None:
     """TLS certificate has expired."""
     res = parse_output_file("tests/20220311_tls_handshake_cert_expired.txt")
 
@@ -228,7 +223,7 @@ def test_rrdp_tls_cert_expired():
     ) in list(res.fetch_status)
 
 
-def test_rrdp_not_modified():
+def test_rrdp_not_modified() -> None:
     """Test a situation with rsync fallback (from RRDP)."""
     res = parse_output_file("tests/20210610_sample_deltas.txt")
     print(list(res.fetch_status))
@@ -240,7 +235,7 @@ def test_rrdp_not_modified():
     ) in list(res.fetch_status)
 
 
-def test_rrdp_snapshots():
+def test_rrdp_snapshots() -> None:
     """Test a situation with rsync fallback (from RRDP)."""
     res = parse_output_file("tests/20210610_sample_snapshot_dl.txt")
 
@@ -252,7 +247,7 @@ def test_rrdp_snapshots():
     ) in list(res.fetch_status)
 
 
-def test_rrdp_deltas():
+def test_rrdp_deltas() -> None:
     """Test a situation with rsync fallback (from RRDP)."""
     res = parse_output_file("tests/20210610_sample_deltas.txt")
 
@@ -264,7 +259,7 @@ def test_rrdp_deltas():
     ) in list(res.fetch_status)
 
 
-def test_rrdp_parse_aborted():
+def test_rrdp_parse_aborted() -> None:
     """Test a situation where parsing is aborted for rsync."""
     res = parse_output_file("tests/20220311_sample_rrdp_rejected_file_too_large.txt")
     fetch_status = list(res.fetch_status)
@@ -277,7 +272,7 @@ def test_rrdp_parse_aborted():
     assert FetchStatus("<unknown>", "rrdp_parse_error_file_too_big") in fetch_status
 
 
-def test_fallback_to_cache():
+def test_fallback_to_cache() -> None:
     """Test the situation where a repo falls back to cache."""
     parser = parse_output_file("tests/sample_aggregated_output.txt")
 
@@ -287,7 +282,7 @@ def test_fallback_to_cache():
     )
 
 
-def test_intertwined_rrdp_lines_20210614():
+def test_intertwined_rrdp_lines_20210614() -> None:
     """Parse a file that contains lines that have mixed output for RRDP."""
     res = parse_output_file("tests/20210614_sample_rrdp_joined_line.txt")
 
@@ -296,7 +291,7 @@ def test_intertwined_rrdp_lines_20210614():
         assert "rpki-client:" not in status.type
 
 
-def test_intertwined_rrdp_lines_20210712():
+def test_intertwined_rrdp_lines_20210712() -> None:
     """Parse a string that contains mixed output for RRDP."""
     res = OutputParser(
         "rpki-client: https://rpki.multacom.com/rrdp/notification.xml: notification file not modifiedrpki-client: https://rrdp.rpki.nlnetlabs.nl/rrdp/notification.xml: loaded from network"
@@ -306,7 +301,7 @@ def test_intertwined_rrdp_lines_20210712():
         assert "rpki-client:" not in line
 
 
-def test_rrdp_parse_failed():
+def test_rrdp_parse_failed() -> None:
     """Parse a string that contains the output on an invalid RRDP repo."""
     res = OutputParser(
         "rpki-client: parse failed - serial mismatch\n"
@@ -319,7 +314,7 @@ def test_rrdp_parse_failed():
     ) in list(res.fetch_status)
 
 
-def test_rrdp_repository_not_modified():
+def test_rrdp_repository_not_modified() -> None:
     """Parse a string that contains the output on an repository that did not change."""
     res = OutputParser(
         "rpki-client: https://rrdp.example.org/rrdp/notification.xml: pulling from network\n"
@@ -334,7 +329,7 @@ def test_rrdp_repository_not_modified():
     ) in list(res.fetch_status)
 
 
-def test_rrdp_serial_decreated():
+def test_rrdp_serial_decreated() -> None:
     """Parse a string that contains the output when RRDP serial reverts for same serial."""
     res = OutputParser(
         "rpki-client: https://rrdp.example.org/rrdp/notification.xml: serial number decreased from 42 to 10\n"
@@ -347,7 +342,7 @@ def test_rrdp_serial_decreated():
     ) in list(res.fetch_status)
 
 
-def test_unsupported_filetype():
+def test_unsupported_filetype() -> None:
     parser = OutputParser(
         "rpki-client: rrdp/198613f16d61d95b77329eb7acdb3e1f8d1f0ec2b75e9510a7f7eacc7c3ebe19/rpki-repo.registro.br/repo/CdwCiTUGWyooJPMS1kEENXCA3aBaR67C8gcsvCd5HFU1/0/CBC415E956186D9CC61972979D5AC7B197F563BB.mft: unsupported file type for 3137372e38352e3136342e302f32322d3234203d3e203532373433.inv\n"
     )
@@ -359,7 +354,7 @@ def test_unsupported_filetype():
     ) in list(parser.warnings)
 
 
-def test_rpki_client_warnings():
+def test_rpki_client_warnings() -> None:
     """Parse a file that contains lines with warnings from rpki-client itself."""
     res = parse_output_file("tests/20220901_http_chunked_assertion_error.txt")
     # rpki-client: http.c:715: http_done: Assertion `conn->bufpos == 0' failed.
