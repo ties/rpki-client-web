@@ -1,4 +1,6 @@
 """Tests for the output parser."""
+from pathlib import Path
+
 from rpkiclientweb.models import (
     ExpirationWarning,
     FetchStatus,
@@ -12,12 +14,15 @@ from rpkiclientweb.outputparser import OutputParser, missing_labels
 
 
 def parse_output_file(name: str) -> OutputParser:
-    with open(name, "r") as f:
+    p = Path(__file__).parent
+    input_file = p / name
+
+    with input_file.open("r") as f:
         return OutputParser(f.read())
 
 
 def test_parse_sample_stderr_missing_files() -> None:
-    parser = parse_output_file("tests/sample_stderr_regular.txt")
+    parser = parse_output_file("inputs/sample_stderr_regular.txt")
 
     assert (
         LabelWarning(
@@ -36,7 +41,7 @@ def test_parse_sample_aggregated() -> None:
 
     Gathered with `docker logs rpki-client-web | sed -e 's/\\n/\n/g' | grep -E "^rpki-client:" | sort | uniq`
     """
-    parser = parse_output_file("tests/sample_aggregated_output.txt")
+    parser = parse_output_file("inputs/sample_aggregated_output.txt")
 
     assert (
         LabelWarning(
@@ -65,7 +70,7 @@ def test_twnic_revoked_objects() -> None:
     """
     Parse the output on 2021-2-3 that contains revoked objects.
     """
-    parser = parse_output_file("tests/20210206_sample_twnic_during.txt")
+    parser = parse_output_file("inputs/20210206_sample_twnic_during.txt")
 
     assert (
         LabelWarning(
@@ -84,7 +89,7 @@ def test_intertwined_lines() -> None:
     output from multiple processes.
     """
     parser = parse_output_file(
-        "tests/20210304_sample_idnic_multiple_processes_write_to_same_fd.txt"
+        "inputs/20210304_sample_idnic_multiple_processes_write_to_same_fd.txt"
     )
 
     for line in parser.pulling:
@@ -113,7 +118,7 @@ def test_overclaiming_line() -> None:
 
 def test_pulling_lines() -> None:
     """Test that the correct pulling lines are listed."""
-    parser = parse_output_file("tests/sample_stderr_regular.txt")
+    parser = parse_output_file("inputs/sample_stderr_regular.txt")
 
     assert "rpki.ripe.net/ta" in parser.pulling
     assert "rpki.ripe.net/repository" in parser.pulling
@@ -124,7 +129,7 @@ def test_pulling_lines() -> None:
 
 def test_vanished_lines() -> None:
     """Test that the vanished file lines are detected."""
-    parser = parse_output_file("tests/20210206_sample_twnic_pre_incident_missing.txt")
+    parser = parse_output_file("inputs/20210206_sample_twnic_pre_incident_missing.txt")
 
     files = parser.vanished_files
     directories = parser.vanished_directories
@@ -142,7 +147,7 @@ def test_vanished_lines() -> None:
 
 def test_statistics_by_host() -> None:
     """Test the grouping of warnings by host."""
-    parser = parse_output_file("tests/sample_aggregated_output.txt")
+    parser = parse_output_file("inputs/sample_aggregated_output.txt")
 
     stats = parser.statistics_by_host()
 
@@ -154,9 +159,9 @@ def test_statistics_by_host() -> None:
 
 def test_missing_labels() -> None:
     """Test the diffing of sets of labels."""
-    after = parse_output_file("tests/sample_stderr_regular.txt").statistics_by_host()
+    after = parse_output_file("inputs/sample_stderr_regular.txt").statistics_by_host()
     before = parse_output_file(
-        "tests/sample_aggregated_output.txt"
+        "inputs/sample_aggregated_output.txt"
     ).statistics_by_host()
 
     assert missing_labels(before, after) == frozenset(
@@ -171,7 +176,7 @@ def test_missing_labels() -> None:
 
 def test_rpki_object_no_valid_mft_available() -> None:
     """No valid manifest available errors."""
-    res = parse_output_file("tests/20220223_no_valid_mft_available.txt")
+    res = parse_output_file("inputs/20220223_no_valid_mft_available.txt")
 
     assert (
         LabelWarning(
@@ -184,7 +189,7 @@ def test_rpki_object_no_valid_mft_available() -> None:
 
 def test_rpki_object_missing_sia() -> None:
     """No valid manifest available errors."""
-    res = parse_output_file("tests/20220122_missing_sia.txt")
+    res = parse_output_file("inputs/20220122_missing_sia.txt")
 
     assert (
         LabelWarning(
@@ -197,7 +202,7 @@ def test_rpki_object_missing_sia() -> None:
 
 def test_rsync_errors() -> None:
     """Test a situation with many rsync errors."""
-    res = parse_output_file("tests/20210610_sample_rsync_errors.txt")
+    res = parse_output_file("inputs/20210610_sample_rsync_errors.txt")
 
     assert FetchStatus("rsync://rpki.cnnic.cn/rpki", "rsync_load_failed", 1) in list(
         res.fetch_status
@@ -206,7 +211,7 @@ def test_rsync_errors() -> None:
 
 def test_rsync_fallback() -> None:
     """Test a situation with rsync fallback (from RRDP)."""
-    res = parse_output_file("tests/20210610_rsync_fallback.txt")
+    res = parse_output_file("inputs/20210610_rsync_fallback.txt")
 
     assert FetchStatus(
         "https://rrdp.ripe.net/notification.xml", "rrdp_rsync_fallback"
@@ -215,7 +220,7 @@ def test_rsync_fallback() -> None:
 
 def test_rrdp_tls_cert_expired() -> None:
     """TLS certificate has expired."""
-    res = parse_output_file("tests/20220311_tls_handshake_cert_expired.txt")
+    res = parse_output_file("inputs/20220311_tls_handshake_cert_expired.txt")
 
     assert FetchStatus(
         "https://rpki.blade.sh/rrdp/notification.xml",
@@ -225,8 +230,7 @@ def test_rrdp_tls_cert_expired() -> None:
 
 def test_rrdp_not_modified() -> None:
     """Test a situation with rsync fallback (from RRDP)."""
-    res = parse_output_file("tests/20210610_sample_deltas.txt")
-    print(list(res.fetch_status))
+    res = parse_output_file("inputs/20210610_sample_deltas.txt")
 
     assert FetchStatus(
         "https://rrdp.lacnic.net/rrdp/notification.xml",
@@ -237,7 +241,7 @@ def test_rrdp_not_modified() -> None:
 
 def test_rrdp_snapshots() -> None:
     """Test a situation with rsync fallback (from RRDP)."""
-    res = parse_output_file("tests/20210610_sample_snapshot_dl.txt")
+    res = parse_output_file("inputs/20210610_sample_snapshot_dl.txt")
 
     assert FetchStatus(
         "https://rrdp.afrinic.net/notification.xml", "rrdp_snapshot", 1
@@ -249,7 +253,7 @@ def test_rrdp_snapshots() -> None:
 
 def test_rrdp_deltas() -> None:
     """Test a situation with rsync fallback (from RRDP)."""
-    res = parse_output_file("tests/20210610_sample_deltas.txt")
+    res = parse_output_file("inputs/20210610_sample_deltas.txt")
 
     assert FetchStatus(
         "https://rrdp.apnic.net/notification.xml", "rrdp_delta", 7
@@ -261,7 +265,7 @@ def test_rrdp_deltas() -> None:
 
 def test_rrdp_parse_aborted() -> None:
     """Test a situation where parsing is aborted for rsync."""
-    res = parse_output_file("tests/20220311_sample_rrdp_rejected_file_too_large.txt")
+    res = parse_output_file("inputs/20220311_sample_rrdp_rejected_file_too_large.txt")
     fetch_status = list(res.fetch_status)
 
     assert (
@@ -274,7 +278,7 @@ def test_rrdp_parse_aborted() -> None:
 
 def test_fallback_to_cache() -> None:
     """Test the situation where a repo falls back to cache."""
-    parser = parse_output_file("tests/sample_aggregated_output.txt")
+    parser = parse_output_file("inputs/sample_aggregated_output.txt")
 
     #  rpki-client: nostromo.heficed.net/repo: load from network failed, fallback to cache
     assert FetchStatus("nostromo.heficed.net/repo", "sync_fallback_to_cache") in list(
@@ -284,7 +288,7 @@ def test_fallback_to_cache() -> None:
 
 def test_intertwined_rrdp_lines_20210614() -> None:
     """Parse a file that contains lines that have mixed output for RRDP."""
-    res = parse_output_file("tests/20210614_sample_rrdp_joined_line.txt")
+    res = parse_output_file("inputs/20210614_sample_rrdp_joined_line.txt")
 
     for status in res.fetch_status:
         assert "rpki-client:" not in status.uri
@@ -356,14 +360,13 @@ def test_unsupported_filetype() -> None:
 
 def test_rpki_client_warnings() -> None:
     """Parse a file that contains lines with warnings from rpki-client itself."""
-    res = parse_output_file("tests/20220901_http_chunked_assertion_error.txt")
+    res = parse_output_file("inputs/20220901_http_chunked_assertion_error.txt")
     # rpki-client: http.c:715: http_done: Assertion `conn->bufpos == 0' failed.
     # rpki-client: https://rrdp.example.org/notification.xml: bad message digest
     # rpki-client: http terminated signal 6
     # rpki-client: not all files processed, giving up
 
     warnings = list(res.rpki_client_errors)
-    print(warnings)
 
     assert RpkiClientError("http_terminated") in warnings
     assert RpkiClientError("not_all_files_processed") in warnings
