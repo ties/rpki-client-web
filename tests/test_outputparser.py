@@ -1,4 +1,5 @@
 """Tests for the output parser."""
+from collections import Counter
 from pathlib import Path
 
 from rpkiclientweb.models import (
@@ -375,3 +376,14 @@ def test_rpki_client_warnings() -> None:
     assert FetchStatus(
         "https://rrdp.example.org/notification.xml", "bad_message_digest"
     ) in list(res.fetch_status)
+
+
+def test_rpki_client_failed_download_digest_warnings() -> None:
+    """Parse a file that contains lines with warnings from rpki-client itself."""
+    res = parse_output_file("inputs/20220902_message_digest_failed_download.txt")
+
+    c = Counter([(s.type, s.uri) for s in res.fetch_status])
+
+    assert (
+        c[("sync_bad_message_digest", "https://rrdp.example.org/notification.xml")] > 10
+    )

@@ -62,6 +62,9 @@ SYNC_RSYNC_RRDP_DELTAS = re.compile(
 SYNC_RRDP_PARSE_ABORTED = re.compile(
     r"rpki-client: (?P<uri>.*): parse error at line [0-9]+: parsing aborted"
 )
+SYNC_RRDP_BAD_FILE_DIGEST = re.compile(
+    r"rpki-client: (?P<uri>.*): bad file digest for .*"
+)
 SYNC_RRDP_SERIAL_DECREASED = re.compile(
     r"rpki-client: (?P<uri>.*): serial number decreased from (?P<previous>[0-9]+) to (?P<current>[0-9]+)"
 )
@@ -183,6 +186,7 @@ def parse_fetch_status(line: str) -> Generator[RPKIClientWarning, None, None]:
     if rrdp_parse_aborted:
         yield FetchStatus(rrdp_parse_aborted.group("uri"), "rrdp_parse_aborted")
         return
+
     rrdp_content_too_big = SYNC_RRDP_CONTENT_TOO_BIG.match(line)
     if rrdp_content_too_big:
         yield FetchStatus("<unknown>", "rrdp_parse_error_file_too_big")
@@ -201,6 +205,13 @@ def parse_fetch_status(line: str) -> Generator[RPKIClientWarning, None, None]:
     bad_message_digest = SYNC_BAD_MESSAGE_DIGEST.match(line)
     if bad_message_digest:
         yield FetchStatus(bad_message_digest.group("uri"), "bad_message_digest")
+        return
+
+    file_bad_message_digest = SYNC_RRDP_BAD_FILE_DIGEST.match(line)
+    if file_bad_message_digest:
+        yield FetchStatus(
+            file_bad_message_digest.group("uri"), "sync_bad_message_digest"
+        )
         return
 
     load_failed = SYNC_RSYNC_LOAD_FAILED.match(line)
