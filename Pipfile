@@ -17,7 +17,7 @@ pytest = "*"
 [packages]
 pyyaml = "*"
 aiohttp = ">=3.8.1"
-prometheus-async = {extras = ["aiohttp"],version = "*"}
+prometheus-async = {extras = ["aiohttp"],version = ">=22.2.0"}
 voluptuous = "*"
 
 [requires]
