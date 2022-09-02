@@ -347,6 +347,17 @@ def test_rrdp_serial_decreated() -> None:
     ) in list(res.fetch_status)
 
 
+def test_rrdp_tls_failure() -> None:
+    """Parse a string that contains a TLS failure."""
+    res = OutputParser(
+        "rpki-client: rrdp.example.org: TLS read: read failed: error:0A000126:SSL routines::unexpected eof while reading\n"
+    )
+
+    assert FetchStatus("rrdp.example.org", "rrdp_tls_failure", 1) in list(
+        res.fetch_status
+    )
+
+
 def test_unsupported_filetype() -> None:
     parser = OutputParser(
         "rpki-client: rrdp/198613f16d61d95b77329eb7acdb3e1f8d1f0ec2b75e9510a7f7eacc7c3ebe19/rpki-repo.registro.br/repo/CdwCiTUGWyooJPMS1kEENXCA3aBaR67C8gcsvCd5HFU1/0/CBC415E956186D9CC61972979D5AC7B197F563BB.mft: unsupported file type for 3137372e38352e3136342e302f32322d3234203d3e203532373433.inv\n"
