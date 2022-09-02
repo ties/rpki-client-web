@@ -37,7 +37,7 @@ Changes
 dev:
 **Includes rpki-client 7.9 in the container**
 
-  * aiohttp 3.8.1
+  * aiohttp 3.8.1, prometheus-async 22.2.0
   * track rrdp serial decrease in metric
   * track repository not modified message
   * improve output of rsync_timeout
