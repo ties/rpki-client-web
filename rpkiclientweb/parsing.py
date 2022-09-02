@@ -71,6 +71,9 @@ SYNC_RRDP_SERIAL_DECREASED = re.compile(
 SYNC_RRDP_TLS_CERTIFICATE_VERIFICATION_FAILED = re.compile(
     r"rpki-client: (?P<uri>.*): TLS handshake: certificate verification failed:.*"
 )
+SYNC_RRDP_TLS_FAILURE = re.compile(
+    r"rpki-client: (?P<uri>.*): TLS read: read failed:.*"
+)
 SYNC_RRDP_CONTENT_TOO_BIG = re.compile(r"rpki-client: parse failed - content too big")
 
 FILE_MISSING_SIA_RE = re.compile(
@@ -179,6 +182,15 @@ def parse_fetch_status(line: str) -> Generator[RPKIClientWarning, None, None]:
         yield FetchStatus(
             tls_cert_verification.group("uri"),
             "rrdp_tls_certificate_verification_failed",
+        )
+        return
+
+    # Generic tls failure
+    tls_failure = SYNC_RRDP_TLS_FAILURE.match(line)
+    if tls_failure:
+        yield FetchStatus(
+            tls_failure.group("uri"),
+            "rrdp_tls_failure",
         )
         return
 

@@ -42,6 +42,7 @@ dev:
   * track repository not modified message
   * track rrdp bad message digest error (mostly caused by incorrect state on
     disk)
+  * track generic TLS failures
   * improve output of rsync_timeout
   * **Behavioural change**: use rpki-client `-s` timeout set to the kill timeout.
   * Track more messages for errors during manifest parsing
