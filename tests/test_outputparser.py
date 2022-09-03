@@ -16,7 +16,7 @@ from rpkiclientweb.outputparser import OutputParser, missing_labels
 from rpkiclientweb.util import parse_host
 
 
-def count_fetch_status(res: OutputParser) -> Counter[Tuple[str, str]]:
+def count_fetch_status(res: OutputParser) -> Counter:  # Tuple[str, str]
     return Counter((s.type, s.uri) for s in res.fetch_status)
 
 
