@@ -47,6 +47,8 @@ dev:
   * **Behavioural change**: use rpki-client `-s` timeout set to the kill timeout.
   * Track more messages for errors during manifest parsing
   * Track assertion errors and other warnings from rpki-client
+  * renamed "rrdp_tls_failure" label to "tls_failure" because it may happen for
+    trust anchor certificates as well
 
 2022-04-13 0.10.0:
 **Includes rpki-client 7.8 in the container, raising the object size limit**
