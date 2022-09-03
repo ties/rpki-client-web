@@ -1,6 +1,7 @@
 """Tests for the output parser."""
 from collections import Counter
 from pathlib import Path
+from typing import Tuple
 
 from rpkiclientweb.models import (
     ExpirationWarning,
@@ -12,6 +13,10 @@ from rpkiclientweb.models import (
     WarningSummary,
 )
 from rpkiclientweb.outputparser import OutputParser, missing_labels
+
+
+def count_fetch_status(res: OutputParser) -> Counter[Tuple[str, str]]:
+    return Counter((s.type, s.uri) for s in res.fetch_status)
 
 
 def parse_output_file(name: str) -> OutputParser:
@@ -353,9 +358,14 @@ def test_rrdp_tls_failure() -> None:
         "rpki-client: rrdp.example.org: TLS read: read failed: error:0A000126:SSL routines::unexpected eof while reading\n"
     )
 
-    assert FetchStatus("rrdp.example.org", "rrdp_tls_failure", 1) in list(
-        res.fetch_status
+    assert FetchStatus("rrdp.example.org", "tls_failure", 1) in list(res.fetch_status)
+
+    res = parse_output_file(
+        "inputs/20220903_certificate_not_yet_valid_tls_read_error.txt"
     )
+
+    assert FetchStatus("rrdp.example.org", "tls_failure", 1) in res.fetch_status
+    assert FetchStatus("rpki.example.org", "tls_failure", 1) in res.fetch_status
 
 
 def test_unsupported_filetype() -> None:
@@ -393,7 +403,7 @@ def test_rpki_client_failed_download_digest_warnings() -> None:
     """Parse a file that contains lines with warnings from rpki-client itself."""
     res = parse_output_file("inputs/20220902_message_digest_failed_download.txt")
 
-    c = Counter([(s.type, s.uri) for s in res.fetch_status])
+    c = count_fetch_status(res)
 
     assert (
         c[("sync_bad_message_digest", "https://rrdp.example.org/notification.xml")] > 10

@@ -1,0 +1,22 @@
+rpki-client: ta/example: pulling from https://rpki.example.org/repository/example.cer
+rpki-client: ta/example: loaded from network
+rpki-client: https://rrdp.example.org/notification.xml: pulling from network
+rpki-client: https://rrdp.example.org/notification.xml: repository not modified
+rpki-client: https://rrdp.example.org/notification.xml: loaded from network
+rpki-client: rpki.example.org/repository/member_repository/F36505B2/0569917622D711ED862FD6E0F1222468/fr3iqg5CdX8lyf2_Gp-NM23yu2c.mft: no valid mft available
+rpki-client: rpki.example.org/repository/member_repository/F3646C24/1C86B7862B5B11EC8EBEF540D8A014CE/_r9_454NpaYN1sjcZoHO9aJGKC4.mft: no valid mft available
+rpki-client: rpki.example.org/repository/member_repository/F36505B2/0569917622D711ED862FD6E0F1222468/papPgUtMMAVGA7x4iUls_YlzO9A.mft: no valid mft available
+rpki-client: rpki.example.org/repository/member_repository/F36505B2/0569917622D711ED862FD6E0F1222468/0nALpPtwFyntPHjkS8xt-VQrqLw.mft: no valid mft available
+rpki-client: rpki.example.org/repository/member_repository/F366742F/B09C4EFE3E6211EB82352F27F8AEA228/6362D79EE5F411EC92C467DEF1222468.roa: certificate is not yet valid
+rpki-client: rpki.example.org/repository/member_repository/F366742F/B09C4EFE3E6211EB82352F27F8AEA228/D51A2348E5F311ECB314B3DCF1222468.roa: certificate is not yet valid
+rpki-client: rpki.example.org/repository/member_repository/F366742F/B09C4EFE3E6211EB82352F27F8AEA228/B974CFFCE5F411ECB9F66FDFF1222468.roa: certificate is not yet valid
+rpki-client: rpki.example.org/repository/member_repository/F366742F/B09C4EFE3E6211EB82352F27F8AEA228/2EE1E4A0E5F511ECB465DAE0F1222468.roa: certificate is not yet valid
+rpki-client: rpki.example.org/repository/member_repository/F368F2D0/7F4A98EA6E0511E89C0D6E4BF8AEA228/11A429A8E7C011ECACC2F89CF1222468.roa: certificate is not yet valid
+rpki-client: rpki.example.org/repository/member_repository/F368F2D0/7F4A98EA6E0511E89C0D6E4BF8AEA228/6766FC685F2011EC938150DD5A40D577.roa: certificate revoked
+rpki-client: rpki.example.org/repository/member_repository/F368F2D0/7F4A98EA6E0511E89C0D6E4BF8AEA228/9A5BD9DC0F1411EDB755AA95F1222468.roa: certificate has expired
+rpki-client: rpki.example.org/repository/member_repository/F368F2D0/7F4A98EA6E0511E89C0D6E4BF8AEA228/2C3E6B70E7C011ECB0C5559DF1222468.roa: certificate is not yet valid
+rpki-client: rpki.example.org/repository/member_repository/F368F2D0/7F4A98EA6E0511E89C0D6E4BF8AEA228/4105F85CE7C011ECBE8ABC9DF1222468.roa: certificate is not yet valid
+rpki-client: rpki.example.org: TLS read: read failed: error:0A000126:SSL routines::unexpected eof while reading
+rpki-client: rpki.example.org/repository/member_repository/F368F2D0/92F86E1C6E0511E8A1B5854BF8AEA228/351A51C4FDA411ECB24AD7AEF1222468.roa: certificate is not yet valid
+rpki-client: rrdp.example.org: TLS read: read failed: error:0A000126:SSL routines::unexpected eof while reading
+rpki-client: all files parsed: generating output
