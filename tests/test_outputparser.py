@@ -13,6 +13,7 @@ from rpkiclientweb.models import (
     WarningSummary,
 )
 from rpkiclientweb.outputparser import OutputParser, missing_labels
+from rpkiclientweb.util import parse_host
 
 
 def count_fetch_status(res: OutputParser) -> Counter[Tuple[str, str]]:
@@ -80,7 +81,7 @@ def test_twnic_revoked_objects() -> None:
 
     assert (
         LabelWarning(
-            warning_type="revoked_certificate",
+            warning_type="ee_certificate_revoked",
             uri="rpkica.twnic.tw/rpki/TWNICCA/OPENRICH/mlhIJnN1dfbOEvjGTcE83FLq17Q.roa",
         )
         in parser.warnings
@@ -408,3 +409,23 @@ def test_rpki_client_failed_download_digest_warnings() -> None:
     assert (
         c[("sync_bad_message_digest", "https://rrdp.example.org/notification.xml")] > 10
     )
+
+
+def test_roa_certificate_not_valid() -> None:
+    """
+    Warnings for ROA that certificates are not in a valid state.
+
+    cases:
+      * not yet valid
+      * revoked
+      * expired
+    """
+    res = parse_output_file(
+        "inputs/20220903_certificate_not_yet_valid_tls_read_error.txt"
+    )
+
+    c = Counter((c.warning_type, parse_host(c.uri)) for c in res.warnings)
+
+    assert c[("ee_certificate_expired", "rpki.example.org")] > 0
+    assert c[("ee_certificate_not_yet_valid", "rpki.example.org")] > 0
+    assert c[("ee_certificate_revoked", "rpki.example.org")] > 0

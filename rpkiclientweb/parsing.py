@@ -21,14 +21,23 @@ FILE_BAD_MESSAGE_DIGEST_RE = re.compile(
 FILE_UNSUPPORTED_FILETYPE_RE = re.compile(
     r"rpki-client: (?P<path>.*): unsupported file type for (?P<object>.*)"
 )
-FILE_EXPIRED_MANIFEST_RE = re.compile(
+FILE_MFT_EXPIRED_RE = re.compile(
     r"rpki-client: (?P<path>.*): mft expired on (?P<expiry>.*)"
 )
-FILE_NO_MANIFEST_AVAILABLE_RE = re.compile(
+FILE_MFT_NOT_AVAILABLE_RE = re.compile(
     r"rpki-client: (?P<path>.*): no valid mft available"
 )
-FILE_NOT_YET_VALID_RE = re.compile(
+FILE_MFT_NOT_YET_VALID_RE = re.compile(
     r"rpki-client: (?P<path>.*): mft not yet valid (?P<expiry>.*)"
+)
+FILE_CERTIFICATE_EXPIRED = re.compile(
+    r"rpki-client: (?P<path>.*): certificate has expired"
+)
+FILE_CERTIFICATE_NOT_YET_VALID_RE = re.compile(
+    r"rpki-client: (?P<path>.*): certificate is not yet valid"
+)
+FILE_CERTIFICATE_REVOKED_RE = re.compile(
+    r"rpki-client: (?P<path>.*): certificate revoked"
 )
 FILE_BAD_UPDATE_INTERVAL_RE = re.compile(
     r"rpki-client: (?P<path>.*): bad update interval.*"
@@ -82,9 +91,6 @@ FILE_MISSING_SIA_RE = re.compile(
 FILE_RESOURCE_OVERCLAIMING_RE = re.compile(
     r"rpki-client: (?P<path>.*): RFC 3779 resource not subset of parent's resources"
 )
-FILE_REVOKED_CERTIFICATE_RE = re.compile(
-    r"rpki-client: (?P<path>.*): certificate revoked"
-)
 #
 # Error states hit by rpki-client
 #
@@ -112,9 +118,21 @@ def parse_maybe_warning_line(line) -> Generator[RPKIClientWarning, None, None]:
         yield LabelWarning("overclaiming", overclaiming.group("path"))
         return
 
-    revoked_cert = FILE_REVOKED_CERTIFICATE_RE.match(line)
-    if revoked_cert:
-        yield LabelWarning("revoked_certificate", revoked_cert.group("path"))
+    cert_expired = FILE_CERTIFICATE_EXPIRED.match(line)
+    if cert_expired:
+        yield LabelWarning("ee_certificate_expired", cert_expired.group("path"))
+        return
+
+    cert_not_yet_valid = FILE_CERTIFICATE_NOT_YET_VALID_RE.match(line)
+    if cert_not_yet_valid:
+        yield LabelWarning(
+            "ee_certificate_not_yet_valid", cert_not_yet_valid.group("path")
+        )
+        return
+
+    cert_revoked = FILE_CERTIFICATE_REVOKED_RE.match(line)
+    if cert_revoked:
+        yield LabelWarning("ee_certificate_revoked", cert_revoked.group("path"))
         return
 
     unsupported_filetype = FILE_UNSUPPORTED_FILETYPE_RE.match(line)
@@ -126,7 +144,7 @@ def parse_maybe_warning_line(line) -> Generator[RPKIClientWarning, None, None]:
         )
         return
 
-    no_valid_mft = FILE_NO_MANIFEST_AVAILABLE_RE.match(line)
+    no_valid_mft = FILE_MFT_NOT_AVAILABLE_RE.match(line)
     if no_valid_mft:
         yield LabelWarning("no_valid_mft_available", no_valid_mft.group("path"))
         return
@@ -144,7 +162,7 @@ def parse_maybe_warning_line(line) -> Generator[RPKIClientWarning, None, None]:
         )
         return
 
-    expired_manifest = FILE_EXPIRED_MANIFEST_RE.match(line)
+    expired_manifest = FILE_MFT_EXPIRED_RE.match(line)
     if expired_manifest:
         expiry = expired_manifest.group("expiry")
         yield ExpirationWarning(
@@ -154,7 +172,7 @@ def parse_maybe_warning_line(line) -> Generator[RPKIClientWarning, None, None]:
         )
         return
 
-    not_yet_valid_manifest = FILE_NOT_YET_VALID_RE.match(line)
+    not_yet_valid_manifest = FILE_MFT_NOT_YET_VALID_RE.match(line)
     if not_yet_valid_manifest:
         expiry = not_yet_valid_manifest.group("expiry")
         yield ExpirationWarning(
@@ -190,7 +208,7 @@ def parse_fetch_status(line: str) -> Generator[RPKIClientWarning, None, None]:
     if tls_failure:
         yield FetchStatus(
             tls_failure.group("uri"),
-            "rrdp_tls_failure",
+            "tls_failure",
         )
         return
 
