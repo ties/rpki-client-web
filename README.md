@@ -37,6 +37,7 @@ Changes
 dev:
 **Includes rpki-client 7.9 in the container**
 
+  * **Bugfix:** launch rpki-client with absolute path instead of relative path.
   * **Behavioural change**: use rpki-client `-s` timeout set to the kill timeout.
   * **Behavioural change**: skip `host` in configuration file to listen on both
     IPv4 and IPv6.

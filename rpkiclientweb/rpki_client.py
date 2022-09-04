@@ -184,7 +184,7 @@ class RpkiClient:
         t0 = time.monotonic()
 
         proc = await asyncio.create_subprocess_exec(
-            self.config.rpki_client.name,
+            self.config.rpki_client.resolve(),
             *self.args,
             stdout=asyncio.subprocess.PIPE,
             stderr=asyncio.subprocess.PIPE,
