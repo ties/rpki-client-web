@@ -15,6 +15,7 @@ timeout: 1175
 # Note that it may take ~10s before rsync is actually started
 # deadline: -1
 
+# optional: Skip or leave empty to listen on both IPv4 and IPv6
 host: 0.0.0.0
 port: 8888
 

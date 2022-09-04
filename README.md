@@ -37,6 +37,9 @@ Changes
 dev:
 **Includes rpki-client 7.9 in the container**
 
+  * **Behavioural change**: use rpki-client `-s` timeout set to the kill timeout.
+  * **Behavioural change**: skip `host` in configuration file to listen on both
+    IPv4 and IPv6.
   * aiohttp 3.8.1, prometheus-async 22.2.0
   * track rrdp serial decrease in metric
   * track repository not modified message
@@ -44,7 +47,6 @@ dev:
     disk)
   * track generic TLS failures
   * improve output of rsync_timeout
-  * **Behavioural change**: use rpki-client `-s` timeout set to the kill timeout.
   * Track more messages for errors during manifest parsing
   * Track assertion errors and other warnings from rpki-client
   * renamed "rrdp_tls_failure" label to "tls_failure" because it may happen for
