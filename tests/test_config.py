@@ -73,6 +73,14 @@ def test_config_adds_defaults():
     assert conf.deadline == -1
 
 
+def test_config_host_empty():
+    config_content = load_sample_conf()
+    config_content["host"] = None
+    conf = Configuration(config_content)
+
+    assert conf.host is None
+
+
 def test_json_serialize():
     config_content = load_sample_conf()
     conf = Configuration(config_content)

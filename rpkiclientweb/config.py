@@ -33,16 +33,28 @@ class Configuration:
     """ Timeout before rpki-client is killed. """
     timeout: int
 
-    """ host to listen on. """
-    host: str
     """ port to listen on. """
     port: int
 
     """ Path to rpki-client. """
     rpki_client: Path
 
-    """deadline: DEADLINE env var is passed with Unix timestamp of [deadline] after run starts"""
-    deadline: Optional[int] = None
+    """
+    deadline: DEADLINE environment variable is passed to process with Unix
+    timestamp of [deadline] seconds after run starts.
+    Can be used to, for example, exit rsync early.
+
+    This environment variable is not set if the configuration property is not
+    set.
+    """
+    deadline: int
+
+    """
+    host to listen on.
+
+    Leave empty to listen on all interfaces on both IPv4 and IPv6
+    """
+    host: Optional[str] = None
 
     """Optional path to rsync binary or wrapper. """
     rsync_command: Optional[Path] = None
@@ -59,7 +71,7 @@ class Configuration:
         LOG.info("Configuration: %s", conf)
 
         if jitter is not None:
-            self.jitter = conf.get("jitter", 600) if jitter == -1 else jitter
+            self.jitter = 0 if jitter == -1 else jitter
         else:
             self.jitter = conf.get("jitter", 600)
 
@@ -93,7 +105,7 @@ class Configuration:
         validate(self.timeout is not None, "timeout needs to be set")
         validate(self.timeout <= self.interval, "timeout needs to be below interval")
 
-        self.host = conf.get("host", "localhost")
+        self.host = conf.get("host", None)
         self.port = conf.get("port", 8888)
         validate(self.port > 0, "Port should be > 0")
 

@@ -108,7 +108,8 @@ class RpkiClientWeb:
 
     async def run(self):
         """Run rpki-client in loop."""
-        LOG.info("starting webserver on %s:%d", self.config.host, self.config.port)
+        listening_on = self.config.host if self.config.host else "[all interfaces]"
+        LOG.info("starting webserver on %s:%d", listening_on, self.config.port)
         runner = web.AppRunner(self.app)
         await runner.setup()
         site = web.TCPSite(runner, self.config.host, self.config.port)
