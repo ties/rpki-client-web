@@ -429,3 +429,19 @@ def test_roa_certificate_not_valid() -> None:
     assert c[("ee_certificate_expired", "rpki.example.org")] > 0
     assert c[("ee_certificate_not_yet_valid", "rpki.example.org")] > 0
     assert c[("ee_certificate_revoked", "rpki.example.org")] > 0
+
+
+def test_fetch_error_no_ee_certificate_errorr() -> None:
+    """Do not conflate TLS and EE certificate errors."""
+    res = parse_output_file("inputs/20220905_tls_error_expired.txt")
+
+    assert (
+        FetchStatus(
+            uri="https://rpkica.mckay.com/rrdp/notify.xml",
+            type="rrdp_tls_certificate_verification_failed",
+            count=1,
+        )
+        in res.fetch_status
+    )
+    # But no EE certificate warning:
+    assert len(list(res.warnings)) != 0

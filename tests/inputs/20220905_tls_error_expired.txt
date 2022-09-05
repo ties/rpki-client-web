@@ -1,0 +1,5 @@
+rpki-client: https://chloe.sobornost.net/rpki/news-public.xml: notification file not modified
+rpki-client: https://chloe.sobornost.net/rpki/news-public.xml: loaded from network
+rpki-client: https://rpkica.mckay.com/rrdp/notify.xml: TLS handshake: certificate verification failed: certificate has expired
+rpki-client: https://rpkica.mckay.com/rrdp/notify.xml: load from network failed, fallback to rsync
+rpki-client: .rsync/rpkica.mckay.com/rpki: pulling from rsync://rpkica.mckay.com/rpki

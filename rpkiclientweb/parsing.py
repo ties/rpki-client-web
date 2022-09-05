@@ -30,14 +30,15 @@ FILE_MFT_NOT_AVAILABLE_RE = re.compile(
 FILE_MFT_NOT_YET_VALID_RE = re.compile(
     r"rpki-client: (?P<path>.*): mft not yet valid (?P<expiry>.*)"
 )
+# TODO: Consider a more elegant way of filtering out TLS handshake errors
 FILE_CERTIFICATE_EXPIRED = re.compile(
-    r"rpki-client: (?P<path>.*): certificate has expired"
+    r"rpki-client: (?P<path>(?!TLS handshake:).+): certificate has expired"
 )
 FILE_CERTIFICATE_NOT_YET_VALID_RE = re.compile(
-    r"rpki-client: (?P<path>.*): certificate is not yet valid"
+    r"rpki-client: (?P<path>(?!TLS handshake:).+): certificate is not yet valid"
 )
 FILE_CERTIFICATE_REVOKED_RE = re.compile(
-    r"rpki-client: (?P<path>.*): certificate revoked"
+    r"rpki-client: (?P<path>(?!TLS handshake:).+): certificate revoked"
 )
 FILE_BAD_UPDATE_INTERVAL_RE = re.compile(
     r"rpki-client: (?P<path>.*): bad update interval.*"
