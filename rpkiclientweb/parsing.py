@@ -178,7 +178,7 @@ def parse_maybe_warning_line(line) -> Generator[RPKIClientWarning, None, None]:
         expiry = not_yet_valid_manifest.group("expiry")
         yield ExpirationWarning(
             "not_yet_valid_manifest",
-            expired_manifest.group("path"),
+            not_yet_valid_manifest.group("path"),
             datetime.strptime(expiry, "%b %d %H:%M:%S %Y GMT"),
         )
         return
@@ -195,7 +195,7 @@ def parse_maybe_warning_line(line) -> Generator[RPKIClientWarning, None, None]:
         return
 
 
-def parse_fetch_status(line: str) -> Generator[RPKIClientWarning, None, None]:
+def parse_fetch_status(line: str) -> Generator[FetchStatus, None, None]:
     tls_cert_verification = SYNC_RRDP_TLS_CERTIFICATE_VERIFICATION_FAILED.match(line)
     if tls_cert_verification:
         yield FetchStatus(

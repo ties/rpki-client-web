@@ -58,6 +58,4 @@ class RpkiClientError(NamedTuple):
     warning_type: str
 
 
-RPKIClientWarning = Union[
-    FetchStatus, LabelWarning, ExpirationWarning, ManifestObjectWarning
-]
+RPKIClientWarning = Union[LabelWarning, ExpirationWarning, ManifestObjectWarning]

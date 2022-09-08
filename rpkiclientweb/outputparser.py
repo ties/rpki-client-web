@@ -117,7 +117,7 @@ class OutputParser:
             if vanished_file:
                 res.add(vanished_file.group("path"))
 
-        return res
+        return frozenset(res)
 
     def statistics_by_host(self) -> List[WarningSummary]:
         """Group the output by host by type."""
