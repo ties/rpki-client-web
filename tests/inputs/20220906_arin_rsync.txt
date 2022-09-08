@@ -1,0 +1,14 @@
+rpki-client: .rsync/rpki.arin.net/repository: pulling from rsync://rpki.arin.net/repository
+rpki-client: rsync://rpki.arin.net/repository: synchronisation timeout
+rpki-client: .rsync/rpki.arin.net/repository: load from network failed, fallback to cache
+default_perms_for_dir: sys_acl_get_file(arin-rpki-ta/5e4a23ea-e80a-403e-b08c-2171da2157d3/f60c9f32-a87c-4339-a2f3-6299a3b02e29, ACL_TYPE_DEFAULT): No such file or directory, falling back on umask
+rsync: [generator] recv_generator: mkdir "/opt/rpkiclientweb/cache/.rsync/rpki.arin.net/repository/arin-rpki-ta/5e4a23ea-e80a-403e-b08c-2171da2157d3/f60c9f32-a87c-4339-a2f3-6299a3b02e29/b9b0013b-aa8f-41bf-a6f9-0b1c072f5940" failed: No such file or directory (2)
+*** Skipping any contents from this failed directory ***
+rsync: [generator] recv_generator: mkdir "/opt/rpkiclientweb/cache/.rsync/rpki.arin.net/repository/arin-rpki-ta/5e4a23ea-e80a-403e-b08c-2171da2157d3/f60c9f32-a87c-4339-a2f3-6299a3b02e29/b9f19bdb-3f20-47fc-8ae5-f673030fdd45" failed: No such file or directory (2)
+*** Skipping any contents from this failed directory ***
+rsync: [generator] recv_generator: mkdir "/opt/rpkiclientweb/cache/.rsync/rpki.arin.net/repository/arin-rpki-ta/5e4a23ea-e80a-403e-b08c-2171da2157d3/f60c9f32-a87c-4339-a2f3-6299a3b02e29/baa44644-44fc-473b-9d00-5c0e25612094" failed: No such file or directory (2)
+*** Skipping any contents from this failed directory ***
+rsync: [generator] recv_generator: mkdir "/opt/rpkiclientweb/cache/.rsync/rpki.arin.net/repository/arin-rpki-ta/5e4a23ea-e80a-403e-b08c-2171da2157d3/f60c9f32-a87c-4339-a2f3-6299a3b02e29/bc831f6b-71a6-46bb-9f64-2da80ccc244c" failed: No such file or directory (2)
+*** Skipping any contents from this failed directory ***
+rsync error: some files/attrs were not transferred (see previous errors) (code 23) at main.c(1839) [generator=3.2.5]
+rpki-client: rsync rsync://rpki.arin.net/repository failed

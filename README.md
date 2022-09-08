@@ -46,6 +46,8 @@ dev:
   * track repository not modified message
   * track rrdp bad message digest error (mostly caused by incorrect state on
     disk)
+  * track rrdp connection timeouts
+  * track rsync timeouts+failures
   * track generic TLS failures
   * improve output of rsync_timeout
   * Track more messages for errors during manifest parsing

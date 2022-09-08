@@ -59,6 +59,11 @@ SYNC_CACHE_FALLBACK = re.compile(
 SYNC_RSYNC_RRDP_NOT_MODIFIED = re.compile(
     r"rpki-client: (?P<uri>.*): notification file not modified$"
 )
+# connection refused/cannot assign requested address, likely only for RRDP.
+SYNC_CONNECT_ERROR = re.compile(r"rpki-client: (?P<uri>.+): connect: .+$")
+SYNC_SYNCHRONISATION_TIMEOUT = re.compile(
+    r"rpki-client: (?P<uri>.+): synchronisation timeout$"
+)
 SYNC_RRDP_REPOSITORY_NOT_MODIFIED = re.compile(
     r"rpki-client: (?P<uri>.*): repository not modified$"
 )
@@ -196,6 +201,12 @@ def parse_maybe_warning_line(line) -> Generator[RPKIClientWarning, None, None]:
 
 
 def parse_fetch_status(line: str) -> Generator[FetchStatus, None, None]:
+    # (rrdp) failures while connecting
+    connect_error = SYNC_CONNECT_ERROR.match(line)
+    if connect_error:
+        yield FetchStatus(connect_error.group("uri"), "connect_error")
+        return
+
     tls_cert_verification = SYNC_RRDP_TLS_CERTIFICATE_VERIFICATION_FAILED.match(line)
     if tls_cert_verification:
         yield FetchStatus(
@@ -204,7 +215,6 @@ def parse_fetch_status(line: str) -> Generator[FetchStatus, None, None]:
         )
         return
 
-    # Generic tls failure
     tls_failure = SYNC_RRDP_TLS_FAILURE.match(line)
     if tls_failure:
         yield FetchStatus(
@@ -213,6 +223,14 @@ def parse_fetch_status(line: str) -> Generator[FetchStatus, None, None]:
         )
         return
 
+    synchronisation_timeout = SYNC_SYNCHRONISATION_TIMEOUT.match(line)
+    if synchronisation_timeout:
+        yield FetchStatus(
+            synchronisation_timeout.group("uri"), "synchronisation_timeout"
+        )
+        return
+
+    # RRDP content failures
     rrdp_parse_aborted = SYNC_RRDP_PARSE_ABORTED.match(line)
     if rrdp_parse_aborted:
         yield FetchStatus(rrdp_parse_aborted.group("uri"), "rrdp_parse_aborted")
@@ -221,16 +239,6 @@ def parse_fetch_status(line: str) -> Generator[FetchStatus, None, None]:
     rrdp_content_too_big = SYNC_RRDP_CONTENT_TOO_BIG.match(line)
     if rrdp_content_too_big:
         yield FetchStatus("<unknown>", "rrdp_parse_error_file_too_big")
-        return
-
-    fallback = SYNC_RSYNC_FALLBACK.match(line)
-    if fallback:
-        yield FetchStatus(fallback.group("uri"), "rrdp_rsync_fallback", 1)
-        return
-
-    cache_fallback = SYNC_CACHE_FALLBACK.match(line)
-    if cache_fallback:
-        yield FetchStatus(cache_fallback.group("uri"), "sync_fallback_to_cache")
         return
 
     bad_message_digest = SYNC_BAD_MESSAGE_DIGEST.match(line)
@@ -245,11 +253,7 @@ def parse_fetch_status(line: str) -> Generator[FetchStatus, None, None]:
         )
         return
 
-    load_failed = SYNC_RSYNC_LOAD_FAILED.match(line)
-    if load_failed:
-        yield FetchStatus(load_failed.group("uri"), "rsync_load_failed", 1)
-        return
-
+    # RRDP: regular updates
     not_modified = SYNC_RSYNC_RRDP_NOT_MODIFIED.match(line)
     if not_modified:
         yield FetchStatus(
@@ -277,6 +281,22 @@ def parse_fetch_status(line: str) -> Generator[FetchStatus, None, None]:
         )
 
         yield FetchStatus(serial_decreased.group("uri"), "rrdp_serial_decreased", delta)
+        return
+
+    # Messages about behaviour/fallback
+    fallback = SYNC_RSYNC_FALLBACK.match(line)
+    if fallback:
+        yield FetchStatus(fallback.group("uri"), "rrdp_rsync_fallback", 1)
+        return
+
+    cache_fallback = SYNC_CACHE_FALLBACK.match(line)
+    if cache_fallback:
+        yield FetchStatus(cache_fallback.group("uri"), "sync_fallback_to_cache")
+        return
+
+    load_failed = SYNC_RSYNC_LOAD_FAILED.match(line)
+    if load_failed:
+        yield FetchStatus(load_failed.group("uri"), "rsync_load_failed", 1)
         return
 
 

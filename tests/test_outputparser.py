@@ -445,3 +445,41 @@ def test_fetch_error_no_ee_certificate_errorr() -> None:
     )
     # But no EE certificate warning:
     assert len(list(res.warnings)) != 0
+
+
+def test_fetch_error_connect_errors() -> None:
+    """Connection errors should be tracked."""
+    res = parse_output_file("inputs/20220906_arin_rrdp.txt")
+
+    assert (
+        FetchStatus(uri="https://rrdp.arin.net/notification.xml", type="connect_error")
+        in res.fetch_status
+    )
+    assert (
+        FetchStatus(uri="https://rrdp.arin.net/arin-rpki-ta.cer", type="connect_error")
+        in res.fetch_status
+    )
+
+    c = count_fetch_status(res)
+    assert c[("connect_error", "https://rrdp.arin.net/notification.xml")] == 4
+    assert c[("connect_error", "https://rrdp.arin.net/arin-rpki-ta.cer")] == 4
+
+
+def test_fetch_error_rsync_issues() -> None:
+    """The count of rsync errors should be tracked."""
+    res = parse_output_file("inputs/20220906_arin_rsync.txt")
+
+    assert (
+        FetchStatus(
+            uri="rsync://rpki.arin.net/repository",
+            type="synchronisation_timeout",
+            count=1,
+        )
+        in res.fetch_status
+    )
+    assert (
+        FetchStatus(
+            uri="rsync://rpki.arin.net/repository", type="rsync_load_failed", count=1
+        )
+        in res.fetch_status
+    )
