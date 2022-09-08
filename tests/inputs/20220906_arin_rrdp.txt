@@ -1,0 +1,85 @@
+Processing time 326 seconds (87 seconds user, 16 seconds system)
+Skiplist entries: 0
+Route Origin Authorizations: 54567 (5 failed parse, 0 invalid)
+BGPsec Router Certificates: 0
+Certificates: 2824 (0 invalid)
+Trust Anchor Locators: 1 (0 invalid)
+Manifests: 2824 (5 failed parse, 0 stale)
+Certificate revocation lists: 2819
+Ghostbuster records: 0
+Repositories: 19
+Cleanup: removed 2800 files, 2852 directories, 491 superfluous
+VRP Entries: 66429 (62208 unique)
+rpki-client: ta/arin: pulling from https://rrdp.arin.net/arin-rpki-ta.cer
+rpki-client: https://rrdp.arin.net/arin-rpki-ta.cer: connect: Connection refused
+rpki-client: https://rrdp.arin.net/arin-rpki-ta.cer: connect: Connection refused
+rpki-client: https://rrdp.arin.net/arin-rpki-ta.cer: connect: Connection refused
+rpki-client: https://rrdp.arin.net/arin-rpki-ta.cer: connect: Cannot assign requested address
+rpki-client: ta/arin: load from network failed
+rpki-client: ta/arin: pulling from rsync://rpki.arin.net/repository/arin-rpki-ta.cer
+rpki-client: ta/arin: loaded from network
+rpki-client: https://rrdp.arin.net/notification.xml: pulling from network
+rpki-client: https://rrdp.arin.net/notification.xml: connect: Connection refused
+rpki-client: https://rrdp.arin.net/notification.xml: connect: Connection refused
+rpki-client: https://rrdp.arin.net/notification.xml: connect: Connection refused
+rpki-client: https://rrdp.arin.net/notification.xml: connect: Cannot assign requested address
+rpki-client: https://rrdp.arin.net/notification.xml: load from network failed, fallback to rsync
+rpki-client: .rsync/rpki.arin.net/repository: pulling from rsync://rpki.arin.net/repository
+rpki-client: .rsync/rpki.arin.net/repository: loaded from network
+rpki-client: https://rrdp-rps.arin.net/notification.xml: pulling from network
+rpki-client: https://rrdp-rps.arin.net/notification.xml: connect: Connection refused
+rpki-client: https://rpki-rrdp.us-east-2.amazonaws.com/rrdp/b68a32ee-455d-483a-943d-1a5be748bfea/notification.xml: pulling from network
+rpki-client: https://rrdp.rp.ki/notification.xml: pulling from network
+rpki-client: https://rrdp-rps.arin.net/notification.xml: connect: Connection refused
+rpki-client: https://rpki-rrdp.us-east-2.amazonaws.com/rrdp/b68a32ee-455d-483a-943d-1a5be748bfea/notification.xml: downloading 1 deltas
+rpki-client: https://rpki-rrdp.us-east-2.amazonaws.com/rrdp/b68a32ee-455d-483a-943d-1a5be748bfea/notification.xml: loaded from network
+rpki-client: https://rrdp-rps.arin.net/notification.xml: connect: Connection refused
+rpki-client: https://rrdp-rps.arin.net/notification.xml: connect: Cannot assign requested address
+rpki-client: https://rrdp-rps.arin.net/notification.xml: load from network failed, fallback to rsync
+rpki-client: .rsync/rpki-rps.arin.net/repository: pulling from rsync://rpki-rps.arin.net/repository
+rpki-client: https://rpki.august.tw/rrdp/notification.xml: pulling from network
+rpki-client: https://rrdp.rp.ki/notification.xml: repository not modified
+rpki-client: https://rrdp.rp.ki/notification.xml: loaded from network
+rpki-client: https://rpki.august.tw/rrdp/notification.xml: repository not modified
+rpki-client: https://rpki.august.tw/rrdp/notification.xml: loaded from network
+rpki-client: .rsync/rpki-rps.arin.net/repository: loaded from network
+rpki-client: https://rpki.admin.freerangecloud.com/rrdp/notification.xml: pulling from network
+rpki-client: https://rpki.akrn.net/rrdp/notification.xml: pulling from network
+rpki-client: https://rpki.admin.freerangecloud.com/rrdp/notification.xml: notification file not modified
+rpki-client: https://rpki.admin.freerangecloud.com/rrdp/notification.xml: loaded from network
+rpki-client: https://rpki.akrn.net/rrdp/notification.xml: repository not modified
+rpki-client: https://rpki.akrn.net/rrdp/notification.xml: loaded from network
+rpki-client: https://rpki.roa.net/rrdp/notification.xml: pulling from network
+rpki-client: https://rpki.roa.net/rrdp/notification.xml: notification file not modified
+rpki-client: https://rpki.roa.net/rrdp/notification.xml: loaded from network
+rpki-client: https://rpki.multacom.com/rrdp/notification.xml: pulling from network
+rpki-client: https://rpki.multacom.com/rrdp/notification.xml: notification file not modified
+rpki-client: https://rpki.multacom.com/rrdp/notification.xml: loaded from network
+rpki-client: https://sakuya.nat.moe/rrdp/notification.xml: pulling from network
+rpki-client: https://rpki.tools.westconnect.ca/rrdp/notification.xml: pulling from network
+rpki-client: https://rpki.qs.nu/rrdp/notification.xml: pulling from network
+rpki-client: https://rpki.qs.nu/rrdp/notification.xml: notification file not modified
+rpki-client: https://rpki.qs.nu/rrdp/notification.xml: loaded from network
+rpki-client: https://rpki.tools.westconnect.ca/rrdp/notification.xml: notification file not modified
+rpki-client: https://rpki.tools.westconnect.ca/rrdp/notification.xml: loaded from network
+rpki-client: https://sakuya.nat.moe/rrdp/notification.xml: notification file not modified
+rpki-client: https://sakuya.nat.moe/rrdp/notification.xml: loaded from network
+rpki-client: rpki-rps.arin.net/repository/8a848adf8143bf6201823bd454752be6/0/267181B0A5DD38D60BCC22881342C64FFC8CBC1F.mft: no valid mft available
+rpki-client: rpki-rps.arin.net/repository/8a848ade7fb71aa901800003287f4402/0/2BF7605B8927C87448B3B294A8B61D8E983248E0.mft: no valid mft available
+rpki-client: rpki-rps.arin.net/repository/8a848adf7fb722e9017ffead9f534ac5/0/BFA2750976CA07F56A68976B0F01EB862F17C3B3.mft: no valid mft available
+rpki-client: rpki-rps.arin.net/repository/8a848adf7f366852017f419c7f1204e0/0/323630353a316330303a353066303a3a2f34342d3434203d3e203136373837.roa: certificate has expired
+rpki-client: rpki-rps.arin.net/repository/8a848adf7f366852017f419c7f1204e0/0/323630353a316330303a6666303a3a2f34342d3434203d3e203136373837.roa: certificate has expired
+rpki-client: rpki-rps.arin.net/repository/8a848adf7f366852017f419c7f1204e0/0/3139322e3231392e3231362e302f32312d3231203d3e203136373837.roa: certificate has expired
+rpki-client: rpki-rps.arin.net/repository/8a848adf7f366852017f419c7f1204e0/0/323630353a316330303a316666303a3a2f34342d3434203d3e203136373837.roa: certificate has expired
+rpki-client: rpki-rps.arin.net/repository/8a848adf7f366852017f419c7f1204e0/0/323630353a316330303a666666303a3a2f34342d3434203d3e203136373837.roa: certificate has expired
+rpki-client: https://rpki.apernet.io/rrdp/notification.xml: pulling from network
+rpki-client: https://rpki-rrdp.mnihyc.com/rrdp/notification.xml: pulling from network
+rpki-client: https://rpki.luys.cloud/rrdp/notification.xml: pulling from network
+rpki-client: https://rpki-rrdp.mnihyc.com/rrdp/notification.xml: notification file not modified
+rpki-client: https://rpki-rrdp.mnihyc.com/rrdp/notification.xml: loaded from network
+rpki-client: https://rpki.luys.cloud/rrdp/notification.xml: repository not modified
+rpki-client: https://rpki.luys.cloud/rrdp/notification.xml: loaded from network
+rpki-client: https://rpki.apernet.io/rrdp/notification.xml: notification file not modified
+rpki-client: https://rpki.apernet.io/rrdp/notification.xml: loaded from network
+rsync error: error in socket IO (code 10) at clientserver.c(138) [Receiver=3.2.5]
+rpki-client: all files parsed: generating output
