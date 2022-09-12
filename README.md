@@ -34,7 +34,7 @@ Endpoints
 Changes
 =======
 
-2022-09-12 0.10.0:
+2022-09-12 0.11.0:
 
 Includes rpki-client 7.9 in the container. Update to rpki-client 8.0 will be
 released after testing.
