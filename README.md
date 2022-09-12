@@ -34,8 +34,10 @@ Endpoints
 Changes
 =======
 
-dev:
-**Includes rpki-client 7.9 in the container**
+2022-09-12 0.10.0:
+
+Includes rpki-client 7.9 in the container. Update to rpki-client 8.0 will be
+released after testing.
 
   * **Bugfix:** launch rpki-client with absolute path instead of relative path.
   * **Behavioural change**: use rpki-client `-s` timeout set to the kill timeout.
