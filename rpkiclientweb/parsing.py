@@ -46,7 +46,6 @@ FILE_BAD_UPDATE_INTERVAL_RE = re.compile(
 FILE_MISSING_FILE_RE = re.compile(
     r"rpki-client: (?P<path>.*): No such file or directory"
 )
-
 SYNC_RSYNC_LOAD_FAILED = re.compile(r"rpki-client: rsync (?P<uri>.*) failed$")
 SYNC_RSYNC_FALLBACK = re.compile(
     r"rpki-client: (?P<uri>.*): load from network failed, fallback to rsync$"
@@ -55,7 +54,9 @@ SYNC_BAD_MESSAGE_DIGEST = re.compile(r"rpki-client: (?P<uri>.*): bad message dig
 SYNC_CACHE_FALLBACK = re.compile(
     r"rpki-client: (?P<uri>.*): load from network failed, fallback to cache$"
 )
-
+SYNC_HTTP_404 = re.compile(
+    r"^rpki-client: Error retrieving (?P<uri>.+): 404 Not Found$"
+)
 SYNC_RSYNC_RRDP_NOT_MODIFIED = re.compile(
     r"rpki-client: (?P<uri>.*): notification file not modified$"
 )
@@ -66,6 +67,9 @@ SYNC_SYNCHRONISATION_TIMEOUT = re.compile(
 )
 SYNC_RRDP_REPOSITORY_NOT_MODIFIED = re.compile(
     r"rpki-client: (?P<uri>.*): repository not modified$"
+)
+SYNC_RRDP_SNAPSHOT_FALLBACK = re.compile(
+    r"^rpki-client: (?P<uri>.+): delta sync failed, fallback to snapshot$"
 )
 
 SYNC_RSYNC_RRDP_SNAPSHOT = re.compile(
@@ -230,6 +234,11 @@ def parse_fetch_status(line: str) -> Generator[FetchStatus, None, None]:
         )
         return
 
+    http_404 = SYNC_HTTP_404.match(line)
+    if http_404:
+        yield FetchStatus(http_404.group("uri"), "http_404")
+        return
+
     # RRDP content failures
     rrdp_parse_aborted = SYNC_RRDP_PARSE_ABORTED.match(line)
     if rrdp_parse_aborted:
@@ -253,6 +262,11 @@ def parse_fetch_status(line: str) -> Generator[FetchStatus, None, None]:
         )
         return
 
+    snapshot_fallback = SYNC_RRDP_SNAPSHOT_FALLBACK.match(line)
+    if snapshot_fallback:
+        yield FetchStatus(snapshot_fallback.group("uri"), "rrdp_snapshot_fallback")
+        return
+
     # RRDP: regular updates
     not_modified = SYNC_RSYNC_RRDP_NOT_MODIFIED.match(line)
     if not_modified:
@@ -270,10 +284,12 @@ def parse_fetch_status(line: str) -> Generator[FetchStatus, None, None]:
     if snapshot:
         yield FetchStatus(snapshot.group("uri"), "rrdp_snapshot", 1)
         return
+
     deltas = SYNC_RSYNC_RRDP_DELTAS.match(line)
     if deltas:
         yield FetchStatus(deltas.group("uri"), "rrdp_delta", int(deltas.group("count")))
         return
+
     serial_decreased = SYNC_RRDP_SERIAL_DECREASED.match(line)
     if serial_decreased:
         delta = int(serial_decreased.group("previous")) - int(

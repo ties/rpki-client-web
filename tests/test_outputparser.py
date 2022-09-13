@@ -483,3 +483,15 @@ def test_fetch_error_rsync_issues() -> None:
         )
         in res.fetch_status
     )
+
+
+def test_fetch_error_404() -> None:
+    """Parse a number of fetch errors due to 404s."""
+    res = parse_output_file("inputs/20220912_404_delta.txt")
+
+    assert FetchStatus(
+        "https://rrdp.ripe.net/notification.xml", "rrdp_snapshot_fallback"
+    ) in list(res.fetch_status)
+
+    c = count_fetch_status(res)
+    assert c[("http_404", "rrdp.ripe.net")] == 2
