@@ -33,6 +33,10 @@ Endpoints
 
 Changes
 =======
+202x-xx-xx HEAD:
+
+  * track rrdp snapshot fallback
+  * track http 404 errors
 
 2022-09-12 0.11.0:
 

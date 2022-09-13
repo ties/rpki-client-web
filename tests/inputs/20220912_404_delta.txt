@@ -1,0 +1,11 @@
+rpki-client: ta/ripe: pulling from https://rpki.ripe.net/ta/ripe-ncc-ta.cer
+rpki-client: ta/ripe: loaded from network
+rpki-client: https://rrdp.ripe.net/notification.xml: pulling from network
+rpki-client: https://rrdp.ripe.net/notification.xml: downloading 1 deltas
+rpki-client: Error retrieving rrdp.ripe.net: 404 Not Found
+rpki-client: https://rrdp.ripe.net/notification.xml: bad message digest
+rpki-client: https://rrdp.ripe.net/notification.xml: delta sync failed, fallback to snapshot
+rpki-client: Error retrieving rrdp.ripe.net: 404 Not Found
+rpki-client: https://rrdp.ripe.net/notification.xml: bad message digest
+rpki-client: https://rrdp.ripe.net/notification.xml: load from network failed, fallback to rsync
+rpki-client: .rsync/rpki.ripe.net/repository: pulling from rsync://rpki.ripe.net/repository

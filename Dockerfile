@@ -5,8 +5,8 @@ WORKDIR /opt/rpkiclientweb
 # Use dependencies from fedora as much as possible, saves building them and build deps.
 RUN dnf --setopt=install_weak_deps=False --best install -y python3-aiohttp python3-pyyaml python3-pip python3-wrapt git\
   && dnf install -y rpki-client --enablerepo=updates-testing,updates-testing-modular --best \
-	&& dnf clean all \
-	&& rm -rf /var/cache/yum
+  && dnf clean all \
+  && rm -rf /var/cache/yum
 
 # Add Tini
 ENV TINI_VERSION v0.19.0
