@@ -204,7 +204,7 @@ def parse_maybe_warning_line(line) -> Generator[RPKIClientWarning, None, None]:
         return
 
 
-def parse_fetch_status(line: str) -> Generator[FetchStatus, None, None]:
+def parse_fetch_status(line: str) -> Generator[FetchStatus, None, None]:  # noqa: C901
     # (rrdp) failures while connecting
     connect_error = SYNC_CONNECT_ERROR.match(line)
     if connect_error:
@@ -221,10 +221,7 @@ def parse_fetch_status(line: str) -> Generator[FetchStatus, None, None]:
 
     tls_failure = SYNC_RRDP_TLS_FAILURE.match(line)
     if tls_failure:
-        yield FetchStatus(
-            tls_failure.group("uri"),
-            "tls_failure",
-        )
+        yield FetchStatus(tls_failure.group("uri"), "tls_failure")
         return
 
     synchronisation_timeout = SYNC_SYNCHRONISATION_TIMEOUT.match(line)
@@ -270,19 +267,17 @@ def parse_fetch_status(line: str) -> Generator[FetchStatus, None, None]:
     # RRDP: regular updates
     not_modified = SYNC_RSYNC_RRDP_NOT_MODIFIED.match(line)
     if not_modified:
-        yield FetchStatus(
-            not_modified.group("uri"), "rrdp_notification_not_modified", 1
-        )
+        yield FetchStatus(not_modified.group("uri"), "rrdp_notification_not_modified")
         return
     repository_not_modified = SYNC_RRDP_REPOSITORY_NOT_MODIFIED.match(line)
     if repository_not_modified:
         yield FetchStatus(
-            repository_not_modified.group("uri"), "rrdp_repository_not_modified", 1
+            repository_not_modified.group("uri"), "rrdp_repository_not_modified"
         )
         return
     snapshot = SYNC_RSYNC_RRDP_SNAPSHOT.match(line)
     if snapshot:
-        yield FetchStatus(snapshot.group("uri"), "rrdp_snapshot", 1)
+        yield FetchStatus(snapshot.group("uri"), "rrdp_snapshot")
         return
 
     deltas = SYNC_RSYNC_RRDP_DELTAS.match(line)
@@ -302,7 +297,7 @@ def parse_fetch_status(line: str) -> Generator[FetchStatus, None, None]:
     # Messages about behaviour/fallback
     fallback = SYNC_RSYNC_FALLBACK.match(line)
     if fallback:
-        yield FetchStatus(fallback.group("uri"), "rrdp_rsync_fallback", 1)
+        yield FetchStatus(fallback.group("uri"), "rrdp_rsync_fallback")
         return
 
     cache_fallback = SYNC_CACHE_FALLBACK.match(line)
@@ -312,7 +307,7 @@ def parse_fetch_status(line: str) -> Generator[FetchStatus, None, None]:
 
     load_failed = SYNC_RSYNC_LOAD_FAILED.match(line)
     if load_failed:
-        yield FetchStatus(load_failed.group("uri"), "rsync_load_failed", 1)
+        yield FetchStatus(load_failed.group("uri"), "rsync_load_failed")
         return
 
 
