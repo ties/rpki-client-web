@@ -10,3 +10,6 @@ output
 .pytest_cache
 .vagrant
 .autoenv.zsh
+azure-pipelines.yml
+Vagrantfile
+Dockerfile
