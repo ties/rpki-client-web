@@ -33,10 +33,11 @@ Endpoints
 
 Changes
 =======
-202x-xx-xx HEAD:
+2022-xx-xx DEV:
 
   * track rrdp snapshot fallback
   * track http 404 errors
+  * rpki-client 8.0 in container image
 
 2022-09-12 0.11.0:
 
