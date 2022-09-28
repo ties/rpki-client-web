@@ -30,6 +30,9 @@ FILE_MFT_NOT_AVAILABLE_RE = re.compile(
 FILE_MFT_NOT_YET_VALID_RE = re.compile(
     r"rpki-client: (?P<path>.*): mft not yet valid (?P<expiry>.*)"
 )
+FILE_CMS_UNEXPECTED_SIGNED_ATTRIBUTE = re.compile(
+    r"rpki-client: (?P<path>.*): RFC 6488: CMS has unexpected signed attribute (?P<attribute>.*)"
+)
 # TODO: Consider a more elegant way of filtering out TLS handshake errors
 FILE_CERTIFICATE_EXPIRED = re.compile(
     r"rpki-client: (?P<path>(?!TLS handshake:).+): certificate has expired"
@@ -163,6 +166,12 @@ def parse_maybe_warning_line(line) -> Generator[RPKIClientWarning, None, None]:
     if missing_sia:
         yield LabelWarning("missing_sia", missing_sia.group("path"))
         return
+
+    cms_unexpected_signed_attr = FILE_CMS_UNEXPECTED_SIGNED_ATTRIBUTE.match(line)
+    if cms_unexpected_signed_attr:
+        yield LabelWarning(
+            "unexpected_signed_cms_attribute", cms_unexpected_signed_attr.group("path")
+        )
 
     # manifest time-related checks
     bad_update_interval = FILE_BAD_UPDATE_INTERVAL_RE.match(line)

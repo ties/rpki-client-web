@@ -381,6 +381,20 @@ def test_unsupported_filetype() -> None:
     ) in list(parser.warnings)
 
 
+def test_parse_mft_warning() -> None:
+    parser = OutputParser(
+        "rpki-client: interop/misc-objects/6C76EDB2225D11E286C4BD8F7A2F2747.roa: RFC 6488: CMS has unexpected signed attribute 1.2.840.113549.1.9.15\n"
+    )
+
+    assert (
+        LabelWarning(
+            "unexpected_signed_cms_attribute",
+            "interop/misc-objects/6C76EDB2225D11E286C4BD8F7A2F2747.roa",
+        )
+        in parser.warnings
+    )
+
+
 def test_rpki_client_warnings() -> None:
     """Parse a file that contains lines with warnings from rpki-client itself."""
     res = parse_output_file("inputs/20220901_http_chunked_assertion_error.txt")
