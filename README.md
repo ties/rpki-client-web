@@ -38,6 +38,7 @@ Changes
   * track rrdp snapshot fallback
   * track http 404 errors
   * rpki-client 8.0 in container image
+  * track unexpected CMS signed attribute warning
 
 2022-09-12 0.11.0:
 
