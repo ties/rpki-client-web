@@ -39,6 +39,7 @@ Changes
   * track http 404 errors
   * rpki-client 8.0 in container image
   * track unexpected CMS signed attribute warning
+  * Update OpenSSL for 3.0.5-2
 
 2022-09-12 0.11.0:
 
