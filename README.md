@@ -33,13 +33,15 @@ Endpoints
 
 Changes
 =======
-2022-xx-xx DEV:
+2022-11-11 0.12.0:
 
   * track rrdp snapshot fallback
   * track http 404 errors
   * rpki-client 8.0 in container image
   * track unexpected CMS signed attribute warning
   * Update OpenSSL for 3.0.5-2
+  * **final release on Fedora 36 container**
+  * **rpki-client 8.0 metric parsing**
 
 2022-09-12 0.11.0:
 
