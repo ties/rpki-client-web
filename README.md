@@ -33,6 +33,10 @@ Endpoints
 
 Changes
 =======
+2022-xx-xx 0.13.0-DEV:
+
+  * Container based on Fedora 37
+
 2022-11-11 0.12.0:
 
   * track rrdp snapshot fallback
