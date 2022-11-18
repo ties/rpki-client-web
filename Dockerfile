@@ -1,10 +1,9 @@
-FROM fedora:36
+FROM fedora:37
 
 WORKDIR /opt/rpkiclientweb
 
 # Use dependencies from fedora as much as possible, saves building them and build deps.
 RUN dnf --setopt=install_weak_deps=False --best install -y python3-aiohttp python3-pyyaml python3-pip python3-wrapt git\
-  && yum  update -y openssl-libs \
   && dnf install -y rpki-client --enablerepo=updates-testing,updates-testing-modular --best \
   && dnf clean all \
   && rm -rf /var/cache/yum
