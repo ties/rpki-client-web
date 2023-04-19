@@ -102,7 +102,8 @@ RPKI_OBJECTS_BUILD_TIME = Gauge(
 RPKI_OBJECTS_COUNT = Gauge("rpki_objects", "Number of objects by type", ["type"])
 RPKI_OBJECTS_MIN_EXPIRY = Gauge(
     "rpki_objects_min_expiry",
-    "First expiry time for file in exported objects by trust anchor (includes non-hosted repositories)",
+    "First expiry time for file in exported objects by trust anchor (includes "
+    "non-hosted repositories)",
     ["ta"],
 )
 

@@ -3,7 +3,6 @@ import argparse
 import asyncio
 import dataclasses
 import logging
-import os
 import sys
 
 from .config import Configuration

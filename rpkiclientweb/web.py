@@ -1,11 +1,7 @@
 import asyncio
-import dataclasses
-import json
 import logging
-import os
 import random
-from dataclasses import dataclass
-from typing import Dict, List, Optional
+from typing import Optional
 
 from aiohttp import web
 from prometheus_async import aio

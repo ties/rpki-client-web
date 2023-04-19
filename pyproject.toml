@@ -1,9 +1,44 @@
+[tool.poetry]
+name = "rpki-client-web"
+version = "0.13.0"
+license = "MIT"
+keywords = ["rpki", "rpki-client", "validator", "metrics", "prometheus"]
+description = "A web api for RPKI-client"
+authors = ["Ties de Kock <ties@tiesdekock.nl>"]
+readme = "README.md"
+repository = "https://github.com/ties/rpki-client-web"
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Topic :: Software Development :: Libraries",
+    "License :: OSI Approved :: MIT License"
+]
+
+packages = [{include = "rpkiclientweb"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+aiohttp = "^3.8.4"
+prometheus-async = {extras = ["aiohttp"], version = "^22.2.0"}
+PyYAML = "^6.0"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^7.3.1"
+tox = "^4.4.12"
+isort = {extras = ["pyproject"], version = "^5.12.0"}
+pytest-cov = "^4.0.0"
+pytest-xdist = "^3.2.1"
+ruff = "^0.0.261"
+black = "^23.3.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
 [tool.black]
 target-version = ["py310"]
 include = '\.pyi?$'
-exclude = '''
+extend-exclude = '''
 /(
-    \.git
   | \.mypy_cache
   | \.tox
   | \.venv
@@ -19,6 +54,9 @@ force_grid_wrap = 0
 use_parentheses = true
 line_length = 88
 profile = "black"
+
+[tool.ruff]
+ignore = ["E501"]
 
 [settings]
 # known_third_party = []

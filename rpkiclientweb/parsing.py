@@ -31,7 +31,8 @@ FILE_MFT_NOT_YET_VALID_RE = re.compile(
     r"rpki-client: (?P<path>.*): mft not yet valid (?P<expiry>.*)"
 )
 FILE_CMS_UNEXPECTED_SIGNED_ATTRIBUTE = re.compile(
-    r"rpki-client: (?P<path>.*): RFC 6488: CMS has unexpected signed attribute (?P<attribute>.*)"
+    r"rpki-client: (?P<path>.*): RFC 6488: CMS has unexpected signed attribute "
+    "(?P<attribute>.*)"
 )
 # TODO: Consider a more elegant way of filtering out TLS handshake errors
 FILE_CERTIFICATE_EXPIRED = re.compile(
@@ -88,7 +89,8 @@ SYNC_RRDP_BAD_FILE_DIGEST = re.compile(
     r"rpki-client: (?P<uri>.*): bad file digest for .*"
 )
 SYNC_RRDP_SERIAL_DECREASED = re.compile(
-    r"rpki-client: (?P<uri>.*): serial number decreased from (?P<previous>[0-9]+) to (?P<current>[0-9]+)"
+    r"rpki-client: (?P<uri>.*): serial number decreased from "
+    "(?P<previous>[0-9]+) to (?P<current>[0-9]+)"
 )
 SYNC_RRDP_TLS_CERTIFICATE_VERIFICATION_FAILED = re.compile(
     r"rpki-client: (?P<uri>.*): TLS handshake: certificate verification failed:.*"
