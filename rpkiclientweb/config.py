@@ -4,7 +4,6 @@ Config file support.
 TODO: Consider using https://pypi.org/project/voluptuous/ or
 https://docs.python-cerberus.org/en/stable/
 """
-import json
 import logging
 from dataclasses import dataclass, field
 from pathlib import Path
@@ -98,7 +97,8 @@ class Configuration:
         self.deadline = conf.get("deadline", -1)
         validate(
             self.deadline <= self.interval,
-            f"deadline needs to be below interval ({self.interval}) or use missing or -1 to disable",
+            f"deadline needs to be below interval ({self.interval}) or use "
+            "missing or -1 to disable",
         )
 
         self.timeout = conf.get("timeout", None)

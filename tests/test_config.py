@@ -4,7 +4,6 @@ from pathlib import Path
 from typing import Dict
 
 import pytest
-from yaml import Loader, dump, load
 
 from rpkiclientweb.config import Configuration
 from rpkiclientweb.rpki_client import RpkiClient
