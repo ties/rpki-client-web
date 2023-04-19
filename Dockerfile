@@ -1,17 +1,16 @@
-FROM fedora:37
+FROM fedora:38
 
 WORKDIR /opt/rpkiclientweb
 
 # Use dependencies from fedora as much as possible, saves building them and build deps.
-RUN dnf --setopt=install_weak_deps=False --best install -y python3-aiohttp python3-pyyaml python3-pip python3-wrapt git\
+RUN dnf --setopt=install_weak_deps=False --best install -y python3-aiohttp python3-pyyaml python3-pip python3-wrapt git tini \
   && dnf install -y rpki-client --enablerepo=updates-testing,updates-testing-modular --best \
   && dnf clean all \
   && rm -rf /var/cache/yum
 
-# Add Tini
-ENV TINI_VERSION v0.19.0
-ADD https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini /tini
-RUN chmod +x /tini
+#
+# Tini is used from the base image distribution since this is cross-architecture.
+#
 
 ADD . /opt/rpkiclientweb
 RUN mkdir /opt/rpkiclientweb/cache /opt/rpkiclientweb/output /config\
@@ -27,7 +26,7 @@ ADD config.yml /config/
 # default port from default config
 EXPOSE 8888
 
-ENTRYPOINT ["/tini", "--"]
+ENTRYPOINT ["tini", "--"]
 
 USER daemon
 # Run your program under Tini
