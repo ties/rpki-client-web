@@ -33,9 +33,11 @@ Endpoints
 
 Changes
 =======
-2022-xx-xx 0.13.0-DEV:
+2023-xx-xx 0.13.0:
 
   * Container based on Fedora 37
+  * Multi-arch (`x86_64`, `arm64`) container build.
+  * Update pre-commit settings
 
 2022-11-11 0.12.0:
 
