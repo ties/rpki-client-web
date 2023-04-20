@@ -7,22 +7,18 @@ include README.md
 include LICENSE.txt
 include config.yml
 
-include .coveragerc .flake8 setup.cfg pyproject.toml
-include .pre-commit-config.yaml pylintrc
-include tox.ini appveyor.yml .travis.yml rtd.txt
-include contributing.md RELEASING.txt HACKING.txt TODO.txt
-include azure-pipelines.yml pytest.ini
-include Pipfile
+include .coveragerc .flake8 pyproject.toml poetry.lock
+include .pre-commit-config.yaml
 include util/rsync_timeout
 graft .github
 
 exclude requirements*
-exclude pyproject.toml .gitkeep .isort.cfg Pipfile.lock
+exclude .gitkeep .isort.cfg
 exclude Dockerfile .dockerignore docker/*
 exclude .vscode/*
 
-exclude venv
 exclude Vagrantfile
+exclude tests/*
 
 global-exclude __pycache__ *.py[cod]
 global-exclude .DS_Store
