@@ -61,5 +61,8 @@ profile = "black"
 [tool.ruff]
 ignore = ["E501"]
 
+[tool.pytest]
+junit_family = "xunit2"
+
 [settings]
 # known_third_party = []
