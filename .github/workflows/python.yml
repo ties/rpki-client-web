@@ -24,16 +24,20 @@ jobs:
           python-version: '3.9'
           cache: 'poetry'
       - run: poetry install
-      - name: Lint with ruff
+      - name: lint (ruff)
         run: |
           # stop the build if there are Python syntax errors or undefined names
           poetry run ruff --format=github --select=E9,F63,F7,F82 --target-version=py310 .
           # default set of ruff rules with GitHub Annotations
           poetry run ruff --format=github --target-version=py10 .
-      - run: poetry run pytest --cov rpkiclientweb --cov-report html -qq -o console_output_style=count -p no:sugar tests
-      - name: Run tox steps
-      # Dirty but low-effort way to run the same steps that tox does:
-      # This could be a lint and a test stage
+      - name: lint (flak8, black)
         run: |
           poetry run flake8 rpkiclientweb setup.py
           poetry run black --check --diff rpkiclientweb tests
+      - name: test
+        run: poetry run pytest --cov rpkiclientweb --cov-report html -qq -o console_output_style=count -p no:sugar tests
+      - name: package and test packaging
+        run: |
+          poetry build
+          poetry run twine build/*
+          poetry run check-manifest
