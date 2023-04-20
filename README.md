@@ -37,7 +37,7 @@ Changes
 
   * Container based on Fedora 37
   * Multi-arch (`x86_64`, `arm64`) container build.
-  * Update pre-commit settings
+  * Build using poetry and revisit build process
 
 2022-11-11 0.12.0:
 
