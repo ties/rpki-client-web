@@ -1,24 +1,19 @@
-graft rpkiclientweb
-graft tests
-graft docs
-graft examples
-
-include README.md
-include LICENSE.txt
-include config.yml
-
-include .coveragerc .flake8 pyproject.toml poetry.lock
-include .pre-commit-config.yaml
-include util/rsync_timeout
-graft .github
-
-exclude requirements*
-exclude .gitkeep .isort.cfg
-exclude Dockerfile .dockerignore docker/*
-exclude .vscode/*
-
+exclude config.yml
+exclude MANIFEST.in
+exclude .pre-commit-config.yaml
+exclude .flake8
+exclude .pre-commit-config.yaml
+exclude poetry.lock
+exclude pylintrc
+exclude Dockerfile
+exclude .dockerignore
 exclude Vagrantfile
-exclude tests/*
 
-global-exclude __pycache__ *.py[cod]
-global-exclude .DS_Store
+graft util
+
+global-exclude .gitkeep .gitignore .DS_Store
+
+prune tests
+prune .github
+prune .vscode
+prune docker
