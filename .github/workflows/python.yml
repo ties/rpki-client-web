@@ -23,21 +23,28 @@ jobs:
         with:
           python-version: '3.9'
           cache: 'poetry'
-      - run: poetry install
+      - name: install (dev) dependencies
+        run: poetry install --with dev
       - name: lint (ruff)
         run: |
           # stop the build if there are Python syntax errors or undefined names
           poetry run ruff --format=github --select=E9,F63,F7,F82 --target-version=py310 .
           # default set of ruff rules with GitHub Annotations
-          poetry run ruff --format=github --target-version=py10 .
+          poetry run ruff --format=github --target-version=py310 .
       - name: lint (flak8, black)
         run: |
-          poetry run flake8 rpkiclientweb setup.py
+          poetry run flake8 rpkiclientweb tests
           poetry run black --check --diff rpkiclientweb tests
       - name: test
         run: poetry run pytest --cov rpkiclientweb --cov-report html -qq -o console_output_style=count -p no:sugar tests
       - name: package and test packaging
         run: |
           poetry build
-          poetry run twine build/*
+          poetry run twine check dist/*
           poetry run check-manifest
+      - name: Save artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: dist
+          path: |
+            dist
