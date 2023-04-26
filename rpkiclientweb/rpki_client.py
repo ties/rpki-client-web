@@ -19,6 +19,7 @@ from rpkiclientweb.metrics import (
     RPKI_CLIENT_ERRORS,
     RPKI_CLIENT_FETCH_STATUS,
     RPKI_CLIENT_HOST_WARNINGS,
+    RPKI_CLIENT_JSON_ERROR,
     RPKI_CLIENT_LAST_DURATION,
     RPKI_CLIENT_LAST_UPDATE,
     RPKI_CLIENT_PULLED,
@@ -353,7 +354,12 @@ class RpkiClient:
             return
 
         with json_path.open("r") as json_res:
-            data = json.load(json_res)
+            try:
+                data = json.load(json_res)
+            except json.decoder.JSONDecodeError as err:
+                LOG.error("Error while parsing JSON in %s: %s", json_path, str(err))
+                RPKI_CLIENT_JSON_ERROR.inc()
+                return
 
             self.__update_object_expiry(data["roas"])
 

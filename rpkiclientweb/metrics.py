@@ -61,6 +61,10 @@ RPKI_CLIENT_LAST_UPDATE = Gauge(
     "rpkiclient_last_update",
     "Timestamp of the last successful call to rpki-client",
 )
+RPKI_CLIENT_JSON_ERROR = Counter(
+    "rpkiclient_json_error",
+    "Number of rpki-client runs where the JSON could not be parsed by Python",
+)
 RPKI_CLIENT_UPDATE_COUNT = Counter(
     "rpkiclient_update", "Number of rpki-client updates", ["returncode"]
 )
