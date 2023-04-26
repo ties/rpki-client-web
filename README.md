@@ -38,6 +38,7 @@ Changes
   * Container based on Fedora 37
   * Multi-arch (`x86_64`, `arm64`) container build.
   * Build using poetry and revisit build process
+  * Add metric for JSON parse errors
 
 2022-11-11 0.12.0:
 
