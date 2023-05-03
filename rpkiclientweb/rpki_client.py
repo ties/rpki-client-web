@@ -78,6 +78,14 @@ METADATA_LABELS = (
 )
 OPTIONAL_METADATA_LABELS = frozenset(
     [
+        # recent attributes (2023-05-03, 8.4)
+        "aspas",
+        "failedaspas",
+        "invalidaspas",
+        "taks",
+        "invalidtals",
+        "vaps",
+        "uniquevaps",
         # recent attribute (2022-03-11)
         "bgpsec_pubkeys",
         "failedroas",
@@ -314,36 +322,39 @@ class RpkiClient:
         Get statistics from `.metadata` of validated objects. Example output:
         ```
         {
-          "buildmachine": "fedora35.localdomain",
-          "buildtime": "2022-03-11T10:42:02Z",
-          "elapsedtime": "139",
-          "usertime": "129",
-          "systemtime": "9",
-          "roas": 62544,
-          "failedroas": 1,
-          "invalidroas": 0,
-          "bgpsec_pubkeys": 2,
-          "certificates": 27355,
-          "invalidcertificates": 0,
-          "tals": 4,
-          "invalidtals": 0,
-          "talfiles": [
-            "/etc/pki/tals/afrinic.tal",
-            "/etc/pki/tals/apnic.tal",
-            "/etc/pki/tals/lacnic.tal",
-            "/etc/pki/tals/ripe.tal"
-          ],
-          "manifests": 27353,
-          "failedmanifests": 5,
-          "stalemanifests": 7,
-          "crls": 27341,
-          "gbrs": 2,
-          "repositories": 44,
-          "vrps": 270611,
-          "uniquevrps": 267623,
-          "cachedir_del_files": 28,
-          "cachedir_superfluous_files": 4965,
-          "cachedir_del_dirs": 1346
+            "buildmachine": "mbp-running-8.4",
+            "buildtime": "2023-05-03T06:23:40Z",
+            "elapsedtime": 123,
+            "usertime": 50,
+            "systemtime": 36,
+            "roas": 34142,
+            "failedroas": 0,
+            "invalidroas": 0,
+            "aspas": 6603,
+            "failedaspas": 0,
+            "invalidaspas": 0,
+            "bgpsec_pubkeys": 0,
+            "certificates": 14719,
+            "invalidcertificates": 0,
+            "taks": 0,
+            "tals": 1,
+            "invalidtals": 0,
+            "talfiles": [
+                "/Users/tdekock/src/ripe/rpki/validator-prepdev/config/ripe-prepdev-https.tal"
+            ],
+            "manifests": 14719,
+            "failedmanifests": 0,
+            "stalemanifests": 0,
+            "crls": 14719,
+            "gbrs": 0,
+            "repositories": 3,
+            "vrps": 424493,
+            "uniquevrps": 424493,
+            "vaps": 6603,
+            "uniquevaps": 6603,
+            "cachedir_del_files": 9734,
+            "cachedir_superfluous_files": 9392,
+            "cachedir_del_dirs": 35183
         }
         ```
         """
