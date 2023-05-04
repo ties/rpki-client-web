@@ -48,6 +48,7 @@ class RpkiClientWeb:
         )
 
     async def index(self, req) -> web.Response:
+        """Human readable index page."""
         return web.Response(
             text=f"""<html>
             <head><title>rpki-client wrapper</title></head>
@@ -74,7 +75,9 @@ class RpkiClientWeb:
         """return the validated objects json."""
         path = self.config.output_dir / "json"
         if path.is_file():
-            return web.FileResponse(path, headers={"Content-Type": "application/json"})
+            resp = web.FileResponse(path, headers={"Content-Type": "application/json"})
+            resp.enable_compression()
+            return resp
 
         status = (
             "validated objects JSON file is not available at the moment."
@@ -97,6 +100,7 @@ class RpkiClientWeb:
         self.finished_initial_run = True
 
     async def json_result(self, req) -> web.Response:
+        """return a description of the last execution result."""
         if self.result:
             return web.json_response(self.result, dumps=json_dumps)
 

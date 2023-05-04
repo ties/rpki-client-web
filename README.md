@@ -43,6 +43,7 @@ Changes
   * **deprecated VRPS by TA metrics, since those are covered in openmetrics metrics**. Will be released >6 months after this release.
   * Include VAPs and bgpsec keys in the tracked 'time to first object expiring'
   * Include rpki-client openmetrics in `/metrics` output.
+  * Enable HTTP compression for validated objects file
 
 2022-11-11 0.12.0:
 
