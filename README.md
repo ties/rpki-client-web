@@ -40,6 +40,9 @@ Changes
   * Build using poetry and revisit build process
   * Add metric for JSON parse errors
   * Add metrics for recent attributes
+  * **deprecated VRPS by TA metrics, since those are covered in openmetrics metrics**. Will be released >6 months after this release.
+  * Include VAPs and bgpsec keys in the tracked 'time to first object expiring'
+  * Include rpki-client openmetrics in `/metrics` output.
 
 2022-11-11 0.12.0:
 
