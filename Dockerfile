@@ -4,9 +4,13 @@ WORKDIR /opt/rpkiclientweb
 
 # Use dependencies from fedora as much as possible, saves building them and build deps.
 RUN dnf --setopt=install_weak_deps=False --best install -y python3-aiohttp python3-pyyaml python3-poetry python3-wrapt git tini \
-  && dnf install -y rpki-client --enablerepo=updates-testing,updates-testing-modular --best \
+  && dnf install -y rpki-client \
+    --enablerepo=updates-testing,updates-testing-modular \
+    --best \
+    --advisory=FEDORA-2023-c1bd199900 \
   && dnf clean all \
   && rm -rf /var/cache/yum
+# --advisory=FEDORA-2023-c1bd199900: rpki-client 8.4.1 on 4-5-2023
 
 #
 # Tini is used from the base image distribution since this is cross-architecture.

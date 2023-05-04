@@ -35,7 +35,7 @@ Changes
 =======
 2023-xx-xx 0.13.0:
 
-  * Container based on Fedora 37
+  * Container based on Fedora 38 w/ rpki-client 8.4.1 (8.3 has issues)
   * Multi-arch (`x86_64`, `arm64`) container build.
   * Build using poetry and revisit build process
   * Add metric for JSON parse errors
