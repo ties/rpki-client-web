@@ -8,10 +8,13 @@ import os
 import time
 from collections import Counter
 from dataclasses import dataclass, field
-from typing import Dict, FrozenSet, List
+from typing import Dict, FrozenSet, Iterable, List
 
+import prometheus_client.registry
 from prometheus_async.aio import time as time_metric
 from prometheus_async.aio import track_inprogress
+from prometheus_client.metrics_core import Metric
+from prometheus_client.openmetrics.parser import text_string_to_metric_families
 
 from rpkiclientweb.config import Configuration
 from rpkiclientweb.metrics import (
@@ -115,6 +118,19 @@ class ExecutionResult:
     duration: float
 
 
+class ListCollector(prometheus_client.registry.Collector):
+    """A colletor of metrics in a list"""
+
+    metrics: List[Metric] = []
+
+    def collect(self) -> Iterable[Metric]:
+        return self.metrics
+
+    def update(self, new_metrics: Iterable[Metric]) -> None:
+        """Update the metrics contained in this collector."""
+        self.metrics = list(new_metrics)
+
+
 @dataclass
 class RpkiClient:
     """Wrapper for rpki-client."""
@@ -123,6 +139,12 @@ class RpkiClient:
 
     warnings: List[WarningSummary] = field(default_factory=list)
     last_update_repos: FrozenSet[str] = frozenset()
+
+    rpki_client_openmetrics: ListCollector = field(init=False)
+
+    def __post_init__(self) -> None:
+        self.rpki_client_openmetrics = ListCollector()
+        prometheus_client.registry.REGISTRY.register(self.rpki_client_openmetrics)
 
     @property
     def args(self) -> List[str]:
@@ -231,6 +253,7 @@ class RpkiClient:
         self.update_warning_metrics(stderr, proc.returncode == 0)
 
         asyncio.create_task(self.update_validated_objects_gauge(proc.returncode))
+        asyncio.create_task(self.update_rpki_client_openmetrics())
 
         return ExecutionResult(
             returncode=proc.returncode,
@@ -238,6 +261,20 @@ class RpkiClient:
             stderr=stderr.decode(),
             duration=duration,
         )
+
+    async def update_rpki_client_openmetrics(self) -> None:
+        """
+        Read and combine the openmetrics formatted metrics from rpki-client with ours
+        """
+        metrics_path = self.config.output_dir / "metrics"
+
+        if not metrics_path.is_file():
+            return
+
+        with metrics_path.open("r") as f:
+            self.rpki_client_openmetrics.update(
+                text_string_to_metric_families(f.read())
+            )
 
     def update_warning_metrics(self, stderr: bytes, was_successful_run: bool) -> None:
         """Update the warning gauges."""
@@ -292,23 +329,41 @@ class RpkiClient:
         self.last_update_repos = new_pulling
 
     # TODO: Update to TypedDict when only supporting 3.8+
-    def __update_object_expiry(self, roas: List[Dict]) -> None:
+    def __update_object_expiry(
+        self,
+        roas: List[Dict],
+        bgpsec_keys: List[Dict],
+        vaps_v4: List[Dict],
+        vaps_v6: List[Dict],
+    ) -> None:
         # roas may not be sorted by ta. Using `itertools.groupby` would require
         # a sort - so just do this in code.
         # ta name -> timestamp
-        min_expires_by_ta: Dict[str, int] = dict()
+        min_expires_by_ta: Dict[str, int] = {}
+        # deprecated in May 2023
         vrps_by_ta: Dict[str, int] = Counter()
+
+        def update_expires(obj: Dict) -> None:
+            expires = obj.get("expires", None)
+            ta = obj.get("ta", None)
+            if (expires is not None) and (ta is not None):
+                # take expires when not found, otherwise, min value.
+                min_expires_by_ta[ta] = min(min_expires_by_ta.get(ta, expires), expires)
+
+        for brk in bgpsec_keys:
+            update_expires(brk)
+
+        for vap in vaps_v4:
+            update_expires(vap)
+
+        for vap in vaps_v6:
+            update_expires(vap)
 
         for roa in roas:
             ta = roa.get("ta", None)
-            expires = roa.get("expires", None)
             if ta is not None:
                 vrps_by_ta[ta] += 1
-                if expires is not None:
-                    # take expires when not found, otherwise, min value.
-                    min_expires_by_ta[ta] = min(
-                        min_expires_by_ta.get(ta, expires), expires
-                    )
+                update_expires(roa)
 
         for ta, vrp_count in vrps_by_ta.items():
             RPKI_OBJECTS_VRPS_BY_TA.labels(ta=ta).set(vrp_count)
@@ -372,7 +427,20 @@ class RpkiClient:
                 RPKI_CLIENT_JSON_ERROR.inc()
                 return
 
-            self.__update_object_expiry(data["roas"])
+            # {
+            #   metadata: {...},
+            #   roas: [...],
+            #   bgpsec_keys: [...],
+            #   provider_authorizations: {
+            #     "ipv4": [...],
+            #     "ipv6": [...]
+            #   }
+            # }
+            roas = data.get("roas", [])
+            bgpsec_keys = data.get("bgpsec_keys", [])
+            vaps = data.get("provider_authorizations", {"ipv4": [], "ipv6": []})
+
+            self.__update_object_expiry(roas, bgpsec_keys, vaps["ipv4"], vaps["ipv6"])
 
             metadata = data["metadata"]
             missing_keys = set()
