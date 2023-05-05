@@ -8,13 +8,10 @@ import os
 import time
 from collections import Counter
 from dataclasses import dataclass, field
-from typing import Dict, FrozenSet, Iterable, List
+from typing import Dict, FrozenSet, List
 
-import prometheus_client.registry
 from prometheus_async.aio import time as time_metric
 from prometheus_async.aio import track_inprogress
-from prometheus_client.metrics_core import Metric
-from prometheus_client.openmetrics.parser import text_string_to_metric_families
 
 from rpkiclientweb.config import Configuration
 from rpkiclientweb.metrics import (
@@ -36,6 +33,7 @@ from rpkiclientweb.metrics import (
     RPKI_OBJECTS_VRPS_BY_TA,
 )
 from rpkiclientweb.outputparser import OutputParser, WarningSummary, missing_labels
+from rpkiclientweb.rpki_client_output import JSONOutputParser, OpenmetricsOutputParser
 from rpkiclientweb.util import json_dumps
 
 LOG = logging.getLogger(__name__)
@@ -43,69 +41,6 @@ LOG_STDOUT = LOG.getChild("stdout")
 LOG_STDERR = LOG.getChild("stderr")
 
 OUTPUT_BUFFER_SIZE = 8_388_608
-
-#
-# Authoratitive source for what labels exist:
-# http://cvsweb.openbsd.org/cgi-bin/cvsweb/~checkout~/src/usr.sbin/rpki-client/output-json.c
-#
-
-BUILDTIME_KEY = "buildtime"
-METADATA_LABELS = (
-    # ignore "buildmachine"
-    "buildtime",
-    "elapsedtime",
-    "usertime",
-    "systemtime",
-    "roas",
-    "failedroas",
-    "invalidroas",
-    "bgpsec_router_keys",
-    "invalidbgpsec_router_keys",
-    "bgpsec_pubkeys",
-    "certificates",
-    "failcertificates",
-    "invalidcertificates",
-    "tals",
-    # ignore "talfiles" strings
-    "manifests",
-    "failedmanifests",
-    "stalemanifests",
-    "crls",
-    "gbrs",
-    "repositories",
-    "vrps",
-    "uniquevrps",
-    "cachedir_del_files",
-    "cachedir_superfluous_files",
-    "cachedir_del_dirs",
-)
-OPTIONAL_METADATA_LABELS = frozenset(
-    [
-        # recent attributes (2023-05-03, 8.4)
-        "aspas",
-        "failedaspas",
-        "invalidaspas",
-        "taks",
-        "invalidtals",
-        "vaps",
-        "uniquevaps",
-        # recent attribute (2022-03-11)
-        "bgpsec_pubkeys",
-        "failedroas",
-        "invalidroas",
-        "failcertificates",
-        "invalidcertificates",
-        "stalemanifests",
-        # not present on 7.3 on fedora:
-        "bgpsec_router_keys",
-        "invalidbgpsec_router_keys",
-        "gbrs",
-        "cachedir_del_files",
-        "cachedir_del_dirs",
-        # recent attribute (2022-03-11)
-        "cachedir_superfluous_files",
-    ]
-)
 
 
 @dataclass
@@ -118,19 +53,6 @@ class ExecutionResult:
     duration: float
 
 
-class ListCollector(prometheus_client.registry.Collector):
-    """A colletor of metrics in a list"""
-
-    metrics: List[Metric] = []
-
-    def collect(self) -> Iterable[Metric]:
-        return self.metrics
-
-    def update(self, new_metrics: Iterable[Metric]) -> None:
-        """Update the metrics contained in this collector."""
-        self.metrics = list(new_metrics)
-
-
 @dataclass
 class RpkiClient:
     """Wrapper for rpki-client."""
@@ -140,11 +62,12 @@ class RpkiClient:
     warnings: List[WarningSummary] = field(default_factory=list)
     last_update_repos: FrozenSet[str] = frozenset()
 
-    rpki_client_openmetrics: ListCollector = field(init=False)
+    openmetrics_parser: OpenmetricsOutputParser = field(init=False)
+    json_parser: JSONOutputParser = field(init=False)
 
     def __post_init__(self) -> None:
-        self.rpki_client_openmetrics = ListCollector()
-        prometheus_client.registry.REGISTRY.register(self.rpki_client_openmetrics)
+        self.openmetrics_parser = OpenmetricsOutputParser()
+        self.json_parser = JSONOutputParser()
 
     @property
     def args(self) -> List[str]:
@@ -271,10 +194,7 @@ class RpkiClient:
         if not metrics_path.is_file():
             return
 
-        with metrics_path.open("r") as f:
-            self.rpki_client_openmetrics.update(
-                text_string_to_metric_families(f.read())
-            )
+        self.openmetrics_parser.parse(metrics_path)
 
     def update_warning_metrics(self, stderr: bytes, was_successful_run: bool) -> None:
         """Update the warning gauges."""
@@ -328,50 +248,6 @@ class RpkiClient:
         self.warnings = new_warnings
         self.last_update_repos = new_pulling
 
-    # TODO: Update to TypedDict when only supporting 3.8+
-    def __update_object_expiry(
-        self,
-        roas: List[Dict],
-        bgpsec_keys: List[Dict],
-        vaps_v4: List[Dict],
-        vaps_v6: List[Dict],
-    ) -> None:
-        # roas may not be sorted by ta. Using `itertools.groupby` would require
-        # a sort - so just do this in code.
-        # ta name -> timestamp
-        min_expires_by_ta: Dict[str, int] = {}
-        # deprecated in May 2023
-        vrps_by_ta: Dict[str, int] = Counter()
-
-        def update_expires(obj: Dict) -> None:
-            expires = obj.get("expires", None)
-            ta = obj.get("ta", None)
-            if (expires is not None) and (ta is not None):
-                # take expires when not found, otherwise, min value.
-                min_expires_by_ta[ta] = min(min_expires_by_ta.get(ta, expires), expires)
-
-        for brk in bgpsec_keys:
-            update_expires(brk)
-
-        for vap in vaps_v4:
-            update_expires(vap)
-
-        for vap in vaps_v6:
-            update_expires(vap)
-
-        for roa in roas:
-            ta = roa.get("ta", None)
-            if ta is not None:
-                vrps_by_ta[ta] += 1
-                update_expires(roa)
-
-        for ta, vrp_count in vrps_by_ta.items():
-            RPKI_OBJECTS_VRPS_BY_TA.labels(ta=ta).set(vrp_count)
-
-        # Might be an empty loop - which is no problem
-        for ta, min_expires in min_expires_by_ta.items():
-            RPKI_OBJECTS_MIN_EXPIRY.labels(ta=ta).set(min_expires)
-
     async def update_validated_objects_gauge(self, returncode: int) -> None:
         """
         Get statistics from `.metadata` of validated objects. Example output:
@@ -420,50 +296,7 @@ class RpkiClient:
             return
 
         with json_path.open("r") as json_res:
-            try:
-                data = json.load(json_res)
-            except json.decoder.JSONDecodeError as err:
-                LOG.error("Error while parsing JSON in %s: %s", json_path, str(err))
-                RPKI_CLIENT_JSON_ERROR.inc()
-                return
-
-            # {
-            #   metadata: {...},
-            #   roas: [...],
-            #   bgpsec_keys: [...],
-            #   provider_authorizations: {
-            #     "ipv4": [...],
-            #     "ipv6": [...]
-            #   }
-            # }
-            roas = data.get("roas", [])
-            bgpsec_keys = data.get("bgpsec_keys", [])
-            vaps = data.get("provider_authorizations", {"ipv4": [], "ipv6": []})
-
-            self.__update_object_expiry(roas, bgpsec_keys, vaps["ipv4"], vaps["ipv6"])
-
-            metadata = data["metadata"]
-            missing_keys = set()
-
-            for key in METADATA_LABELS:
-                value = metadata.get(key, None)
-
-                if key == BUILDTIME_KEY and value is not None:
-                    # format from
-                    # https://github.com/rpki-client/rpki-client-openbsd/blob/92e173c2a0accb425e1130192655d1b57928d986/src/usr.sbin/rpki-client/output-json.c#L36
-                    buildtime = datetime.datetime.strptime(value, "%Y-%m-%dT%H:%M:%SZ")
-                    RPKI_OBJECTS_BUILD_TIME.set(buildtime.timestamp())
-                elif value is not None:
-                    RPKI_OBJECTS_COUNT.labels(type=key).set(value)
-                elif key not in OPTIONAL_METADATA_LABELS:
-                    missing_keys.add(key)
-
-            if missing_keys:
-                LOG.info(
-                    "keys (%s) missing in json .metadata (%s)",
-                    ", ".join(missing_keys),
-                    json.dumps(metadata),
-                )
+            self.json_parser.parse(json_res)
 
         # Any error before this point will cause the last_update to fail and
         # thus be visible in metrics.

@@ -1,0 +1,173 @@
+# HELP rpki_client rpki-client information
+# TYPE rpki_client gauge
+rpki_client_info{nodename="tdekock-pro",release="8.4"} 1
+# HELP rpki_client_job_completion_time end of this run as epoch timestamp
+# TYPE rpki_client_job_completion_time gauge
+rpki_client_job_completion_time 1683193446.576664000
+# HELP rpki_client_repository total number of repositories
+# TYPE rpki_client_repository gauge
+rpki_client_repository 3
+rpki_client_repository{type="rsync",state="synced"} 1
+rpki_client_repository{type="rsync",state="failed"} 0
+rpki_client_repository{type="http",state="synced"} 0
+rpki_client_repository{type="http",state="failed"} 0
+rpki_client_repository{type="rrdp",state="synced"} 2
+rpki_client_repository{type="rrdp",state="failed"} 0
+# HELP rpki_client_objects total number of objects
+# TYPE rpki_client_objects gauge
+rpki_client_objects{type="cert",state="valid"} 14662
+rpki_client_objects{type="cert",state="failed parse"} 0
+rpki_client_objects{type="manifest",state="valid"} 14662
+rpki_client_objects{type="manifest",state="failed parse"} 0
+rpki_client_objects{type="manifest",state="stale"} 0
+rpki_client_objects{type="roa",state="valid"} 34115
+rpki_client_objects{type="roa",state="failed parse"} 0
+rpki_client_objects{type="roa",state="invalid"} 0
+rpki_client_objects{type="aspa",state="valid"} 6642
+rpki_client_objects{type="aspa",state="failed parse"} 0
+rpki_client_objects{type="aspa",state="invalid"} 0
+rpki_client_objects{type="router_key",state="valid"} 0
+rpki_client_objects{type="crl",state="valid"} 14662
+rpki_client_objects{type="gbr",state="valid"} 0
+rpki_client_objects{type="tak",state="valid"} 0
+rpki_client_objects{type="vrp",state="total"} 424308
+rpki_client_objects{type="vrp",state="unique"} 424308
+rpki_client_objects{type="vap",state="total"} 6642
+rpki_client_objects{type="vap",state="unique"} 6642
+rpki_client_objects{type="vap providers",state="both"} 8273
+rpki_client_objects{type="vap providers",state="IPv4 only"} 8305
+rpki_client_objects{type="vap providers",state="IPv6 only"} 8563
+# HELP rpki_client_duration duration in seconds
+# TYPE rpki_client_duration gauge
+rpki_client_duration{type="elapsed"} 58.979429000
+rpki_client_duration{type="user"} 44.440095000
+rpki_client_duration{type="system"} 7.704177000
+# HELP rpki_client_ta_objects total number of objects per TAL
+# TYPE rpki_client_ta_objects gauge
+rpki_client_ta_objects{type="cert",state="valid",name="ripe-prepdev-https"} 14662
+rpki_client_ta_objects{type="cert",state="failed parse",name="ripe-prepdev-https"} 0
+rpki_client_ta_objects{type="manifest",state="valid",name="ripe-prepdev-https"} 14662
+rpki_client_ta_objects{type="manifest",state="failed parse",name="ripe-prepdev-https"} 0
+rpki_client_ta_objects{type="manifest",state="stale",name="ripe-prepdev-https"} 0
+rpki_client_ta_objects{type="roa",state="valid",name="ripe-prepdev-https"} 34115
+rpki_client_ta_objects{type="roa",state="failed parse",name="ripe-prepdev-https"} 0
+rpki_client_ta_objects{type="roa",state="invalid",name="ripe-prepdev-https"} 0
+rpki_client_ta_objects{type="aspa",state="valid",name="ripe-prepdev-https"} 6642
+rpki_client_ta_objects{type="aspa",state="failed parse",name="ripe-prepdev-https"} 0
+rpki_client_ta_objects{type="aspa",state="invalid",name="ripe-prepdev-https"} 0
+rpki_client_ta_objects{type="router_key",state="valid",name="ripe-prepdev-https"} 0
+rpki_client_ta_objects{type="crl",state="valid",name="ripe-prepdev-https"} 14662
+rpki_client_ta_objects{type="gbr",state="valid",name="ripe-prepdev-https"} 0
+rpki_client_ta_objects{type="tak",state="valid",name="ripe-prepdev-https"} 0
+rpki_client_ta_objects{type="vrp",state="total",name="ripe-prepdev-https"} 424308
+rpki_client_ta_objects{type="vrp",state="unique",name="ripe-prepdev-https"} 424308
+rpki_client_ta_objects{type="vap",state="total",name="ripe-prepdev-https"} 6642
+rpki_client_ta_objects{type="vap",state="unique",name="ripe-prepdev-https"} 6642
+rpki_client_ta_objects{type="vap providers",state="both",name="ripe-prepdev-https"} 8273
+rpki_client_ta_objects{type="vap providers",state="IPv4 only",name="ripe-prepdev-https"} 8305
+rpki_client_ta_objects{type="vap providers",state="IPv6 only",name="ripe-prepdev-https"} 8563
+# HELP rpki_client_repository_objects total number of objects per repository
+# TYPE rpki_client_repository_objects gauge
+rpki_client_repository_objects{type="cert",state="valid",name="ripe-prepdev-https",carepo="rsync://rsync.paas.rpki.prepdev.ripe.net/repository",notify="https://rrdp.paas.rpki.prepdev.ripe.net/notification.xml"} 0
+rpki_client_repository_objects{type="cert",state="failed parse",name="ripe-prepdev-https",carepo="rsync://rsync.paas.rpki.prepdev.ripe.net/repository",notify="https://rrdp.paas.rpki.prepdev.ripe.net/notification.xml"} 0
+rpki_client_repository_objects{type="manifest",state="valid",name="ripe-prepdev-https",carepo="rsync://rsync.paas.rpki.prepdev.ripe.net/repository",notify="https://rrdp.paas.rpki.prepdev.ripe.net/notification.xml"} 1
+rpki_client_repository_objects{type="manifest",state="failed parse",name="ripe-prepdev-https",carepo="rsync://rsync.paas.rpki.prepdev.ripe.net/repository",notify="https://rrdp.paas.rpki.prepdev.ripe.net/notification.xml"} 0
+rpki_client_repository_objects{type="manifest",state="stale",name="ripe-prepdev-https",carepo="rsync://rsync.paas.rpki.prepdev.ripe.net/repository",notify="https://rrdp.paas.rpki.prepdev.ripe.net/notification.xml"} 0
+rpki_client_repository_objects{type="roa",state="valid",name="ripe-prepdev-https",carepo="rsync://rsync.paas.rpki.prepdev.ripe.net/repository",notify="https://rrdp.paas.rpki.prepdev.ripe.net/notification.xml"} 1
+rpki_client_repository_objects{type="roa",state="failed parse",name="ripe-prepdev-https",carepo="rsync://rsync.paas.rpki.prepdev.ripe.net/repository",notify="https://rrdp.paas.rpki.prepdev.ripe.net/notification.xml"} 0
+rpki_client_repository_objects{type="roa",state="invalid",name="ripe-prepdev-https",carepo="rsync://rsync.paas.rpki.prepdev.ripe.net/repository",notify="https://rrdp.paas.rpki.prepdev.ripe.net/notification.xml"} 0
+rpki_client_repository_objects{type="aspa",state="valid",name="ripe-prepdev-https",carepo="rsync://rsync.paas.rpki.prepdev.ripe.net/repository",notify="https://rrdp.paas.rpki.prepdev.ripe.net/notification.xml"} 0
+rpki_client_repository_objects{type="aspa",state="failed parse",name="ripe-prepdev-https",carepo="rsync://rsync.paas.rpki.prepdev.ripe.net/repository",notify="https://rrdp.paas.rpki.prepdev.ripe.net/notification.xml"} 0
+rpki_client_repository_objects{type="aspa",state="invalid",name="ripe-prepdev-https",carepo="rsync://rsync.paas.rpki.prepdev.ripe.net/repository",notify="https://rrdp.paas.rpki.prepdev.ripe.net/notification.xml"} 0
+rpki_client_repository_objects{type="router_key",state="valid",name="ripe-prepdev-https",carepo="rsync://rsync.paas.rpki.prepdev.ripe.net/repository",notify="https://rrdp.paas.rpki.prepdev.ripe.net/notification.xml"} 0
+rpki_client_repository_objects{type="crl",state="valid",name="ripe-prepdev-https",carepo="rsync://rsync.paas.rpki.prepdev.ripe.net/repository",notify="https://rrdp.paas.rpki.prepdev.ripe.net/notification.xml"} 1
+rpki_client_repository_objects{type="gbr",state="valid",name="ripe-prepdev-https",carepo="rsync://rsync.paas.rpki.prepdev.ripe.net/repository",notify="https://rrdp.paas.rpki.prepdev.ripe.net/notification.xml"} 0
+rpki_client_repository_objects{type="tak",state="valid",name="ripe-prepdev-https",carepo="rsync://rsync.paas.rpki.prepdev.ripe.net/repository",notify="https://rrdp.paas.rpki.prepdev.ripe.net/notification.xml"} 0
+rpki_client_repository_objects{type="vrp",state="total",name="ripe-prepdev-https",carepo="rsync://rsync.paas.rpki.prepdev.ripe.net/repository",notify="https://rrdp.paas.rpki.prepdev.ripe.net/notification.xml"} 1
+rpki_client_repository_objects{type="vrp",state="unique",name="ripe-prepdev-https",carepo="rsync://rsync.paas.rpki.prepdev.ripe.net/repository",notify="https://rrdp.paas.rpki.prepdev.ripe.net/notification.xml"} 1
+rpki_client_repository_objects{type="vap",state="total",name="ripe-prepdev-https",carepo="rsync://rsync.paas.rpki.prepdev.ripe.net/repository",notify="https://rrdp.paas.rpki.prepdev.ripe.net/notification.xml"} 0
+rpki_client_repository_objects{type="vap",state="unique",name="ripe-prepdev-https",carepo="rsync://rsync.paas.rpki.prepdev.ripe.net/repository",notify="https://rrdp.paas.rpki.prepdev.ripe.net/notification.xml"} 0
+rpki_client_repository_objects{type="vap providers",state="both",name="ripe-prepdev-https",carepo="rsync://rsync.paas.rpki.prepdev.ripe.net/repository",notify="https://rrdp.paas.rpki.prepdev.ripe.net/notification.xml"} 0
+rpki_client_repository_objects{type="vap providers",state="IPv4 only",name="ripe-prepdev-https",carepo="rsync://rsync.paas.rpki.prepdev.ripe.net/repository",notify="https://rrdp.paas.rpki.prepdev.ripe.net/notification.xml"} 0
+rpki_client_repository_objects{type="vap providers",state="IPv6 only",name="ripe-prepdev-https",carepo="rsync://rsync.paas.rpki.prepdev.ripe.net/repository",notify="https://rrdp.paas.rpki.prepdev.ripe.net/notification.xml"} 0
+rpki_client_repository_objects{type="cert",state="valid",name="ripe-prepdev-https",carepo="rsync://rpki.prepdev.ripe.net/repository",notify="https://rrdp.prepdev.ripe.net/notification.xml"} 14661
+rpki_client_repository_objects{type="cert",state="failed parse",name="ripe-prepdev-https",carepo="rsync://rpki.prepdev.ripe.net/repository",notify="https://rrdp.prepdev.ripe.net/notification.xml"} 0
+rpki_client_repository_objects{type="manifest",state="valid",name="ripe-prepdev-https",carepo="rsync://rpki.prepdev.ripe.net/repository",notify="https://rrdp.prepdev.ripe.net/notification.xml"} 14661
+rpki_client_repository_objects{type="manifest",state="failed parse",name="ripe-prepdev-https",carepo="rsync://rpki.prepdev.ripe.net/repository",notify="https://rrdp.prepdev.ripe.net/notification.xml"} 0
+rpki_client_repository_objects{type="manifest",state="stale",name="ripe-prepdev-https",carepo="rsync://rpki.prepdev.ripe.net/repository",notify="https://rrdp.prepdev.ripe.net/notification.xml"} 0
+rpki_client_repository_objects{type="roa",state="valid",name="ripe-prepdev-https",carepo="rsync://rpki.prepdev.ripe.net/repository",notify="https://rrdp.prepdev.ripe.net/notification.xml"} 34114
+rpki_client_repository_objects{type="roa",state="failed parse",name="ripe-prepdev-https",carepo="rsync://rpki.prepdev.ripe.net/repository",notify="https://rrdp.prepdev.ripe.net/notification.xml"} 0
+rpki_client_repository_objects{type="roa",state="invalid",name="ripe-prepdev-https",carepo="rsync://rpki.prepdev.ripe.net/repository",notify="https://rrdp.prepdev.ripe.net/notification.xml"} 0
+rpki_client_repository_objects{type="aspa",state="valid",name="ripe-prepdev-https",carepo="rsync://rpki.prepdev.ripe.net/repository",notify="https://rrdp.prepdev.ripe.net/notification.xml"} 6642
+rpki_client_repository_objects{type="aspa",state="failed parse",name="ripe-prepdev-https",carepo="rsync://rpki.prepdev.ripe.net/repository",notify="https://rrdp.prepdev.ripe.net/notification.xml"} 0
+rpki_client_repository_objects{type="aspa",state="invalid",name="ripe-prepdev-https",carepo="rsync://rpki.prepdev.ripe.net/repository",notify="https://rrdp.prepdev.ripe.net/notification.xml"} 0
+rpki_client_repository_objects{type="router_key",state="valid",name="ripe-prepdev-https",carepo="rsync://rpki.prepdev.ripe.net/repository",notify="https://rrdp.prepdev.ripe.net/notification.xml"} 0
+rpki_client_repository_objects{type="crl",state="valid",name="ripe-prepdev-https",carepo="rsync://rpki.prepdev.ripe.net/repository",notify="https://rrdp.prepdev.ripe.net/notification.xml"} 14661
+rpki_client_repository_objects{type="gbr",state="valid",name="ripe-prepdev-https",carepo="rsync://rpki.prepdev.ripe.net/repository",notify="https://rrdp.prepdev.ripe.net/notification.xml"} 0
+rpki_client_repository_objects{type="tak",state="valid",name="ripe-prepdev-https",carepo="rsync://rpki.prepdev.ripe.net/repository",notify="https://rrdp.prepdev.ripe.net/notification.xml"} 0
+rpki_client_repository_objects{type="vrp",state="total",name="ripe-prepdev-https",carepo="rsync://rpki.prepdev.ripe.net/repository",notify="https://rrdp.prepdev.ripe.net/notification.xml"} 424307
+rpki_client_repository_objects{type="vrp",state="unique",name="ripe-prepdev-https",carepo="rsync://rpki.prepdev.ripe.net/repository",notify="https://rrdp.prepdev.ripe.net/notification.xml"} 424307
+rpki_client_repository_objects{type="vap",state="total",name="ripe-prepdev-https",carepo="rsync://rpki.prepdev.ripe.net/repository",notify="https://rrdp.prepdev.ripe.net/notification.xml"} 6642
+rpki_client_repository_objects{type="vap",state="unique",name="ripe-prepdev-https",carepo="rsync://rpki.prepdev.ripe.net/repository",notify="https://rrdp.prepdev.ripe.net/notification.xml"} 6642
+rpki_client_repository_objects{type="vap providers",state="both",name="ripe-prepdev-https",carepo="rsync://rpki.prepdev.ripe.net/repository",notify="https://rrdp.prepdev.ripe.net/notification.xml"} 8273
+rpki_client_repository_objects{type="vap providers",state="IPv4 only",name="ripe-prepdev-https",carepo="rsync://rpki.prepdev.ripe.net/repository",notify="https://rrdp.prepdev.ripe.net/notification.xml"} 8305
+rpki_client_repository_objects{type="vap providers",state="IPv6 only",name="ripe-prepdev-https",carepo="rsync://rpki.prepdev.ripe.net/repository",notify="https://rrdp.prepdev.ripe.net/notification.xml"} 8563
+rpki_client_repository_objects{type="cert",state="valid",name="ripe-prepdev-https",carepo="rsync://rpki.prepdev.ripe.net/ta/RIPE-NCC-TA-TEST.cer"} 1
+rpki_client_repository_objects{type="cert",state="failed parse",name="ripe-prepdev-https",carepo="rsync://rpki.prepdev.ripe.net/ta/RIPE-NCC-TA-TEST.cer"} 0
+rpki_client_repository_objects{type="manifest",state="valid",name="ripe-prepdev-https",carepo="rsync://rpki.prepdev.ripe.net/ta/RIPE-NCC-TA-TEST.cer"} 0
+rpki_client_repository_objects{type="manifest",state="failed parse",name="ripe-prepdev-https",carepo="rsync://rpki.prepdev.ripe.net/ta/RIPE-NCC-TA-TEST.cer"} 0
+rpki_client_repository_objects{type="manifest",state="stale",name="ripe-prepdev-https",carepo="rsync://rpki.prepdev.ripe.net/ta/RIPE-NCC-TA-TEST.cer"} 0
+rpki_client_repository_objects{type="roa",state="valid",name="ripe-prepdev-https",carepo="rsync://rpki.prepdev.ripe.net/ta/RIPE-NCC-TA-TEST.cer"} 0
+rpki_client_repository_objects{type="roa",state="failed parse",name="ripe-prepdev-https",carepo="rsync://rpki.prepdev.ripe.net/ta/RIPE-NCC-TA-TEST.cer"} 0
+rpki_client_repository_objects{type="roa",state="invalid",name="ripe-prepdev-https",carepo="rsync://rpki.prepdev.ripe.net/ta/RIPE-NCC-TA-TEST.cer"} 0
+rpki_client_repository_objects{type="aspa",state="valid",name="ripe-prepdev-https",carepo="rsync://rpki.prepdev.ripe.net/ta/RIPE-NCC-TA-TEST.cer"} 0
+rpki_client_repository_objects{type="aspa",state="failed parse",name="ripe-prepdev-https",carepo="rsync://rpki.prepdev.ripe.net/ta/RIPE-NCC-TA-TEST.cer"} 0
+rpki_client_repository_objects{type="aspa",state="invalid",name="ripe-prepdev-https",carepo="rsync://rpki.prepdev.ripe.net/ta/RIPE-NCC-TA-TEST.cer"} 0
+rpki_client_repository_objects{type="router_key",state="valid",name="ripe-prepdev-https",carepo="rsync://rpki.prepdev.ripe.net/ta/RIPE-NCC-TA-TEST.cer"} 0
+rpki_client_repository_objects{type="crl",state="valid",name="ripe-prepdev-https",carepo="rsync://rpki.prepdev.ripe.net/ta/RIPE-NCC-TA-TEST.cer"} 0
+rpki_client_repository_objects{type="gbr",state="valid",name="ripe-prepdev-https",carepo="rsync://rpki.prepdev.ripe.net/ta/RIPE-NCC-TA-TEST.cer"} 0
+rpki_client_repository_objects{type="tak",state="valid",name="ripe-prepdev-https",carepo="rsync://rpki.prepdev.ripe.net/ta/RIPE-NCC-TA-TEST.cer"} 0
+rpki_client_repository_objects{type="vrp",state="total",name="ripe-prepdev-https",carepo="rsync://rpki.prepdev.ripe.net/ta/RIPE-NCC-TA-TEST.cer"} 0
+rpki_client_repository_objects{type="vrp",state="unique",name="ripe-prepdev-https",carepo="rsync://rpki.prepdev.ripe.net/ta/RIPE-NCC-TA-TEST.cer"} 0
+rpki_client_repository_objects{type="vap",state="total",name="ripe-prepdev-https",carepo="rsync://rpki.prepdev.ripe.net/ta/RIPE-NCC-TA-TEST.cer"} 0
+rpki_client_repository_objects{type="vap",state="unique",name="ripe-prepdev-https",carepo="rsync://rpki.prepdev.ripe.net/ta/RIPE-NCC-TA-TEST.cer"} 0
+rpki_client_repository_objects{type="vap providers",state="both",name="ripe-prepdev-https",carepo="rsync://rpki.prepdev.ripe.net/ta/RIPE-NCC-TA-TEST.cer"} 0
+rpki_client_repository_objects{type="vap providers",state="IPv4 only",name="ripe-prepdev-https",carepo="rsync://rpki.prepdev.ripe.net/ta/RIPE-NCC-TA-TEST.cer"} 0
+rpki_client_repository_objects{type="vap providers",state="IPv6 only",name="ripe-prepdev-https",carepo="rsync://rpki.prepdev.ripe.net/ta/RIPE-NCC-TA-TEST.cer"} 0
+rpki_client_repository_objects{type="files",state="deleted",carepo="rsync://rsync.paas.rpki.prepdev.ripe.net/repository",notify="https://rrdp.paas.rpki.prepdev.ripe.net/notification.xml"} 0
+rpki_client_repository_objects{type="files",state="extra",carepo="rsync://rsync.paas.rpki.prepdev.ripe.net/repository",notify="https://rrdp.paas.rpki.prepdev.ripe.net/notification.xml"} 9412
+rpki_client_repository_objects{type="files",state="deleted_extra",carepo="rsync://rsync.paas.rpki.prepdev.ripe.net/repository",notify="https://rrdp.paas.rpki.prepdev.ripe.net/notification.xml"} 0
+rpki_client_repository_objects{type="dirs",state="deleted",carepo="rsync://rsync.paas.rpki.prepdev.ripe.net/repository",notify="https://rrdp.paas.rpki.prepdev.ripe.net/notification.xml"} 0
+rpki_client_repository_objects{type="files",state="deleted",carepo="rsync://rpki.prepdev.ripe.net/repository",notify="https://rrdp.prepdev.ripe.net/notification.xml"} 0
+rpki_client_repository_objects{type="files",state="extra",carepo="rsync://rpki.prepdev.ripe.net/repository",notify="https://rrdp.prepdev.ripe.net/notification.xml"} 1
+rpki_client_repository_objects{type="files",state="deleted_extra",carepo="rsync://rpki.prepdev.ripe.net/repository",notify="https://rrdp.prepdev.ripe.net/notification.xml"} 0
+rpki_client_repository_objects{type="dirs",state="deleted",carepo="rsync://rpki.prepdev.ripe.net/repository",notify="https://rrdp.prepdev.ripe.net/notification.xml"} 1139
+rpki_client_repository_objects{type="files",state="deleted",carepo="rsync://rpki.prepdev.ripe.net/ta/RIPE-NCC-TA-TEST.cer"} 0
+rpki_client_repository_objects{type="files",state="extra",carepo="rsync://rpki.prepdev.ripe.net/ta/RIPE-NCC-TA-TEST.cer"} 0
+rpki_client_repository_objects{type="files",state="deleted_extra",carepo="rsync://rpki.prepdev.ripe.net/ta/RIPE-NCC-TA-TEST.cer"} 0
+rpki_client_repository_objects{type="dirs",state="deleted",carepo="rsync://rpki.prepdev.ripe.net/ta/RIPE-NCC-TA-TEST.cer"} 0
+# HELP rpki_client_repository_duration duration used to sync this repository in seconds
+# TYPE rpki_client_repository_duration gauge
+rpki_client_repository_duration{carepo="rsync://rsync.paas.rpki.prepdev.ripe.net/repository",notify="https://rrdp.paas.rpki.prepdev.ripe.net/notification.xml"} 0.092876000
+rpki_client_repository_duration{carepo="rsync://rpki.prepdev.ripe.net/repository",notify="https://rrdp.prepdev.ripe.net/notification.xml"} 0.095107000
+rpki_client_repository_duration{carepo="rsync://rpki.prepdev.ripe.net/ta/RIPE-NCC-TA-TEST.cer"} 0.146343000
+# HELP rpki_client_repository_state repository state
+# TYPE rpki_client_repository_state gauge
+rpki_client_repository_state{rpki_client_repository_state="failed",carepo="rsync://rsync.paas.rpki.prepdev.ripe.net/repository",notify="https://rrdp.paas.rpki.prepdev.ripe.net/notification.xml"} 0
+rpki_client_repository_state{rpki_client_repository_state="synced",carepo="rsync://rsync.paas.rpki.prepdev.ripe.net/repository",notify="https://rrdp.paas.rpki.prepdev.ripe.net/notification.xml"} 1
+rpki_client_repository_state{rpki_client_repository_state="failed",carepo="rsync://rpki.prepdev.ripe.net/repository",notify="https://rrdp.prepdev.ripe.net/notification.xml"} 0
+rpki_client_repository_state{rpki_client_repository_state="synced",carepo="rsync://rpki.prepdev.ripe.net/repository",notify="https://rrdp.prepdev.ripe.net/notification.xml"} 1
+rpki_client_repository_state{rpki_client_repository_state="failed",carepo="rsync://rpki.prepdev.ripe.net/ta/RIPE-NCC-TA-TEST.cer"} 0
+rpki_client_repository_state{rpki_client_repository_state="synced",carepo="rsync://rpki.prepdev.ripe.net/ta/RIPE-NCC-TA-TEST.cer"} 1
+# HELP rpki_client_repository_protos used protocol to sync repository
+# TYPE rpki_client_repository_protos gauge
+rpki_client_repository_protos{rpki_client_repository_protos="rrdp",carepo="rsync://rsync.paas.rpki.prepdev.ripe.net/repository",notify="https://rrdp.paas.rpki.prepdev.ripe.net/notification.xml"} 1
+rpki_client_repository_protos{rpki_client_repository_protos="rsync",carepo="rsync://rsync.paas.rpki.prepdev.ripe.net/repository",notify="https://rrdp.paas.rpki.prepdev.ripe.net/notification.xml"} 0
+rpki_client_repository_protos{rpki_client_repository_protos="https",carepo="rsync://rsync.paas.rpki.prepdev.ripe.net/repository",notify="https://rrdp.paas.rpki.prepdev.ripe.net/notification.xml"} 0
+rpki_client_repository_protos{rpki_client_repository_protos="rrdp",carepo="rsync://rpki.prepdev.ripe.net/repository",notify="https://rrdp.prepdev.ripe.net/notification.xml"} 1
+rpki_client_repository_protos{rpki_client_repository_protos="rsync",carepo="rsync://rpki.prepdev.ripe.net/repository",notify="https://rrdp.prepdev.ripe.net/notification.xml"} 0
+rpki_client_repository_protos{rpki_client_repository_protos="https",carepo="rsync://rpki.prepdev.ripe.net/repository",notify="https://rrdp.prepdev.ripe.net/notification.xml"} 0
+rpki_client_repository_protos{rpki_client_repository_protos="rrdp",carepo="rsync://rpki.prepdev.ripe.net/ta/RIPE-NCC-TA-TEST.cer"} 0
+rpki_client_repository_protos{rpki_client_repository_protos="rsync",carepo="rsync://rpki.prepdev.ripe.net/ta/RIPE-NCC-TA-TEST.cer"} 1
+rpki_client_repository_protos{rpki_client_repository_protos="https",carepo="rsync://rpki.prepdev.ripe.net/ta/RIPE-NCC-TA-TEST.cer"} 0
+# EOF
