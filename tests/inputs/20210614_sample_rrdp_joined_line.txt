@@ -69,4 +69,3 @@ rpki-client: Ghostbuster records: 2
 rpki-client: Repositories: 15100
 rpki-client: Cleanup: removed 6 files, 30 directories
 rpki-client: VRP Entries: 128886 (128884 unique)
-

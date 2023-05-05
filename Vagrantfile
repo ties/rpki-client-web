@@ -9,7 +9,7 @@ Vagrant.configure("2") do |config|
     vb.memory = "4096"
     vb.cpus = 4
   end
-  
+
   config.vm.synced_folder ".", "/src"
 
   config.vm.provision "shell", inline: <<-SHELL

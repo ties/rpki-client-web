@@ -3,7 +3,7 @@ import json
 import logging
 from collections import Counter
 from pathlib import Path
-from typing import Dict, Iterable, List, TextIO
+from typing import Dict, List, TextIO
 
 from prometheus_client.openmetrics.parser import text_string_to_metric_families
 
