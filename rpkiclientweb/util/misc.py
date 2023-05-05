@@ -1,16 +1,13 @@
 """Utilities."""
 import asyncio
-import json
 import logging
 import time
 import urllib.parse
-from dataclasses import asdict, is_dataclass
-from pathlib import Path
-from typing import Any, Awaitable, Callable, Dict, Optional, TextIO
-
-from yaml import Loader, load
+from typing import Any, Awaitable, Callable
 
 LOG = logging.getLogger(__name__)
+
+__all__ = ["repeat", "parse_host", "validate"]
 
 
 async def repeat(
@@ -75,28 +72,3 @@ def validate(should_be_true: bool, message: str, *args: str) -> None:
     """Validate that an assertion holds."""
     if not should_be_true:
         raise ValueError(message.format(*args))
-
-
-def load_yaml(config_file: TextIO) -> Dict:
-    """load a yaml file."""
-    return load(config_file, Loader=Loader)
-
-
-class CustomJSONEncoder(json.JSONEncoder):
-    """JSON encoder for configuration objects."""
-
-    def default(self, obj: Any) -> Any:
-        """Encode object"""
-        # Encode paths as their full name
-        if is_dataclass(obj):
-            return asdict(obj)
-        if isinstance(obj, Path):
-            return str(obj)
-        # Let the base class default method raise the TypeError if otherwise
-        # unknown)
-        return json.JSONEncoder.default(self, obj)
-
-
-def json_dumps(obj: Any, indent: Optional[int] = 2) -> str:
-    """Dump configuration object to JSON string."""
-    return json.dumps(obj, indent=indent, cls=CustomJSONEncoder)

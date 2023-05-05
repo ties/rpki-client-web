@@ -1,6 +1,7 @@
 import pytest
 
 from rpkiclientweb.util import parse_host, validate
+from rpkiclientweb.util.prometheus import ListCollector
 
 
 def test_parse_legacy_format():
@@ -37,3 +38,11 @@ def test_validate_raises():
 def test_validate_raises_template():
     with pytest.raises(ValueError):
         validate(False, "should raise {}", "and template")
+
+
+def test_list_collector() -> None:
+    """Test the custom prometheus metric collector."""
+    collector = ListCollector()
+    # should be empty initially
+    assert not collector.collect()
+    collector = None
