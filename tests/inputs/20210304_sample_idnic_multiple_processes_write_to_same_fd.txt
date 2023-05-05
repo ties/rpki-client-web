@@ -44,4 +44,3 @@ rpki-client: Certificate revocation lists: 4731
 rpki-client: Repositories: 11
 rpki-client: Files removed: 2462
 rpki-client: VRP Entries: 67473 (67427 unique)
-
