@@ -46,6 +46,7 @@ def parse_host(incomplete_uri: str) -> str:
     ```
     rpki.example.org/dir/file.ext
     rrdp/hex(sha256(rrdp_notification_url))/rrdp.example.org/file.ext
+    .rrdp/hex(sha256(rrdp_notification_url))/rrdp.example.org/file.ext
     rsync/rpki.example.org/file.ext
     ```
 
@@ -57,7 +58,7 @@ def parse_host(incomplete_uri: str) -> str:
             f"Expect at least one slash in path: rejected '{incomplete_uri}'"
         )
 
-    if tokens[0] == "rrdp":
+    if tokens[0] in ("rrdp", ".rrdp"):
         uri_tokens = tokens[2:]
     elif tokens[0] == "rsync":
         uri_tokens = tokens[1:]

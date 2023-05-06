@@ -17,6 +17,12 @@ def test_rrdp_format():
     )
     assert res == "ca.rg.net"
 
+def test_rrdp_dot_format():
+    res = parse_host(
+        ".rrdp/2A58FCECAC1BEAAECDB0232275D0A971B146A47C3E64FEF2FA46A24F5F6B1821/rpki.afrinic.net/repository/member_repository/F36EC460/ACEC2D22898111EC95D350B45A40D577/AAFC7F38899711EC8B6754755A40D577.roa"
+    )
+    assert res == "rpki.afrinic.net"
+
 
 def test_rsync_format():
     res = parse_host(
