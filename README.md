@@ -44,6 +44,7 @@ Changes
   * Include VAPs and bgpsec keys in the tracked 'time to first object expiring'
   * Include rpki-client openmetrics in `/metrics` output.
   * Enable HTTP compression for validated objects file
+  * Fix: Track correct hostname for `.rrdp` dirs by @sumkincpp
 
 2022-11-11 0.12.0:
 
