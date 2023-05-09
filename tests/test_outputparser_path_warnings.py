@@ -1,0 +1,112 @@
+"""Test path/file related warnings."""
+# pylint: disable=missing-function-docstring
+
+from rpkiclientweb.models import LabelWarning, ManifestObjectWarning
+from rpkiclientweb.outputparser import OutputParser
+
+from .util import parse_output_file
+
+
+def test_twnic_revoked_objects() -> None:
+    """
+    Parse the output on 2021-2-3 that contains revoked objects.
+    """
+    parser = parse_output_file("inputs/20210206_sample_twnic_during.txt")
+
+    assert (
+        LabelWarning(
+            warning_type="ee_certificate_revoked",
+            uri="rpkica.twnic.tw/rpki/TWNICCA/OPENRICH/mlhIJnN1dfbOEvjGTcE83FLq17Q.roa",
+        )
+        in parser.warnings
+    )
+
+
+def test_overclaiming_line() -> None:
+    parser = OutputParser(
+        "rpki-client: ca.rg.net/rpki/RGnet-OU/_XrQ8TKGekuqYxq7Ev1ZflcIsWM.roa: RFC 3779 resource not subset of parent's resources"
+    )
+
+    assert (
+        LabelWarning(
+            warning_type="overclaiming",
+            uri="ca.rg.net/rpki/RGnet-OU/_XrQ8TKGekuqYxq7Ev1ZflcIsWM.roa",
+        )
+        in parser.warnings
+    )
+
+
+def test_rpki_object_no_valid_mft_available() -> None:
+    """No valid manifest available errors."""
+    res = parse_output_file("inputs/20220223_no_valid_mft_available.txt")
+
+    assert (
+        LabelWarning(
+            warning_type="no_valid_mft_available",
+            uri="0.sb/repo/sb/30/F8CE54A4C62E61B125423FA90CA3F9D8350C7D3D.mft",
+        )
+        in res.warnings
+    )
+
+
+def test_rpki_object_missing_sia() -> None:
+    """No valid manifest available errors."""
+    res = parse_output_file("inputs/20220122_missing_sia.txt")
+
+    assert (
+        LabelWarning(
+            warning_type="missing_sia",
+            uri="rrdp/436fc6bd7b32853e42fce5fd95b31d5e3ec1c32c46b7518c2067d568e7eac119/chloe.sobornost.net/rpki/RIPE-nljobsnijders/voibVdC3Nzl9dcSfSFuFj6mK0R8.cer",
+        )
+        in res.warnings
+    )
+
+
+def test_crl_has_expired_error() -> None:
+    """Test parse 'crl has expired' errors #97"""
+    res = parse_output_file("inputs/20230509_crl_has_expired.txt")
+    assert (
+        LabelWarning(
+            warning_type="mft_crl_expired",
+            uri="rpki-repo.registro.br/repo/2qosEFHVQbeQvy8iktdNzpWNHKcB1zeV4mSd6F1ea1WN/0/028B43AD112899168CE5212FE3FB097B8D664FD2.mft",
+        )
+        in res.warnings
+    )
+
+
+def test_both_possibilities_of_file_present_error() -> None:
+    """Test both possibilities of file present error #88"""
+    res = parse_output_file("inputs/20230328_both_possibilities_of_file_present.txt")
+    assert (
+        LabelWarning(
+            warning_type="both_possibilities_file_present",
+            uri="rpki.ml/repository/DEFAULT/02iM0p2w53PH2dRcecOfyfjwPU8.cer",
+        )
+        in res.warnings
+    )
+
+
+def test_unsupported_filetype() -> None:
+    parser = OutputParser(
+        "rpki-client: rrdp/198613f16d61d95b77329eb7acdb3e1f8d1f0ec2b75e9510a7f7eacc7c3ebe19/rpki-repo.registro.br/repo/CdwCiTUGWyooJPMS1kEENXCA3aBaR67C8gcsvCd5HFU1/0/CBC415E956186D9CC61972979D5AC7B197F563BB.mft: unsupported file type for 3137372e38352e3136342e302f32322d3234203d3e203532373433.inv\n"
+    )
+
+    assert ManifestObjectWarning(
+        warning_type="unsupported_filetype",
+        uri="rrdp/198613f16d61d95b77329eb7acdb3e1f8d1f0ec2b75e9510a7f7eacc7c3ebe19/rpki-repo.registro.br/repo/CdwCiTUGWyooJPMS1kEENXCA3aBaR67C8gcsvCd5HFU1/0/CBC415E956186D9CC61972979D5AC7B197F563BB.mft",
+        object_name="3137372e38352e3136342e302f32322d3234203d3e203532373433.inv",
+    ) in list(parser.warnings)
+
+
+def test_parse_mft_warning() -> None:
+    parser = OutputParser(
+        "rpki-client: interop/misc-objects/6C76EDB2225D11E286C4BD8F7A2F2747.roa: RFC 6488: CMS has unexpected signed attribute 1.2.840.113549.1.9.15\n"
+    )
+
+    assert (
+        LabelWarning(
+            "unexpected_signed_cms_attribute",
+            "interop/misc-objects/6C76EDB2225D11E286C4BD8F7A2F2747.roa",
+        )
+        in parser.warnings
+    )
