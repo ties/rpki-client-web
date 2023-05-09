@@ -206,6 +206,18 @@ def test_rpki_object_missing_sia() -> None:
     )
 
 
+def test_crl_has_expired_error() -> None:
+    """Test parse 'crl has expired' errors #97"""
+    res = parse_output_file("inputs/20230509_crl_has_expired.txt")
+    assert (
+        LabelWarning(
+            warning_type="mft_crl_expired",
+            uri="rpki-repo.registro.br/repo/2qosEFHVQbeQvy8iktdNzpWNHKcB1zeV4mSd6F1ea1WN/0/028B43AD112899168CE5212FE3FB097B8D664FD2.mft",
+        )
+        in res.warnings
+    )
+
+
 def test_rsync_errors() -> None:
     """Test a situation with many rsync errors."""
     res = parse_output_file("inputs/20210610_sample_rsync_errors.txt")

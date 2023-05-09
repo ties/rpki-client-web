@@ -24,6 +24,7 @@ FILE_UNSUPPORTED_FILETYPE_RE = re.compile(
 FILE_MFT_EXPIRED_RE = re.compile(
     r"rpki-client: (?P<path>.*): mft expired on (?P<expiry>.*)"
 )
+FILE_MFT_CRL_EXPIRED_RE = re.compile(r"rpki-client: (?P<path>.*): CRL has expired")
 FILE_MFT_NOT_AVAILABLE_RE = re.compile(
     r"rpki-client: (?P<path>.*): no valid mft available"
 )
@@ -163,6 +164,10 @@ def parse_maybe_warning_line(line) -> Generator[RPKIClientWarning, None, None]:
     if no_valid_mft:
         yield LabelWarning("no_valid_mft_available", no_valid_mft.group("path"))
         return
+
+    mft_crL_expired = FILE_MFT_CRL_EXPIRED_RE.match(line)
+    if mft_crL_expired:
+        yield LabelWarning("mft_crl_expired", mft_crL_expired.group("path"))
 
     missing_sia = FILE_MISSING_SIA_RE.match(line)
     if missing_sia:
