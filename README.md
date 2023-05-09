@@ -45,6 +45,7 @@ Changes
   * Include rpki-client openmetrics in `/metrics` output.
   * Enable HTTP compression for validated objects file
   * Fix: Track correct hostname for `.rrdp` dirs by @sumkincpp
+  * Feature: Track multiple new warnings
 
 2022-11-11 0.12.0:
 
