@@ -1,0 +1,2 @@
+rpki-client: rpki-repo.registro.br/repo/7QbFALBm5DY5jxXJcJkqX5WXGGjxGdbBRmoTChNSk4gt/0/0916D6C778F2155181CCB182FAE52AE013341E40.mft: CRL has expired
+rpki-client: rpki-repo.registro.br/repo/2qosEFHVQbeQvy8iktdNzpWNHKcB1zeV4mSd6F1ea1WN/0/028B43AD112899168CE5212FE3FB097B8D664FD2.mft: CRL has expired
