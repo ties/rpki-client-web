@@ -7,7 +7,7 @@ RUN dnf --setopt=install_weak_deps=False --best install -y python3-aiohttp pytho
   && dnf install -y rpki-client \
     --enablerepo=updates-testing,updates-testing-modular \
     --best \
-    --advisory=FEDORA-2023-c1bd199900 \
+  && yum info rpki-client >> /rpki-client-version.txt \
   && dnf clean all \
   && rm -rf /var/cache/yum
 # --advisory=FEDORA-2023-c1bd199900: rpki-client 8.4.1 on 4-5-2023
