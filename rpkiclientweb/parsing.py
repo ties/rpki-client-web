@@ -90,7 +90,7 @@ SYNC_RSYNC_RRDP_SNAPSHOT = re.compile(
     r"rpki-client: (?P<uri>.*): downloading snapshot$"
 )
 SYNC_RSYNC_RRDP_DELTAS = re.compile(
-    r"rpki-client: (?P<uri>.*): downloading (?P<count>\d+) deltas( \((?P<session>[A-z0-9\-]+)#(?P<serial>[0-9]+)\))?$"
+    r"rpki-client: (?P<uri>.*): downloading (?P<count>\d+) deltas( \((?P<session>[\w-]+)#(?P<serial>[0-9]+)\))?$"
 )
 
 SYNC_RRDP_PARSE_ABORTED = re.compile(
