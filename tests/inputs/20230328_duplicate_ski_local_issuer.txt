@@ -1,0 +1,5 @@
+rpki-client: rpki.ml/repository/DEFAULT/02iM0p2w53PH2dRcecOfyfjwPU8.cer: RFC 6487: duplicate SKI
+rpki-client: rpki.ml/repository/DEFAULT/02iM0p2w53PH2dRcecOfyfjwPU8.cer: unable to get local issuer certificate
+rpki-client: rpki.ml/repository/DEFAULT/0CaptsnPNAUgK6l5UlpeWCfx9hg.cer: RFC 6487: duplicate SKI
+rpki-client: rpki.ml/repository/DEFAULT/0CaptsnPNAUgK6l5UlpeWCfx9hg.cer: unable to get local issuer certificate
+rpki-client: rpki.ml/repository/DEFAULT/0EeB0IpN5s2DX7Onj4enXAtJxbY.cer: RFC 6487: duplicate SKI

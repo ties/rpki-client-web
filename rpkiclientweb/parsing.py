@@ -45,6 +45,12 @@ FILE_CERTIFICATE_NOT_YET_VALID_RE = re.compile(
 FILE_CERTIFICATE_REVOKED_RE = re.compile(
     r"rpki-client: (?P<path>(?!TLS handshake:).+): certificate revoked"
 )
+FILE_CERTIFICATE_DUPLICATE_SKI = re.compile(
+    r"rpki-client: (?P<path>.*): RFC 6487: duplicate SKI"
+)
+FILE_CERTIFICATE_UNABLE_TO_GET_LOCAL_ISSUER = re.compile(
+    r"rpki-client: (?P<path>.*): unable to get local issuer certificate"
+)
 FILE_BAD_UPDATE_INTERVAL_RE = re.compile(
     r"rpki-client: (?P<path>.*): bad update interval.*"
 )
@@ -153,6 +159,16 @@ def parse_maybe_warning_line(line) -> Generator[RPKIClientWarning, None, None]:
     if cert_revoked:
         yield LabelWarning("ee_certificate_revoked", cert_revoked.group("path"))
         return
+
+    cert_unknown_issuer = FILE_CERTIFICATE_UNABLE_TO_GET_LOCAL_ISSUER.match(line)
+    if cert_unknown_issuer:
+        yield LabelWarning(
+            "unable_to_get_local_issuer_certificate", cert_unknown_issuer.group("path")
+        )
+
+    duplicate_ski = FILE_CERTIFICATE_DUPLICATE_SKI.match(line)
+    if duplicate_ski:
+        yield LabelWarning("rfc6487_duplicate_ski", duplicate_ski.group("path"))
 
     unsupported_filetype = FILE_UNSUPPORTED_FILETYPE_RE.match(line)
     if unsupported_filetype:
