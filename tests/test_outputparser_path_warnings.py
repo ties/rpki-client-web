@@ -122,3 +122,29 @@ def test_multiple_rrdp_lines() -> None:
     assert warning_types["ee_certificate_revoked"] == 1
     assert warning_types["ee_certificate_expired"] == 1
     assert warning_types["ee_certificate_not_yet_valid"] == 7
+
+
+def test_duplicate_ski_local_isssuer() -> None:
+    parser = parse_output_file("inputs/20230328_duplicate_ski_local_issuer.txt")
+    warnings = list(parser.warnings)
+
+    assert len(warnings) == 5
+
+    assert (
+        LabelWarning(
+            "rfc6487_duplicate_ski",
+            "rpki.ml/repository/DEFAULT/0EeB0IpN5s2DX7Onj4enXAtJxbY.cer",
+        )
+        in parser.warnings
+    )
+    assert (
+        LabelWarning(
+            "unable_to_get_local_issuer_certificate",
+            "rpki.ml/repository/DEFAULT/0CaptsnPNAUgK6l5UlpeWCfx9hg.cer",
+        )
+        in parser.warnings
+    )
+
+    warning_types = Counter(warning.warning_type for warning in warnings)
+    assert warning_types["rfc6487_duplicate_ski"] == 3
+    assert warning_types["unable_to_get_local_issuer_certificate"] == 2
