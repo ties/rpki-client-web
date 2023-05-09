@@ -1,0 +1,11 @@
+rpki-client: ta/example loaded from network
+rpki-client: https://rrdp.example.org/notification.xml: pulling from network
+rpki-client: https://rrdp.example.org/notification.xml: downloading 2 deltas (7ca10d7d-74c3-49de-aeb4-88e0634f081b#10064)
+rpki-client: https://rrdp.example.org/notification.xml: loaded from network
+rpki-client: https://rrdp.paas.rpki.example.org/notification.xml: pulling from network
+rpki-client: https://rrdp.paas.rpki.example.org/notification.xml: downloading 1 deltas (f610c790-8ceb-4711-bddd-938d0b16fa39#24265)
+rpki-client: https://rrdp.paas.rpki.example.org/notification.xml: bad file digest for rsync.paas.rpki.example.org/repository/66ba828b-6d57-4c5a-ac58-c43fbb841861/0/9E72449C21052596265AC642409D6DF62C5FFA9B.mft
+rpki-client: https://rrdp.paas.rpki.example.org/notification.xml: bad file digest for rsync.paas.rpki.example.org/repository/66ba828b-6d57-4c5a-ac58-c43fbb841861/0/9E72449C21052596265AC642409D6DF62C5FFA9B.crl
+rpki-client: https://rrdp.paas.rpki.example.org/notification.xml: delta sync failed, fallback to snapshot
+rpki-client: https://rrdp.paas.rpki.example.org/notification.xml: loaded from network
+rpki-client: all files parsed: generating output

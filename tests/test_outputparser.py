@@ -189,9 +189,7 @@ def test_rpki_client_failed_download_digest_warnings() -> None:
 
     c = count_fetch_status(res)
 
-    assert (
-        c[("sync_bad_message_digest", "https://rrdp.example.org/notification.xml")] > 10
-    )
+    assert c[("sync_bad_file_digest", "https://rrdp.example.org/notification.xml")] > 10
 
 
 def test_roa_certificate_not_valid() -> None:
