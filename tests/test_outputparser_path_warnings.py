@@ -1,6 +1,8 @@
 """Test path/file related warnings."""
 # pylint: disable=missing-function-docstring
 
+from collections import Counter
+
 from rpkiclientweb.models import LabelWarning, ManifestObjectWarning
 from rpkiclientweb.outputparser import OutputParser
 
@@ -110,3 +112,13 @@ def test_parse_mft_warning() -> None:
         )
         in parser.warnings
     )
+
+
+def test_multiple_rrdp_lines() -> None:
+    parser = parse_output_file("inputs/20221118_multiple_rrdp_lines.txt")
+    warnings = list(parser.warnings)
+    warning_types = Counter(warning.warning_type for warning in warnings)
+
+    assert warning_types["ee_certificate_revoked"] == 1
+    assert warning_types["ee_certificate_expired"] == 1
+    assert warning_types["ee_certificate_not_yet_valid"] == 7
