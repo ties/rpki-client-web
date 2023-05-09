@@ -218,6 +218,18 @@ def test_crl_has_expired_error() -> None:
     )
 
 
+def test_both_possibilities_of_file_present_error() -> None:
+    """Test both possibilities of file present error #88"""
+    res = parse_output_file("inputs/20230328_both_possibilities_of_file_present.txt")
+    assert (
+        LabelWarning(
+            warning_type="both_possibilities_file_present",
+            uri="rpki.ml/repository/DEFAULT/02iM0p2w53PH2dRcecOfyfjwPU8.cer",
+        )
+        in res.warnings
+    )
+
+
 def test_rsync_errors() -> None:
     """Test a situation with many rsync errors."""
     res = parse_output_file("inputs/20210610_sample_rsync_errors.txt")

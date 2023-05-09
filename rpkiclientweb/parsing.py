@@ -51,6 +51,9 @@ FILE_BAD_UPDATE_INTERVAL_RE = re.compile(
 FILE_MISSING_FILE_RE = re.compile(
     r"rpki-client: (?P<path>.*): No such file or directory"
 )
+FILE_BOTH_POSSIBILITES_PRESENT = re.compile(
+    r"rpki-client: (?P<path>.*): both possibilities of file present"
+)
 SYNC_RSYNC_LOAD_FAILED = re.compile(r"rpki-client: rsync (?P<uri>.*) failed$")
 SYNC_RSYNC_FALLBACK = re.compile(
     r"rpki-client: (?P<uri>.*): load from network failed, fallback to rsync$"
@@ -159,6 +162,13 @@ def parse_maybe_warning_line(line) -> Generator[RPKIClientWarning, None, None]:
             unsupported_filetype.group("object"),
         )
         return
+
+    both_possibilities_file_present = FILE_BOTH_POSSIBILITES_PRESENT.match(line)
+    if both_possibilities_file_present:
+        yield LabelWarning(
+            "both_possibilities_file_present",
+            both_possibilities_file_present.group("path"),
+        )
 
     no_valid_mft = FILE_MFT_NOT_AVAILABLE_RE.match(line)
     if no_valid_mft:
