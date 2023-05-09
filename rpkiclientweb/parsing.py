@@ -90,8 +90,9 @@ SYNC_RSYNC_RRDP_SNAPSHOT = re.compile(
     r"rpki-client: (?P<uri>.*): downloading snapshot$"
 )
 SYNC_RSYNC_RRDP_DELTAS = re.compile(
-    r"rpki-client: (?P<uri>.*): downloading (?P<count>\d+) deltas$"
+    r"rpki-client: (?P<uri>.*): downloading (?P<count>\d+) deltas( \((?P<session>[A-z0-9\-]+)#(?P<serial>[0-9]+)\))?$"
 )
+
 SYNC_RRDP_PARSE_ABORTED = re.compile(
     r"rpki-client: (?P<uri>.*): parse error at line [0-9]+: parsing aborted"
 )
@@ -296,9 +297,7 @@ def parse_fetch_status(line: str) -> Generator[FetchStatus, None, None]:  # noqa
 
     file_bad_message_digest = SYNC_RRDP_BAD_FILE_DIGEST.match(line)
     if file_bad_message_digest:
-        yield FetchStatus(
-            file_bad_message_digest.group("uri"), "sync_bad_message_digest"
-        )
+        yield FetchStatus(file_bad_message_digest.group("uri"), "sync_bad_file_digest")
         return
 
     snapshot_fallback = SYNC_RRDP_SNAPSHOT_FALLBACK.match(line)

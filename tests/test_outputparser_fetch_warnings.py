@@ -70,6 +70,38 @@ def test_rrdp_deltas() -> None:
     ) in list(res.fetch_status)
 
 
+def test_rrdp_deltas_84() -> None:
+    res = parse_output_file("inputs/20230509_full_output.txt")
+    statuses = list(res.fetch_status)
+
+    assert (
+        FetchStatus("https://rrdp.example.org/notification.xml", "rrdp_delta", 2)
+        in statuses
+    )
+    assert (
+        FetchStatus(
+            "https://rrdp.paas.rpki.example.org/notification.xml", "rrdp_delta", 1
+        )
+        in statuses
+    )
+    assert (
+        FetchStatus(
+            "https://rrdp.paas.rpki.example.org/notification.xml",
+            "sync_bad_file_digest",
+            1,
+        )
+        in statuses
+    )
+    assert (
+        FetchStatus(
+            "https://rrdp.paas.rpki.example.org/notification.xml",
+            "rrdp_snapshot_fallback",
+            1,
+        )
+        in statuses
+    )
+
+
 def test_rrdp_parse_aborted() -> None:
     """Test a situation where parsing is aborted for rsync."""
     res = parse_output_file("inputs/20220311_sample_rrdp_rejected_file_too_large.txt")
