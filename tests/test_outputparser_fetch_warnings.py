@@ -74,30 +74,35 @@ def test_rrdp_deltas_84() -> None:
     res = parse_output_file("inputs/20230509_full_output.txt")
     statuses = list(res.fetch_status)
 
-    assert (
-        FetchStatus("https://rrdp.example.org/notification.xml", "rrdp_delta", 2)
-        in statuses
-    )
+    RRDP_EXAMPLE_ORG = "https://rrdp.example.org/notification.xml"
+    RRDP_PAAS_EXAMPLE_ORG = "https://rrdp.paas.rpki.example.org/notification.xml"
+    RPKI_CA = "https://rpkica.mckay.com/rrdp/notify.xml"
+
+    assert FetchStatus(RRDP_EXAMPLE_ORG, "rrdp_delta", 2) in statuses
+    assert FetchStatus(RRDP_PAAS_EXAMPLE_ORG, "rrdp_delta", 1) in statuses
+    assert FetchStatus(RRDP_PAAS_EXAMPLE_ORG, "sync_bad_file_digest", 1) in statuses
+    assert FetchStatus(RRDP_PAAS_EXAMPLE_ORG, "rrdp_snapshot_fallback", 1) in statuses
+
     assert (
         FetchStatus(
-            "https://rrdp.paas.rpki.example.org/notification.xml", "rrdp_delta", 1
-        )
-        in statuses
-    )
-    assert (
-        FetchStatus(
-            "https://rrdp.paas.rpki.example.org/notification.xml",
-            "sync_bad_file_digest",
+            "https://rpki-rrdp.us-east-2.amazonaws.com/rrdp/967a255c-d680-42d3-9ec3-ecb3f9da088c/notification.xml",
+            "rrdp_notification_not_modified",
             1,
         )
         in statuses
     )
+
+    assert FetchStatus(RPKI_CA, "rrdp_rsync_fallback", 1) in statuses
     assert (
-        FetchStatus(
-            "https://rrdp.paas.rpki.example.org/notification.xml",
-            "rrdp_snapshot_fallback",
-            1,
-        )
+        FetchStatus(RPKI_CA, "rrdp_tls_certificate_verification_failed", 1) in statuses
+    )
+
+    assert (
+        FetchStatus("https://chloe.sobornost.net/rpki/news.xml", "connect_error", 1)
+        in statuses
+    )
+    assert (
+        FetchStatus("https://chloe.sobornost.net/rpki/news.xml", "connect_timeout", 1)
         in statuses
     )
 

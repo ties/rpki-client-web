@@ -72,10 +72,15 @@ SYNC_HTTP_404 = re.compile(
     r"^rpki-client: Error retrieving (?P<uri>.+): 404 Not Found$"
 )
 SYNC_RSYNC_RRDP_NOT_MODIFIED = re.compile(
-    r"rpki-client: (?P<uri>.*): notification file not modified$"
+    r"rpki-client: (?P<uri>.*): notification file not modified( \((?P<session>[\w-]+)#(?P<serial>[0-9]+)\))?$"
 )
 # connection refused/cannot assign requested address, likely only for RRDP.
-SYNC_CONNECT_ERROR = re.compile(r"rpki-client: (?P<uri>.+): connect: .+$")
+SYNC_CONNECT_ERROR = re.compile(
+    r"rpki-client: (?P<uri>[^ ]+)(?P<ip> \([0-9a-f:\.]+\))?: connect: .+$"
+)
+SYNC_CONNECT_TIMEOUT = re.compile(
+    r"rpki-client: (?P<uri>[^ ]+)(?P<ip> \([0-9a-f:\.]+\))?: connect timeout$"
+)
 SYNC_SYNCHRONISATION_TIMEOUT = re.compile(
     r"rpki-client: (?P<uri>.+): synchronisation timeout$"
 )
@@ -104,7 +109,7 @@ SYNC_RRDP_SERIAL_DECREASED = re.compile(
     "(?P<previous>[0-9]+) to (?P<current>[0-9]+)"
 )
 SYNC_RRDP_TLS_CERTIFICATE_VERIFICATION_FAILED = re.compile(
-    r"rpki-client: (?P<uri>.*): TLS handshake: certificate verification failed:.*"
+    r"rpki-client: (?P<uri>[^ ]+)(?P<ip> \([0-9a-f:\.]+\))?: TLS handshake: certificate verification failed:.*"
 )
 SYNC_RRDP_TLS_FAILURE = re.compile(
     r"rpki-client: (?P<uri>.*): TLS read: read failed:.*"
@@ -252,6 +257,11 @@ def parse_fetch_status(line: str) -> Generator[FetchStatus, None, None]:  # noqa
     connect_error = SYNC_CONNECT_ERROR.match(line)
     if connect_error:
         yield FetchStatus(connect_error.group("uri"), "connect_error")
+        return
+
+    connect_timeout = SYNC_CONNECT_TIMEOUT.match(line)
+    if connect_timeout:
+        yield FetchStatus(connect_timeout.group("uri"), "connect_timeout")
         return
 
     tls_cert_verification = SYNC_RRDP_TLS_CERTIFICATE_VERIFICATION_FAILED.match(line)
