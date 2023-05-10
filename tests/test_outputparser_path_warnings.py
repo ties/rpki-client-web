@@ -113,6 +113,20 @@ def test_parse_mft_warning() -> None:
         in parser.warnings
     )
 
+    parser = OutputParser(
+        "rpki-client: repository.lacnic.net/rpki/lacnic/a0c4b4a0-6417-4a7c-8758-9e6f4b0e9679/9783ac9bad2b7b922f648c90e881bf44978069ad.mft: bad message digest for aa78fd79d9a4dc5b9456cc52ce73dba02a1eabe4.roa"
+    )
+
+    # 8.4 (?) style bad message digest
+    assert (
+        ManifestObjectWarning(
+            "bad_message_digest",
+            "repository.lacnic.net/rpki/lacnic/a0c4b4a0-6417-4a7c-8758-9e6f4b0e9679/9783ac9bad2b7b922f648c90e881bf44978069ad.mft",
+            "aa78fd79d9a4dc5b9456cc52ce73dba02a1eabe4.roa",
+        )
+        in parser.warnings
+    )
+
 
 def test_multiple_rrdp_lines() -> None:
     parser = parse_output_file("inputs/20221118_multiple_rrdp_lines.txt")
