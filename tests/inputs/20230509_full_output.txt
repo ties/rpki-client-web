@@ -8,4 +8,14 @@ rpki-client: https://rrdp.paas.rpki.example.org/notification.xml: bad file diges
 rpki-client: https://rrdp.paas.rpki.example.org/notification.xml: bad file digest for rsync.paas.rpki.example.org/repository/66ba828b-6d57-4c5a-ac58-c43fbb841861/0/9E72449C21052596265AC642409D6DF62C5FFA9B.crl
 rpki-client: https://rrdp.paas.rpki.example.org/notification.xml: delta sync failed, fallback to snapshot
 rpki-client: https://rrdp.paas.rpki.example.org/notification.xml: loaded from network
+rpki-client: https://rpkica.mckay.com/rrdp/notify.xml: pulling from network
+rpki-client: https://rpkica.mckay.com/rrdp/notify.xml (51.75.161.87): TLS handshake: certificate verification failed: certificate has expired
+rpki-client: https://rpkica.mckay.com/rrdp/notify.xml: load from network failed, fallback to rsync
+rpki-client: .rsync/rpkica.mckay.com/rpki: pulling from rsync://rpkica.mckay.com/rpki
+rpki-client: .rsync/rpkica.mckay.com/rpki: loaded from network
+rpki-client: https://rpki-rrdp.us-east-2.amazonaws.com/rrdp/967a255c-d680-42d3-9ec3-ecb3f9da088c/notification.xml: pulling from network
+rpki-client: https://rpki-rrdp.us-east-2.amazonaws.com/rrdp/967a255c-d680-42d3-9ec3-ecb3f9da088c/notification.xml: notification file not modified (50656cf5-c3aa-45bf-8de3-7c9fa8af5322#947)
+rpki-client: https://rpki-rrdp.us-east-2.amazonaws.com/rrdp/967a255c-d680-42d3-9ec3-ecb3f9da088c/notification.xml: loaded from network
+rpki-client: https://chloe.sobornost.net/rpki/news.xml (46.23.94.25): connect timeout
+rpki-client: https://chloe.sobornost.net/rpki/news.xml (2a03:6000:6f66:615::25): connect: Cannot assign requested address
 rpki-client: all files parsed: generating output
