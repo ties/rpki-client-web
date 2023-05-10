@@ -179,6 +179,15 @@ def test_rrdp_tls_failure() -> None:
     assert FetchStatus("rpki.example.org", "tls_failure", 1) in res.fetch_status
 
 
+def test_rrdp_tls_failure_no_object_warning() -> None:
+    res = OutputParser(
+        "rpki-client: https://rpkica.mckay.com/rrdp/notify.xml (51.75.161.87): TLS handshake: certificate verification failed: certificate has expired"
+    )
+
+    assert len(list(res.fetch_status)) == 1
+    assert len(list(res.warnings)) == 0
+
+
 def test_fetch_error_no_ee_certificate_errorr() -> None:
     """Do not conflate TLS and EE certificate errors."""
     res = parse_output_file("inputs/20220905_tls_error_expired.txt")
@@ -192,7 +201,7 @@ def test_fetch_error_no_ee_certificate_errorr() -> None:
         in res.fetch_status
     )
     # But no EE certificate warning:
-    assert len(list(res.warnings)) != 0
+    assert len(list(res.warnings)) == 0
 
 
 def test_fetch_error_connect_errors() -> None:

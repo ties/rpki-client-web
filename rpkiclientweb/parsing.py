@@ -37,13 +37,13 @@ FILE_CMS_UNEXPECTED_SIGNED_ATTRIBUTE = re.compile(
 )
 # TODO: Consider a more elegant way of filtering out TLS handshake errors
 FILE_CERTIFICATE_EXPIRED = re.compile(
-    r"rpki-client: (?P<path>(?!TLS handshake:).+): certificate has expired"
+    r"rpki-client: (?P<path>[^:]+): certificate has expired"
 )
 FILE_CERTIFICATE_NOT_YET_VALID_RE = re.compile(
-    r"rpki-client: (?P<path>(?!TLS handshake:).+): certificate is not yet valid"
+    r"rpki-client: (?P<path>[^:]+): certificate is not yet valid"
 )
 FILE_CERTIFICATE_REVOKED_RE = re.compile(
-    r"rpki-client: (?P<path>(?!TLS handshake:).+): certificate revoked"
+    r"rpki-client: (?P<path>[^:]+): certificate revoked"
 )
 FILE_CERTIFICATE_6487_DUPLICATE_SKI = re.compile(
     r"rpki-client: (?P<path>.*): RFC 6487: duplicate SKI"
