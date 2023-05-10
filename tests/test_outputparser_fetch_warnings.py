@@ -48,14 +48,17 @@ def test_rrdp_not_modified() -> None:
 
 def test_rrdp_snapshots() -> None:
     """Test a situation with rsync fallback (from RRDP)."""
+    RRDP_APNIC = "https://rrdp.apnic.net/notification.xml"
+    RRDP_AFRINIC = "https://rrdp.afrinic.net/notification.xml"
     res = parse_output_file("inputs/20210610_sample_snapshot_dl.txt")
 
-    assert FetchStatus(
-        "https://rrdp.afrinic.net/notification.xml", "rrdp_snapshot", 1
-    ) in list(res.fetch_status)
-    assert FetchStatus(
-        "https://rrdp.apnic.net/notification.xml", "rrdp_snapshot", 1
-    ) in list(res.fetch_status)
+    assert FetchStatus(RRDP_APNIC, "rrdp_snapshot", 1) in res.fetch_status
+    assert FetchStatus(RRDP_AFRINIC, "rrdp_snapshot", 1) in res.fetch_status
+
+    parser = OutputParser(
+        "rpki-client: https://rrdp.apnic.net/notification.xml: downloading snapshot (7ca10d7d-74c3-49de-aeb4-88e0634f081b#10201)"
+    )
+    assert FetchStatus(RRDP_APNIC, "rrdp_snapshot", 1) in parser.fetch_status
 
 
 def test_rrdp_deltas() -> None:
