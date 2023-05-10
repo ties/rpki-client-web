@@ -146,53 +146,31 @@ RPKI_CLIENT_NOT_ALL_FILES = re.compile(
 def parse_maybe_warning_line(line) -> Generator[RPKIClientWarning, None, None]:
     """Parse a line for warnings - may be empty."""
     # LabelWarning (<type, file> tuples) first
-    missing_file = FILE_MISSING_FILE_RE.match(line)
-    if missing_file:
-        yield LabelWarning("missing_file", missing_file.group("path"))
-        return
-
-    overclaiming = FILE_RESOURCE_OVERCLAIMING_RE.match(line)
-    if overclaiming:
-        yield LabelWarning("overclaiming", overclaiming.group("path"))
-        return
-
-    cert_expired = FILE_CERTIFICATE_EXPIRED.match(line)
-    if cert_expired:
-        yield LabelWarning("ee_certificate_expired", cert_expired.group("path"))
-        return
-
-    cert_not_yet_valid = FILE_CERTIFICATE_NOT_YET_VALID_RE.match(line)
-    if cert_not_yet_valid:
-        yield LabelWarning(
-            "ee_certificate_not_yet_valid", cert_not_yet_valid.group("path")
-        )
-        return
-
-    cert_revoked = FILE_CERTIFICATE_REVOKED_RE.match(line)
-    if cert_revoked:
-        yield LabelWarning("ee_certificate_revoked", cert_revoked.group("path"))
-        return
-
-    cert_unknown_issuer = FILE_CERTIFICATE_UNABLE_TO_GET_LOCAL_ISSUER.match(line)
-    if cert_unknown_issuer:
-        yield LabelWarning(
-            "unable_to_get_local_issuer_certificate", cert_unknown_issuer.group("path")
-        )
-        return
-
-    duplicate_ski = FILE_CERTIFICATE_6487_DUPLICATE_SKI.match(line)
-    if duplicate_ski:
-        yield LabelWarning("rfc6487_duplicate_ski", duplicate_ski.group("path"))
-        return
-
-    uncovered_ip = FILE_CERTIFICATE_6487_UNCOVERED_IP.match(line)
-    if uncovered_ip:
-        yield LabelWarning("rfc6487_uncovered_ip", uncovered_ip.group("path"))
-        return
-
-    other_6487 = FILE_CERTIFICATE_6487_OTHER_ERROR.match(line)
-    if other_6487:
-        yield LabelWarning("rfc6487_unknown_error", other_6487.group("path"))
+    #
+    # Basic cases and certificate validity
+    for regex, warning_type in [
+        (FILE_MISSING_FILE_RE, "missing_file"),
+        (FILE_RESOURCE_OVERCLAIMING_RE, "overclaiming"),
+        (FILE_CERTIFICATE_EXPIRED, "ee_certificate_expired"),
+        (FILE_CERTIFICATE_NOT_YET_VALID_RE, "ee_certificate_not_yet_valid"),
+        (FILE_CERTIFICATE_REVOKED_RE, "ee_certificate_revoked"),
+        (
+            FILE_CERTIFICATE_UNABLE_TO_GET_LOCAL_ISSUER,
+            "unable_to_get_local_issuer_certificate",
+        ),
+        (FILE_CERTIFICATE_6487_DUPLICATE_SKI, "rfc6487_duplicate_ski"),
+        (FILE_CERTIFICATE_6487_UNCOVERED_IP, "rfc6487_uncovered_ip"),
+        (FILE_CERTIFICATE_6487_OTHER_ERROR, "rfc6487_unknown_error"),
+        (FILE_BOTH_POSSIBILITES_PRESENT, "both_possibilities_file_present"),
+        (FILE_MFT_NOT_AVAILABLE_RE, "no_valid_mft_available"),
+        (FILE_MFT_CRL_EXPIRED_RE, "mft_crl_expired"),
+        (FILE_MISSING_SIA_RE, "missing_sia"),
+        (FILE_CMS_UNEXPECTED_SIGNED_ATTRIBUTE, "unexpected_signed_cms_attribute"),
+    ]:
+        match = regex.match(line)
+        if match:
+            yield LabelWarning(warning_type, match.group("path"))
+            return
 
     unsupported_filetype = FILE_UNSUPPORTED_FILETYPE_RE.match(line)
     if unsupported_filetype:
@@ -202,33 +180,6 @@ def parse_maybe_warning_line(line) -> Generator[RPKIClientWarning, None, None]:
             unsupported_filetype.group("object"),
         )
         return
-
-    both_possibilities_file_present = FILE_BOTH_POSSIBILITES_PRESENT.match(line)
-    if both_possibilities_file_present:
-        yield LabelWarning(
-            "both_possibilities_file_present",
-            both_possibilities_file_present.group("path"),
-        )
-
-    no_valid_mft = FILE_MFT_NOT_AVAILABLE_RE.match(line)
-    if no_valid_mft:
-        yield LabelWarning("no_valid_mft_available", no_valid_mft.group("path"))
-        return
-
-    mft_crL_expired = FILE_MFT_CRL_EXPIRED_RE.match(line)
-    if mft_crL_expired:
-        yield LabelWarning("mft_crl_expired", mft_crL_expired.group("path"))
-
-    missing_sia = FILE_MISSING_SIA_RE.match(line)
-    if missing_sia:
-        yield LabelWarning("missing_sia", missing_sia.group("path"))
-        return
-
-    cms_unexpected_signed_attr = FILE_CMS_UNEXPECTED_SIGNED_ATTRIBUTE.match(line)
-    if cms_unexpected_signed_attr:
-        yield LabelWarning(
-            "unexpected_signed_cms_attribute", cms_unexpected_signed_attr.group("path")
-        )
 
     # manifest time-related checks
     bad_update_interval = FILE_BAD_UPDATE_INTERVAL_RE.match(line)
