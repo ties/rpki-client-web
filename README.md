@@ -33,6 +33,12 @@ Endpoints
 
 Changes
 =======
+2023-05-10 0.13.1:
+
+  * Track 'uncovered ip' errors
+  * Track unrecognized RFC6487 errors
+
+
 2023-05-10 0.13.0:
 
   * Container based on Fedora 38 w/ rpki-client 8.4.1 (8.3 has issues)
