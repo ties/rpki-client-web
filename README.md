@@ -37,6 +37,7 @@ Changes
 
   * Track 'uncovered ip' errors
   * Track unrecognized RFC6487 errors
+  * fix: Some TLS errors would be tracked as warnings about objects
 
 
 2023-05-10 0.13.0:
