@@ -33,6 +33,10 @@ Endpoints
 
 Changes
 =======
+
+2023-xx-xx 0.13.2:
+
+
 2023-05-10 0.13.1:
 
   * Track 'uncovered ip' errors
