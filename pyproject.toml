@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "rpkiclientweb"
-version = "0.13.0"
+version = "0.13.1"
 license = "MIT"
 keywords = ["rpki", "rpki-client", "validator", "metrics", "prometheus"]
 description = "A web api for RPKI-client"
