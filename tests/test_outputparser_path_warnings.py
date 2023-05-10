@@ -38,6 +38,28 @@ def test_overclaiming_line() -> None:
     )
 
 
+def test_6487_uncovered_ip() -> None:
+    parser = OutputParser(
+        "rpki-client: .rrdp/6C7608F9DCB6B5D586E660C3B957770DA3B76B9BFA57AAA8ECD0CA3DA57AAA8E/rpki.example.org/repository/DEFAULT/2RsBUBqyS0jqZooobKXoMQpCNNE.cer: RFC 6487: uncovered IP: (inherit)"
+    )
+
+    uri = ".rrdp/6C7608F9DCB6B5D586E660C3B957770DA3B76B9BFA57AAA8ECD0CA3DA57AAA8E/rpki.example.org/repository/DEFAULT/2RsBUBqyS0jqZooobKXoMQpCNNE.cer"
+
+    assert LabelWarning(warning_type="rfc6487_uncovered_ip", uri=uri) in parser.warnings
+
+
+def test_6487_unknown_error() -> None:
+    parser = OutputParser(
+        "rpki-client: .rrdp/6C7608F9DCB6B5D586E660C3B957770DA3B76B9BFA57AAA8ECD0CA3DA57AAA8E/rpki.example.org/repository/DEFAULT/2RsBUBqyS0jqZooobKXoMQpCNNE.cer: RFC 6487: other hypothetical error: (param)"
+    )
+
+    uri = ".rrdp/6C7608F9DCB6B5D586E660C3B957770DA3B76B9BFA57AAA8ECD0CA3DA57AAA8E/rpki.example.org/repository/DEFAULT/2RsBUBqyS0jqZooobKXoMQpCNNE.cer"
+
+    assert (
+        LabelWarning(warning_type="rfc6487_unknown_error", uri=uri) in parser.warnings
+    )
+
+
 def test_rpki_object_no_valid_mft_available() -> None:
     """No valid manifest available errors."""
     res = parse_output_file("inputs/20220223_no_valid_mft_available.txt")

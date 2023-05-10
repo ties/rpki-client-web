@@ -45,8 +45,15 @@ FILE_CERTIFICATE_NOT_YET_VALID_RE = re.compile(
 FILE_CERTIFICATE_REVOKED_RE = re.compile(
     r"rpki-client: (?P<path>(?!TLS handshake:).+): certificate revoked"
 )
-FILE_CERTIFICATE_DUPLICATE_SKI = re.compile(
+FILE_CERTIFICATE_6487_DUPLICATE_SKI = re.compile(
     r"rpki-client: (?P<path>.*): RFC 6487: duplicate SKI"
+)
+FILE_CERTIFICATE_6487_UNCOVERED_IP = re.compile(
+    r"rpki-client: (?P<path>.*): RFC 6487: uncovered IP:.+"
+)
+# Needs to be processed _after_ the other 6487 lines.
+FILE_CERTIFICATE_6487_OTHER_ERROR = re.compile(
+    r"rpki-client: (?P<path>.*): RFC 6487:.*"
 )
 FILE_CERTIFICATE_UNABLE_TO_GET_LOCAL_ISSUER = re.compile(
     r"rpki-client: (?P<path>.*): unable to get local issuer certificate"
@@ -171,10 +178,21 @@ def parse_maybe_warning_line(line) -> Generator[RPKIClientWarning, None, None]:
         yield LabelWarning(
             "unable_to_get_local_issuer_certificate", cert_unknown_issuer.group("path")
         )
+        return
 
-    duplicate_ski = FILE_CERTIFICATE_DUPLICATE_SKI.match(line)
+    duplicate_ski = FILE_CERTIFICATE_6487_DUPLICATE_SKI.match(line)
     if duplicate_ski:
         yield LabelWarning("rfc6487_duplicate_ski", duplicate_ski.group("path"))
+        return
+
+    uncovered_ip = FILE_CERTIFICATE_6487_UNCOVERED_IP.match(line)
+    if uncovered_ip:
+        yield LabelWarning("rfc6487_uncovered_ip", uncovered_ip.group("path"))
+        return
+
+    other_6487 = FILE_CERTIFICATE_6487_OTHER_ERROR.match(line)
+    if other_6487:
+        yield LabelWarning("rfc6487_unknown_error", other_6487.group("path"))
 
     unsupported_filetype = FILE_UNSUPPORTED_FILETYPE_RE.match(line)
     if unsupported_filetype:
