@@ -36,6 +36,10 @@ FILE_CMS_UNEXPECTED_SIGNED_ATTRIBUTE = re.compile(
     r"rpki-client: (?P<path>.*): RFC 6488: CMS has unexpected signed attribute "
     "(?P<attribute>.*)"
 )
+# Known cause: ASPA pre-profile 15 objects. Would be more idiomatic if rpki-client warned about the version.
+FILE_ASPA_PARSE_FAILED = re.compile(
+    r"rpki-client: (?P<path>[^:]+): ASPA: failed to parse ASProviderAttestation"
+)
 # TODO: Consider a more elegant way of filtering out TLS handshake errors
 FILE_CERTIFICATE_EXPIRED = re.compile(
     r"rpki-client: (?P<path>[^:]+): certificate has expired"
@@ -167,6 +171,7 @@ def parse_maybe_warning_line(line) -> Generator[RPKIClientWarning, None, None]:
         (FILE_MFT_CRL_EXPIRED_RE, "mft_crl_expired"),
         (FILE_MISSING_SIA_RE, "missing_sia"),
         (FILE_CMS_UNEXPECTED_SIGNED_ATTRIBUTE, "unexpected_signed_cms_attribute"),
+        (FILE_ASPA_PARSE_FAILED, "aspa_parse_failed"),
     ]:
         match = regex.match(line)
         if match:

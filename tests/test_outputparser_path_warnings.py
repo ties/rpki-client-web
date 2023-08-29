@@ -150,6 +150,20 @@ def test_parse_mft_warning() -> None:
     )
 
 
+def test_parse_aspa_format_error() -> None:
+    """Parse and count the warnings about ASPA in profile-14 and earlier format."""
+    parser = OutputParser(
+        "rpki-client: .rrdp/6C7608F9DCB6B5D586E660C3B957770DA3B76B9BFA57AAA8ECD0CA3D4C8C48F4/rpki.prepdev.ripe.net/repository/DEFAULT/4e/1ea101-e220-419e-a968-eaee14482c11/1/pZ2hy5MpkC3sTxpOfqebiNySzO4.asa: ASPA: failed to parse ASProviderAttestation"
+    )
+
+    assert (
+        LabelWarning(
+            "aspa_parse_failed",
+            ".rrdp/6C7608F9DCB6B5D586E660C3B957770DA3B76B9BFA57AAA8ECD0CA3D4C8C48F4/rpki.prepdev.ripe.net/repository/DEFAULT/4e/1ea101-e220-419e-a968-eaee14482c11/1/pZ2hy5MpkC3sTxpOfqebiNySzO4.asa",
+        )
+    ) in parser.warnings
+
+
 def test_multiple_rrdp_lines() -> None:
     parser = parse_output_file("inputs/20221118_multiple_rrdp_lines.txt")
     warnings = list(parser.warnings)
