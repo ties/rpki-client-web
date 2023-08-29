@@ -37,6 +37,8 @@ Changes
 2023-08-29 0.13.2:
 
   * Various dependency updates
+  * Parse warnings on ASPA parsing failure (for old ASPA profile)
+  * Use "scheme://host:port" in metrics instead of URL for HTTP errors
 
 
 2023-05-10 0.13.1:
