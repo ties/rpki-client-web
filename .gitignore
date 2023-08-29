@@ -9,3 +9,4 @@ pip-wheel-metadata
 .autoenv.zsh
 __pycache__
 .DS_Store
+.coverage

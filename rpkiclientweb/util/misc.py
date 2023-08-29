@@ -69,6 +69,19 @@ def parse_host(incomplete_uri: str) -> str:
     return urllib.parse.urlparse(f"//{'/'.join(uri_tokens)}").netloc
 
 
+def parse_proto_host_from_url(url: str) -> str:
+    """
+    Parse protocol and host from full url.
+
+    Used to reduce the cardinality of the corresponding metric.
+    """
+    tokens = urllib.parse.urlparse(url if url else "")
+    if url and (not tokens or (not tokens.scheme and not tokens.netloc)):
+        return url
+
+    return tokens._replace(path="", params="", query="", fragment="").geturl()
+
+
 def validate(should_be_true: bool, message: str, *args: str) -> None:
     """Validate that an assertion holds."""
     if not should_be_true:

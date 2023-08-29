@@ -250,5 +250,16 @@ def test_fetch_error_404() -> None:
         "https://rrdp.ripe.net/notification.xml", "rrdp_snapshot_fallback"
     ) in list(res.fetch_status)
 
+    # Old format logfile does not have the protocol in the log yet.
     c = count_fetch_status(res)
     assert c[("http_404", "rrdp.ripe.net")] == 2
+
+
+def test_fetch_error_404_no_full_url_in_metric() -> None:
+    """Parse an error where a snapshot is missing. The hostname should be in the metric not the url."""
+    res = parse_output_file("inputs/20230828_404_snapshot_url.txt")
+    status_errors = list(res.fetch_status)
+
+    assert FetchStatus("https://rrdp.ripe.net", "http_404") in status_errors
+
+    assert FetchStatus("https://magellan.ipxo.com", "http_521") in status_errors

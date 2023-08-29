@@ -1,0 +1,8 @@
+rpki-client: ta/ripe: pulling from https://rpki.ripe.net/ta/ripe-ncc-ta.cer
+rpki-client: ta/ripe: loaded from network
+rpki-client: https://rrdp.ripe.net/notification.xml: pulling from network
+rpki-client: https://rrdp.ripe.net/notification.xml: downloading snapshot (172322cf-c642-4e6f-806c-bd2375d8001a#13821)
+rpki-client: Error retrieving https://rrdp.ripe.net/172322cf-c642-4e6f-806c-bd2375d8001a/13821/snapshot-7211eaec9a7e28f08db684cc6e8d6882bc9eea95232f13f47b9975aa566de175.xml (2a02:26f0:fe00::686e:f0c8): 404 Not Found
+rpki-client: Error retrieving https://magellan.ipxo.com/rrdp/notification.xml (2606:4700:10::6816:2edd): 521
+rpki-client: https://rrdp.ripe.net/notification.xml: bad message digest
+rpki-client: https://rrdp.ripe.net/notification.xml: load from network failed, fall back to rsync
