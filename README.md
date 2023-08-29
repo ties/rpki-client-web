@@ -44,6 +44,7 @@ Changes
   * Track 'uncovered ip' errors
   * Track unrecognized RFC6487 errors
   * fix: Some TLS errors would be tracked as warnings about objects
+  * Parse warning about ASPA objects that failed to be parsed (because they likely are in the previous profile)
 
 
 2023-05-10 0.13.0:
