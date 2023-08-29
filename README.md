@@ -34,7 +34,9 @@ Endpoints
 Changes
 =======
 
-2023-xx-xx 0.13.2:
+2023-08-29 0.13.2:
+
+  * Various dependency updates
 
 
 2023-05-10 0.13.1:
