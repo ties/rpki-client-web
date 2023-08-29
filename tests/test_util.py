@@ -1,6 +1,7 @@
 import pytest
 
 from rpkiclientweb.util import parse_host, validate
+from rpkiclientweb.util.misc import parse_proto_host_from_url
 from rpkiclientweb.util.prometheus import ListCollector
 
 
@@ -53,3 +54,19 @@ def test_list_collector() -> None:
     # should be empty initially
     assert not collector.collect()
     collector = None
+
+
+def test_parse_proto_host_from_url() -> None:
+    assert parse_proto_host_from_url(None) == ""
+    assert parse_proto_host_from_url("") == ""
+
+    assert parse_proto_host_from_url("example.org") == "example.org"
+    assert parse_proto_host_from_url("https://example.org") == "https://example.org"
+    assert (
+        parse_proto_host_from_url("https://example.org:42") == "https://example.org:42"
+    )
+
+    assert (
+        parse_proto_host_from_url("https://example.org/message.txt")
+        == "https://example.org"
+    )

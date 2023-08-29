@@ -10,6 +10,7 @@ from rpkiclientweb.models import (
     RpkiClientError,
     RPKIClientWarning,
 )
+from rpkiclientweb.util.misc import parse_proto_host_from_url
 
 #
 # Regular expressions matching log lines.
@@ -75,8 +76,8 @@ SYNC_BAD_MESSAGE_DIGEST = re.compile(r"rpki-client: (?P<uri>.*): bad message dig
 SYNC_CACHE_FALLBACK = re.compile(
     r"rpki-client: (?P<uri>.*): load from network failed, fallback to cache$"
 )
-SYNC_HTTP_404 = re.compile(
-    r"^rpki-client: Error retrieving (?P<uri>.+): 404 Not Found$"
+SYNC_HTTP_ERROR = re.compile(
+    r"^rpki-client: Error retrieving (?P<uri>.+): (?P<http_status>[0-9]{3}).*$"
 )
 SYNC_RSYNC_RRDP_NOT_MODIFIED = re.compile(
     r"rpki-client: (?P<uri>.*): notification file not modified( \((?P<session>[\w-]+)#(?P<serial>[0-9]+)\))?$"
@@ -253,9 +254,12 @@ def parse_fetch_status(line: str) -> Generator[FetchStatus, None, None]:  # noqa
         )
         return
 
-    http_404 = SYNC_HTTP_404.match(line)
-    if http_404:
-        yield FetchStatus(http_404.group("uri"), "http_404")
+    http_error = SYNC_HTTP_ERROR.match(line)
+    if http_error:
+        yield FetchStatus(
+            parse_proto_host_from_url(http_error.group("uri")),
+            f"http_{http_error.group('http_status')}",
+        )
         return
 
     # RRDP content failures
