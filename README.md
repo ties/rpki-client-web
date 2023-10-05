@@ -34,6 +34,9 @@ Endpoints
 Changes
 =======
 
+2023-10-xx 0.14.0:
+  * rpki-client 8.6 from Fedora advisory
+
 2023-08-29 0.13.2:
 
   * Various dependency updates
