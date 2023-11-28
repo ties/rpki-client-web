@@ -20,7 +20,7 @@ include = [
 
 [tool.poetry.dependencies]
 python = "^3.10"
-aiohttp = "^3.8.4"
+aiohttp = "^3.9.0"
 prometheus-async = {extras = ["aiohttp"], version = "^22.2.0"}
 PyYAML = "^6.0"
 
