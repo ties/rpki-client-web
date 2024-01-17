@@ -29,7 +29,18 @@ class Configuration:
 
     """ Interval between rpki-client runs. """
     interval: int
-    """ Timeout before rpki-client is killed. """
+    """ Timeout before rpki-client is killed.
+
+    According to the authors in private correspondence,
+    > If you set '-s 1800'
+    >
+    > The total process [timeout] is 30 minutes.
+    > Attempts to sync a given repos must complete within 1/4th (7.5 minutes).
+    > Sync operations are executed concurrently (16 for RSYNC, 64 for RRDP).
+    > All sync operations are halted after 7/8th of [timeout] (26.25 minutes).
+    > This leaves 3.75 minutes at the end to produce the final VRP JSON and
+    > do cleanup operations.
+    """
     timeout: int
 
     """ port to listen on. """
