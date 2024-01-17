@@ -66,6 +66,29 @@ def test_parse_sample_aggregated() -> None:
     )
 
 
+def test_parse_failed_fetch() -> None:
+    """Track failed fetch that falls back to previous serial."""
+    parser = parse_output_file("inputs/20240117_failed_fetch.txt")
+    warnings = list(parser.warnings)
+
+    assert (
+        ManifestObjectWarning(
+            warning_type="bad_message_digest",
+            uri=".rsync/chloe.sobornost.net/rpki/uplift/IBfMWA0nPFS6MGTNLNavObgEuIc.mft#1486",
+            object_name="T2ll0jOGuS7ODxpWNmwS1yOtzRM.roa",
+        )
+        in warnings
+    )
+
+    assert (
+        LabelWarning(
+            warning_type="mft_failed_fetch",
+            uri="chloe.sobornost.net/rpki/uplift/IBfMWA0nPFS6MGTNLNavObgEuIc.mft",
+        )
+        in warnings
+    )
+
+
 def test_intertwined_lines() -> None:
     """
     Parse a file that contains lines that have mixed output.

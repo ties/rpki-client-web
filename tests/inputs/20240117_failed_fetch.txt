@@ -1,0 +1,2 @@
+rpki-client: .rsync/chloe.sobornost.net/rpki/uplift/IBfMWA0nPFS6MGTNLNavObgEuIc.mft#1486: bad message digest for T2ll0jOGuS7ODxpWNmwS1yOtzRM.roa
+rpki-client: chloe.sobornost.net/rpki/uplift/IBfMWA0nPFS6MGTNLNavObgEuIc.mft: failed fetch, continuing with #1485
