@@ -20,8 +20,11 @@ include = [
 
 [tool.poetry.dependencies]
 python = "^3.10"
-aiohttp = "^3.8.4"
-prometheus-async = {extras = ["aiohttp"], version = "^22.2.0"}
+# required for python 3.12
+aiohttp = "^3.9.0b0"
+# Do not use extras syntax, since this pulls in old aiohttp, which depends on
+# frozenlist which is not 3.12 compatible.
+prometheus-async = "22.2.0"
 PyYAML = "^6.0"
 
 [tool.poetry.group.dev.dependencies]
