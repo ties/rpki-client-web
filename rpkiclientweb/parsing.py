@@ -117,7 +117,7 @@ SYNC_RRDP_BAD_FILE_DIGEST = re.compile(
     r"rpki-client: (?P<uri>.*): bad file digest for .*"
 )
 SYNC_RRDP_HASH_MUTATION = re.compile(
-    r"rpki-client: (?P<uri>.*): [A-z0-9\-]+#(?P<serial>[0-9]+) unexpected delta mutation.*$"
+    r"rpki-client: (?P<uri>.*): [a-f0-9\-]+#(?P<serial>[0-9]+) unexpected delta mutation.*$"
 )
 SYNC_RRDP_SERIAL_DECREASED = re.compile(
     r"rpki-client: (?P<uri>.*): serial number decreased from "
