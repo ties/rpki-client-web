@@ -89,6 +89,37 @@ def test_parse_failed_fetch() -> None:
     )
 
 
+def test_parse_new_manifest_warnings() -> None:
+    """Test parsing of the new manifest warnings.
+
+    Thest the parsing of the new manifest warnings, which are related to the new manifest
+    handling w.r.t. failed fetches after the Rome RIPE meeting.
+    """
+
+    parser = parse_output_file("inputs/20231218_new_manifest_warnings.txt")
+    warnings = list(parser.warnings)
+
+    for uri in (
+        ".rrdp/198613F16D61D95B77329EB7ACDB3E1F8D1F0EC2B75E9510A7F7EACC7C3EBE19/rpki-repo.registro.br/repo/9xvLcRDGUD2PCTAtKR2vmSx8fhmKuPMS1eF21EAsfyDH/0/E7CEC0517A77D3840BD53B1A9DB0837429E25EA8.mft",
+        ".rrdp/198613F16D61D95B77329EB7ACDB3E1F8D1F0EC2B75E9510A7F7EACC7C3EBE19/rpki-repo.registro.br/repo/CMFVFdUhWFBKZa5guKSqPinRGiMnnGwjpiUnURbGZCoi/0/BF5A2964D04B4DACFFDD8B969D0A30D6B1B6FF15.mft",
+        ".rrdp/198613F16D61D95B77329EB7ACDB3E1F8D1F0EC2B75E9510A7F7EACC7C3EBE19/rpki-repo.registro.br/repo/Brv3fshLN9xi4v8TYPcMD1fCh9NMkU8kCk3ZUQqbe2qk/0/284BBBBB37224FB295DA80B26E93B007A1E377E7.mft",
+        ".rrdp/198613F16D61D95B77329EB7ACDB3E1F8D1F0EC2B75E9510A7F7EACC7C3EBE19/rpki-repo.registro.br/repo/ET39NSWiZg3eArKG7XYKApQTWa6BgL5DojdybajGtFUy/0/574748D8BF31C17F406ADCFABD98395668029B7F.mft",
+        ".rrdp/198613F16D61D95B77329EB7ACDB3E1F8D1F0EC2B75E9510A7F7EACC7C3EBE19/rpki-repo.registro.br/repo/GzJa4casvhcjD2hnHm5jAawctRkNagGnLB653uq8HDcN/0/B4E2CEBFE3B84B40B7E2069624E8751BE40B580F.mft",
+        ".rrdp/198613F16D61D95B77329EB7ACDB3E1F8D1F0EC2B75E9510A7F7EACC7C3EBE19/rpki-repo.registro.br/repo/9fopLjTvZriXaR6pFEQUwrcXPrhnUwCEB6eTJ9qWg9Hj/0/B5C41D258314BEAD112B53343A51D3ED73995B11.mft",
+        ".rrdp/198613F16D61D95B77329EB7ACDB3E1F8D1F0EC2B75E9510A7F7EACC7C3EBE19/rpki-repo.registro.br/repo/Fm49kGxNCMffxFq7Kxo87HAhnuVoQfWLXiSUPcVYz7LA/0/6A5115067878F7854C30A2F6C86EA4806BBBE4B0.mft",
+        ".rrdp/198613F16D61D95B77329EB7ACDB3E1F8D1F0EC2B75E9510A7F7EACC7C3EBE19/rpki-repo.registro.br/repo/8uLpsbFtPnQMZGNDFYqbHd1kRKKFqoJhLae957tQQtPx/0/09347E4F9CBA8C744856F25E49BFAB804E739CCE.mft",
+    ):
+        assert LabelWarning(warning_type="mft_unexpected_number", uri=uri) in warnings
+
+    assert (
+        LabelWarning(
+            warning_type="mft_misissuance_recycled",
+            uri=".rrdp/198613F16D61D95B77329EB7ACDB3E1F8D1F0EC2B75E9510A7F7EACC7C3EBE19/rpki-repo.registro.br/repo/4wg6znyq2KkGtQAkuUrnSTvSskRGsMfrPrSbpwjHLG3p/0/49F994834C75CE03A545CED4889AD66B26C112CB.mft",
+        )
+        in warnings
+    )
+
+
 def test_intertwined_lines() -> None:
     """
     Parse a file that contains lines that have mixed output.

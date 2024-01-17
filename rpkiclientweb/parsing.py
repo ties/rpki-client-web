@@ -32,6 +32,13 @@ FILE_MFT_NOT_AVAILABLE_RE = re.compile(
 FILE_MFT_FAILED_FETCH_RE = re.compile(
     r"rpki-client: (?P<path>.*): failed fetch, continuing with #[0-9]+"
 )
+
+FILE_MFT_UNEXPECTED_NUMBER_RE = re.compile(
+    r"rpki-client: (?P<path>.*): unexpected manifest number.*"
+)
+FILE_MFT_MISISSUANCE_RECYCLED_RE = re.compile(
+    r"rpki-client: (?P<path>.*): manifest misissuance, #[0-9]+ was recycled"
+)
 FILE_MFT_NOT_YET_VALID_RE = re.compile(
     r"rpki-client: (?P<path>.*): mft not yet valid (?P<expiry>.*)"
 )
@@ -176,6 +183,8 @@ def parse_maybe_warning_line(line) -> Generator[RPKIClientWarning, None, None]:
         (FILE_MFT_NOT_AVAILABLE_RE, "no_valid_mft_available"),
         (FILE_MFT_CRL_EXPIRED_RE, "mft_crl_expired"),
         (FILE_MFT_FAILED_FETCH_RE, "mft_failed_fetch"),
+        (FILE_MFT_UNEXPECTED_NUMBER_RE, "mft_unexpected_number"),
+        (FILE_MFT_MISISSUANCE_RECYCLED_RE, "mft_misissuance_recycled"),
         (FILE_MISSING_SIA_RE, "missing_sia"),
         (FILE_CMS_UNEXPECTED_SIGNED_ATTRIBUTE, "unexpected_signed_cms_attribute"),
         (FILE_ASPA_PARSE_FAILED, "aspa_parse_failed"),
