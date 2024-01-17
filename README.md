@@ -38,6 +38,7 @@ Changes
   * rpki-client 8.8 in container
   * container based on Fedora 39
   * dependencies updated for Python 3.12
+  * track 'rrdp delta hash mutation' error
 
 2023-08-29 0.13.2:
 

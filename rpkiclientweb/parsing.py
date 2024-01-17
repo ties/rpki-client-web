@@ -116,6 +116,9 @@ SYNC_RRDP_PARSE_ABORTED = re.compile(
 SYNC_RRDP_BAD_FILE_DIGEST = re.compile(
     r"rpki-client: (?P<uri>.*): bad file digest for .*"
 )
+SYNC_RRDP_HASH_MUTATION = re.compile(
+    r"rpki-client: (?P<uri>.*): [A-z0-9\-]+#(?P<serial>[0-9]+) unexpected delta mutation.*$"
+)
 SYNC_RRDP_SERIAL_DECREASED = re.compile(
     r"rpki-client: (?P<uri>.*): serial number decreased from "
     "(?P<previous>[0-9]+) to (?P<current>[0-9]+)"
@@ -228,6 +231,7 @@ def parse_maybe_warning_line(line) -> Generator[RPKIClientWarning, None, None]:
 
 
 def parse_fetch_status(line: str) -> Generator[FetchStatus, None, None]:  # noqa: C901
+    """Parse a line for a potential data fetching error."""
     # (rrdp) failures while connecting
     connect_error = SYNC_CONNECT_ERROR.match(line)
     if connect_error:
@@ -281,6 +285,13 @@ def parse_fetch_status(line: str) -> Generator[FetchStatus, None, None]:  # noqa
     bad_message_digest = SYNC_BAD_MESSAGE_DIGEST.match(line)
     if bad_message_digest:
         yield FetchStatus(bad_message_digest.group("uri"), "bad_message_digest")
+        return
+
+    rrdp_hash_mutation = SYNC_RRDP_HASH_MUTATION.match(line)
+    if rrdp_hash_mutation:
+        yield FetchStatus(
+            rrdp_hash_mutation.group("uri"), "rrdp_delta_hash_mutation", 1
+        )
         return
 
     file_bad_message_digest = SYNC_RRDP_BAD_FILE_DIGEST.match(line)
