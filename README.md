@@ -39,6 +39,8 @@ Changes
   * container based on Fedora 39
   * dependencies updated for Python 3.12
   * track 'rrdp delta hash mutation' error
+  * track failed fetch (= manifest rejected and previous re-used) warnings
+  * track new manifest parsing errors
 
 2023-08-29 0.13.2:
 
