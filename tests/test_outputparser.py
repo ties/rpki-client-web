@@ -89,6 +89,21 @@ def test_parse_failed_fetch() -> None:
     )
 
 
+def test_parse_missing_certificate_crl() -> None:
+    """Track the warning for missing manifest of signing certificate."""
+    parser = OutputParser(
+        "rpki-client: rsync.example.org/repository/35e32bc1-a629-44b7-968d-86fb05fcf01d/0/B92878BC51346518F1FEB41640B62B344887ACF1.mft: unable to get certificate CRL"
+    )
+
+    assert (
+        LabelWarning(
+            warning_type="mft_missing_crl",
+            uri="rsync.example.org/repository/35e32bc1-a629-44b7-968d-86fb05fcf01d/0/B92878BC51346518F1FEB41640B62B344887ACF1.mft",
+        )
+        in parser.warnings
+    )
+
+
 def test_parse_new_manifest_warnings() -> None:
     """Test parsing of the new manifest warnings.
 
