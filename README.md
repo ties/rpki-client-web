@@ -42,6 +42,7 @@ Changes
   * track failed fetch (= manifest rejected and previous re-used) warnings
   * track new manifest parsing errors
   * track RRDP 'referenced file deleted' warnings.
+  * track error for missing CRL of a manifest.
 
 2023-08-29 0.13.2:
 
