@@ -126,8 +126,16 @@ SYNC_RRDP_PARSE_ABORTED = re.compile(
 SYNC_RRDP_BAD_FILE_DIGEST = re.compile(
     r"rpki-client: (?P<uri>.*): bad file digest for .*"
 )
+"""The hash of a delta for a specific <serial, session> tuple does not match what was seen before."""
 SYNC_RRDP_HASH_MUTATION = re.compile(
     r"rpki-client: (?P<uri>.*): [a-f0-9\-]+#(?P<serial>[0-9]+) unexpected delta mutation.*$"
+)
+"""
+A RRDP <withdraw .../> was signaled from the RRDP server to the RRDP client for a URL but the file is still referenced.
+https://github.com/openbsd/src/blob/fbeb52932c09e79e51eda25f2ad7008b9aba1099/usr.sbin/rpki-client/repo.c#L1570
+"""
+SYNC_RRDP_REFERENCED_FILE_DELETED = re.compile(
+    r"rpki-client: (?P<uri>.*): referenced file supposed to be deleted"
 )
 SYNC_RRDP_SERIAL_DECREASED = re.compile(
     r"rpki-client: (?P<uri>.*): serial number decreased from "
@@ -304,6 +312,13 @@ def parse_fetch_status(line: str) -> Generator[FetchStatus, None, None]:  # noqa
     if rrdp_hash_mutation:
         yield FetchStatus(
             rrdp_hash_mutation.group("uri"), "rrdp_delta_hash_mutation", 1
+        )
+        return
+
+    rrdp_referenced_file_deleted = SYNC_RRDP_REFERENCED_FILE_DELETED.match(line)
+    if rrdp_referenced_file_deleted:
+        yield FetchStatus(
+            rrdp_referenced_file_deleted.group("uri"), "rrdp_referenced_file_deleted"
         )
         return
 

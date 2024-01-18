@@ -128,6 +128,20 @@ def test_rrdp_serial_decreassed() -> None:
     ) in list(res.fetch_status)
 
 
+def test_rrdp_referenced_file_delted() -> None:
+    """A file was withdrawn from RRDP while it was still referenced by other objects."""
+
+    res = OutputParser(
+        "rpki-client: rpki.example.org/repository/DEFAULT/0f/331bcf-8e29-45bd-ab6c-f52b30e01820/1/BaYSj14pZXCsabRKG-pJ7HoYDvM.roa: referenced file supposed to be deleted"
+    )
+
+    assert FetchStatus(
+        "rpki.example.org/repository/DEFAULT/0f/331bcf-8e29-45bd-ab6c-f52b30e01820/1/BaYSj14pZXCsabRKG-pJ7HoYDvM.roa",
+        "rrdp_referenced_file_deleted",
+        1,
+    ) in list(res.fetch_status)
+
+
 def test_parse_rrdp_delta_mutation_error() -> None:
     """Parse the warning when a historic RRDP hash changes."""
     parser = OutputParser(
