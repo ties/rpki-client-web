@@ -34,7 +34,7 @@ Endpoints
 Changes
 =======
 
-2024-xx-yy 0.14.0:
+2024-01-22 0.14.0:
   * rpki-client 8.8 in container
   * container based on Fedora 39
   * dependencies updated for Python 3.12
