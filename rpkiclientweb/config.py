@@ -80,11 +80,6 @@ class Configuration:
     ) -> None:
         LOG.info("Configuration: %s", conf)
 
-        if jitter is not None:
-            self.jitter = 0 if jitter == -1 else jitter
-        else:
-            self.jitter = conf.get("jitter", 600)
-
         self.verbosity = int(conf.get("verbosity", 1) if not verbosity else verbosity)
 
         self.cache_dir = Path(conf["cache_dir"]).resolve()
@@ -104,6 +99,12 @@ class Configuration:
         self.interval = conf.get("interval", None)
         validate(self.interval is not None, "interval needs to be set")
         validate(self.interval > 0, "Interval needs to be a positive integer")
+
+        # jitter defaults to 0..interval
+        if jitter is not None:
+            self.jitter = 0 if jitter == -1 else jitter
+        else:
+            self.jitter = conf.get("jitter", self.interval)
 
         self.deadline = conf.get("deadline", -1)
         validate(
