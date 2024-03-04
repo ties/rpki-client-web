@@ -4,6 +4,7 @@ Config file support.
 TODO: Consider using https://pypi.org/project/voluptuous/ or
 https://docs.python-cerberus.org/en/stable/
 """
+
 import logging
 from dataclasses import dataclass, field
 from pathlib import Path

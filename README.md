@@ -39,6 +39,7 @@ Changes
   * Use rpki-client 9.0 in the image
   * Slight reduction in image size by installing less temporary packages during
     build.
+  * Update other dependencies
 
 2024-01-22 0.14.0:
   * rpki-client 8.8 in container

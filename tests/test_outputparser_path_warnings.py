@@ -1,4 +1,5 @@
 """Test path/file related warnings."""
+
 # pylint: disable=missing-function-docstring
 
 from collections import Counter

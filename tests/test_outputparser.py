@@ -3,6 +3,7 @@ Tests for the output parser.
 
 Contains test cases that not _only_ path related, or nor _only_ fetching related. For example, test cases that parse a complete log file and check it for multiple types of situations.
 """
+
 # pylint: disable=missing-function-docstring
 from collections import Counter
 
