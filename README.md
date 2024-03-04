@@ -34,8 +34,11 @@ Endpoints
 Changes
 =======
 
-2024-xx-yy 0.14.1:
+2024-03-04 0.14.1:
   * fix: Jitter defaults to random delay of 0..interval, as documented. Not 0..600 irrespective of interval.
+  * Use rpki-client 9.0 in the image
+  * Slight reduction in image size by installing less temporary packages during
+    build.
 
 2024-01-22 0.14.0:
   * rpki-client 8.8 in container
