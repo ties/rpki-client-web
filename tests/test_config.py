@@ -1,4 +1,5 @@
 """Tests for config."""
+
 import tempfile
 from pathlib import Path
 from typing import Dict

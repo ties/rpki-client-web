@@ -1,4 +1,5 @@
 """Tests for the fetching-related warnings."""
+
 # pylint: disable=missing-function-docstring
 
 from rpkiclientweb.models import FetchStatus

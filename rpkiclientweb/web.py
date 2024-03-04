@@ -82,7 +82,7 @@ class RpkiClientWeb:
         status = (
             "validated objects JSON file is not available at the moment."
             if self.finished_initial_run
-            else "initial validation run has not finished yet.",
+            else "initial validation run has not finished yet."
         )
         raise web.HTTPServiceUnavailable(
             text=json_dumps(

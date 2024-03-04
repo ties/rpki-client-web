@@ -3,6 +3,7 @@ Tests for the output parser.
 
 Contains specific tests for RRDP.
 """
+
 # pylint: disable=missing-function-docstring
 
 from rpkiclientweb.models import FetchStatus
