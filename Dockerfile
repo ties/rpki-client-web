@@ -7,6 +7,7 @@ RUN dnf --setopt=install_weak_deps=False --best install -y tini \
   && dnf install -y rpki-client \
     --enablerepo=updates-testing \
     --best \
+  && dnf upgrade --enablerepo=updates-testing --refresh --advisory=FEDORA-2024-b05ce2af28 \
   && yum info rpki-client >> /rpki-client-version.txt \
   && dnf clean all \
   && rm -rf /var/cache/yum
@@ -18,11 +19,11 @@ RUN dnf --setopt=install_weak_deps=False --best install -y tini \
 ADD . /opt/rpkiclientweb
 # Alternative to poetry install: `poetry export` to create requirements.txt.
 RUN cd /opt/rpkiclientweb \
-  && dnf --setopt=install_weak_deps=False --best install -y python3-devel git gcc python3-devel python3-pip \
+  && dnf --setopt=install_weak_deps=False --best install -y python3-devel python3-pip git-core gcc python3-devel \
   && python3 -m pip install poetry \
   && python3 -m poetry config virtualenvs.create false \
   && python3 -m poetry install --without dev \
-  && dnf remove -y git gcc python3-devel \
+  && dnf remove -y git-core gcc python3-devel \
   && mkdir /opt/rpkiclientweb/cache /opt/rpkiclientweb/output /config\
   && chown -R daemon:daemon /opt/rpkiclientweb /config/
 VOLUME ["/opt/rpkiclientweb/cache", "/opt/rpkiclientweb/output", "/config"]
