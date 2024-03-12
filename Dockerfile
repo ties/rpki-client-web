@@ -6,10 +6,8 @@ WORKDIR /opt/rpkiclientweb
 # FEDORA-2024-b05ce2af28: rpki-client 9 testing
 RUN dnf --setopt=install_weak_deps=False --best install -y tini \
   && dnf install -y rpki-client \
-    --advisory=FEDORA-2024-b05ce2af28 \
     --enablerepo=updates-testing \
     --best \
-  && dnf upgrade --enablerepo=updates-testing --refresh --advisory=FEDORA-2024-b05ce2af28 \
   && yum info rpki-client >> /rpki-client-version.txt \
   && dnf clean all \
   && rm -rf /var/cache/yum
