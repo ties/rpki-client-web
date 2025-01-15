@@ -1,12 +1,13 @@
-FROM fedora:39
+FROM fedora:41
 
 WORKDIR /opt/rpkiclientweb
 
 # Use dependencies from fedora as much as possible, saves building them and build deps.
-# FEDORA-2024-b05ce2af28: rpki-client 9 testing
-RUN dnf --setopt=install_weak_deps=False --best install -y tini \
-  && dnf install -y rpki-client \
+# FEDORA-2025-ec87287710: rsync CVEs in 1-2025.
+RUN dnf --setopt=install_weak_deps=False --best install -y tini rpki-client \
+  && dnf install -y rsync \
     --enablerepo=updates-testing \
+    --advisory=FEDORA-2025-ec87287710 && echo "2025-01-15: rsync 3.4.0-1.fc41" \
     --best \
   && yum info rpki-client >> /rpki-client-version.txt \
   && dnf clean all \
