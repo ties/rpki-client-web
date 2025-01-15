@@ -1,5 +1,5 @@
 This repository contains a utility that exposes the results of [rpki-client](https://www.rpki-client.org/)
-via a HTTP API.
+[via](via) a HTTP API.
 
 Usage
 =====
@@ -33,6 +33,12 @@ Endpoints
 
 Changes
 =======
+
+2025-01-15 v0.15.0:
+  * rpki-client 9.3 in container
+  * container based on Fedora 41
+  * rsync 3.4.0 (patched against the [CVEs](https://marc.info/?l=rsync&m=173688395430253&w=2))
+  * dependency updates
 
 2024-03-04 0.14.1:
   * fix: Jitter defaults to random delay of 0..interval, as documented. Not 0..600 irrespective of interval.
