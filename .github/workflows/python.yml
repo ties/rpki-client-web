@@ -28,7 +28,7 @@ jobs:
       - name: lint (ruff)
         run: |
           # default set of ruff rules with GitHub Annotations
-          poetry run ruff --target-version=py310 .
+          poetry run ruff
       - name: lint (flak8, black)
         run: |
           poetry run flake8 rpkiclientweb tests

@@ -66,6 +66,7 @@ profile = "black"
 
 [tool.ruff]
 ignore = ["E501"]
+target-version = "py310"
 
 [tool.pytest]
 junit_family = "xunit2"
