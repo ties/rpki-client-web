@@ -15,6 +15,7 @@ jobs:
       actions: read   # To read the workflow path.
       id-token: write # To sign the provenance.
       contents: write # To add assets to a release.
+      packages: write # To push to the container registry.
     steps:
       - name: Checkout
         uses: actions/checkout@v3
