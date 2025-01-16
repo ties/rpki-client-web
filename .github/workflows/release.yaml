@@ -10,6 +10,10 @@ on:
 
 jobs:
   docker-release:
+    permissions:
+      actions: read   # To read the workflow path.
+      id-token: write # To sign the provenance.
+      contents: write # To add assets to a release.
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
