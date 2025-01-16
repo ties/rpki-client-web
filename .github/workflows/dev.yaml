@@ -12,10 +12,11 @@ jobs:
   docker-dev-release:
     runs-on: ubuntu-latest
     permissions:
-      actions: read   # To read the workflow path.
-      id-token: write # To sign the provenance.
-      contents: write # To add assets to a release.
-      packages: write # To push to the container registry.
+      actions: read       # To read the workflow path.
+      id-token: write     # To sign the provenance.
+      contents: write     # To add assets to a release.
+      packages: write     # To push to the container registry.
+      attestations: write # To generate an artifact attestation.
     steps:
       - name: Checkout
         uses: actions/checkout@v3
