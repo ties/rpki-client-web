@@ -41,7 +41,7 @@ jobs:
           poetry run twine check dist/*
           poetry run check-manifest
       - name: Save artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: dist
           path: |

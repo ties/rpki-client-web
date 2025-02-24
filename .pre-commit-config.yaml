@@ -14,21 +14,21 @@ repos:
   # ruff's pre-commit hook should be placed before other tools introducing
   # formatting changes.
   - repo: https://github.com/charliermarsh/ruff-pre-commit
-    rev: 'v0.9.1'
+    rev: 'v0.9.7'
     hooks:
       - id: ruff
         args: [ --fix, --exit-non-zero-on-fix, --target-version, "3.13" ]
   - repo: https://github.com/psf/black
-    rev: 24.10.0
+    rev: 25.1.0
     hooks:
       - id: black
         language_version: python3.13
   - repo: https://github.com/pycqa/flake8
-    rev: 7.1.1
+    rev: 7.1.2
     hooks:
       -   id: flake8
   - repo: https://github.com/pycqa/isort
-    rev: 5.13.2
+    rev: 6.0.0
     hooks:
       - id: isort
         name: isort (python)
