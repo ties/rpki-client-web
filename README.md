@@ -34,6 +34,10 @@ Endpoints
 Changes
 =======
 
+2025-xx-yy v0.15.1:
+  * use newer upload-artifacts github action
+  * update dependencies
+
 2025-01-15 v0.15.0:
   * rpki-client 9.3 in container
   * container based on Fedora 41
