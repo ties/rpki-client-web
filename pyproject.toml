@@ -33,7 +33,7 @@ tox = "^4.26.0"
 isort = {extras = ["pyproject"], version = "^6.0.1"}
 pytest-cov = "^6.0.0"
 pytest-xdist = "^3.2.1"
-ruff = "^0.9.7"
+ruff = "^0.12.8"
 black = "^24.10.0"
 twine = "^6.1.0"
 check-manifest = "^0.50"
