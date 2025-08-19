@@ -35,6 +35,9 @@ Changes
 =======
 
 2025-xx-yy v0.15.1:
+  * **switch to uv + hatchling for build system**
+  * switch github actions for uv build
+  * container based on Fedora 42
   * use newer upload-artifacts github action
   * update dependencies
 
