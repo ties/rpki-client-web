@@ -8,6 +8,7 @@ exclude pylintrc
 exclude Dockerfile
 exclude .dockerignore
 exclude Vagrantfile
+exclude htmlcov
 
 graft util
 
