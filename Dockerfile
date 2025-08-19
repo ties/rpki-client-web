@@ -31,7 +31,7 @@ RUN --mount=type=cache,target=/root/.cache/uv \
 
 FROM fedora:42
 
-RUN dnf --setopt=install_weak_deps=False --best install -y tini rpki-client \
+RUN dnf --setopt=install_weak_deps=False --best install -y tini rpki-client rsync \
   && yum info rpki-client >> /rpki-client-version.txt \
   && dnf clean all \
   && rm -rf /var/cache/yum
