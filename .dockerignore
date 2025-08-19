@@ -14,3 +14,6 @@ azure-pipelines.yml
 Vagrantfile
 Dockerfile
 tests
+.ruff_cache
+.vscode
+.venv
