@@ -35,6 +35,8 @@ Changes
 =======
 
 2025-xx-yy v0.15.1:
+  * remove leftover `rpkiclient_fetch_status_total` metrics for unreferenced
+    repositories.
   * **switch to uv + hatchling for build system**
   * switch github actions for uv build
   * container based on Fedora 42
