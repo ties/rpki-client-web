@@ -231,13 +231,14 @@ class RpkiClient:
         new_fetched = frozenset(fetched)
 
         # Clean up fetch status metrics for unreferenced repos
-        for entry in self.fetched - new_fetched:
+        for uri, fetch_type in self.fetched - new_fetched:
             LOG.info(
                 "removed rpkiclient_fetch_status_total{type='%s', uri='%s'}",
-                entry[1],
-                entry[0],
+                fetch_type,
+                uri,
             )
-            RPKI_CLIENT_FETCH_STATUS.remove(entry)
+            # labels: uri, status
+            RPKI_CLIENT_FETCH_STATUS.remove(uri, fetch_type)
 
         self.fetched = new_fetched
 
