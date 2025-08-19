@@ -1,47 +1,46 @@
-[tool.poetry]
+[project]
 name = "rpkiclientweb"
 version = "0.15.0"
-license = "MIT"
+license = {text = "MIT"}
 keywords = ["rpki", "rpki-client", "validator", "metrics", "prometheus"]
 description = "A web api for RPKI-client"
-authors = ["Ties de Kock <ties@tiesdekock.nl>"]
+authors = [{name = "Ties de Kock", email = "ties@tiesdekock.nl"}]
 readme = "README.md"
-repository = "https://github.com/ties/rpki-client-web"
 classifiers = [
     "Development Status :: 5 - Production/Stable",
     "Topic :: Software Development :: Libraries",
     "License :: OSI Approved :: MIT License"
 ]
+requires-python = ">=3.10"
 
-packages = [{include = "rpkiclientweb"}]
-include = [
-  { path = "util/rsync_timeout" }
+dependencies = [
+    "aiohttp>=3.10.11",
+    "prometheus-async==22.2.0",
+    "PyYAML>=6.0",
 ]
 
-[tool.poetry.dependencies]
-python = "^3.10"
-# required for python 3.12
-aiohttp = "^3.10.11"
-# Do not use extras syntax, since this pulls in old aiohttp, which depends on
-# frozenlist which is not 3.12 compatible.
-prometheus-async = "25.1.0"
-PyYAML = "^6.0"
+[project.urls]
+repository = "https://github.com/ties/rpki-client-web"
 
-[tool.poetry.group.dev.dependencies]
-pytest = "^8.3.4"
-tox = "^4.26.0"
-isort = {extras = ["pyproject"], version = "^6.0.1"}
-pytest-cov = "^6.0.0"
-pytest-xdist = "^3.2.1"
-ruff = "^0.9.7"
-black = "^24.10.0"
-twine = "^6.1.0"
-check-manifest = "^0.50"
-flake8 = "^7.0.0"
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.3.4",
+    "isort>=6.0.1",
+    "pytest-cov>=6.0.0",
+    "pytest-xdist>=3.2.1",
+    "ruff>=0.9.7",
+    "black>=24.10.0",
+    "check-manifest>=0.50",
+    "flake8>=7.0.0",
+]
 
 [build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["rpkiclientweb"]
+include = ["util/rsync_timeout"]
 
 [tool.black]
 target-version = ["py310"]
@@ -49,7 +48,6 @@ include = '\.pyi?$'
 extend-exclude = '''
 /(
   | \.mypy_cache
-  | \.tox
   | \.venv
   | build
   | dist
