@@ -17,7 +17,7 @@ repos:
     rev: 'v0.9.7'
     hooks:
       - id: ruff
-        args: [ --fix, --exit-non-zero-on-fix, --target-version, "3.13" ]
+        args: [ --fix, --exit-non-zero-on-fix, --target-version, "py313" ]
   - repo: https://github.com/psf/black
     rev: 25.1.0
     hooks:
