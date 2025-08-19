@@ -1,12 +1,14 @@
-FROM fedora:42 as builder
+FROM fedora:42 AS builder
+
+# configure dnf to pick best and no weak dependencies
+RUN echo -e '[main]\ninstall_weak_deps=False\nbest=True' > /etc/dnf/dnf.conf
 
 # Use dependencies from fedora as much as possible, saves building them and build deps.
-RUN dnf --setopt=install_weak_deps=False --best install -y tini rpki-client python3-uv \
-  && dnf install -y rsync --best \
+RUN --mount=type=cache,target=/var/cache/dnf \
+    --mount=type=cache,target=/var/cache/libdnf5 \
+  dnf install -y tini rpki-client python3-uv rsync \
   && dnf install -y @development-tools python3-devel \
-  && yum info rpki-client >> /rpki-client-version.txt \
-  && dnf clean all \
-  && rm -rf /var/cache/yum
+  && yum info rpki-client >> /rpki-client-version.txt
 
 #
 # Tini is used from the base image distribution since this is cross-architecture.
@@ -31,14 +33,18 @@ RUN --mount=type=cache,target=/root/.cache/uv \
 
 FROM fedora:42
 
-RUN dnf --setopt=install_weak_deps=False --best install -y tini rpki-client rsync \
-  && yum info rpki-client >> /rpki-client-version.txt \
-  && dnf clean all \
-  && rm -rf /var/cache/yum
+# configure dnf to pick best and no weak dependencies
+RUN echo -e '[main]\ninstall_weak_deps=False\nbest=True' > /etc/dnf/dnf.conf
+
+RUN --mount=type=cache,target=/var/cache/dnf \
+    --mount=type=cache,target=/var/cache/libdnf5 \
+  dnf install -y tini rpki-client rsync \
+  && yum info rpki-client >> /rpki-client-version.txt
 
 COPY --from=builder --chown=daemon:daemon /opt/rpkiclientweb /opt/rpkiclientweb
-RUN cd /opt/rpkiclientweb \
-  && mkdir /opt/rpkiclientweb/cache /opt/rpkiclientweb/output /config \
+WORKDIR /opt/rpkiclientweb
+RUN --mount=type=cache,target=/var/cache/dnf \
+  mkdir /opt/rpkiclientweb/cache /opt/rpkiclientweb/output /config \
   && chown -R daemon:daemon /opt/rpkiclientweb /config/ \
   && dnf install -y python3
 VOLUME ["/opt/rpkiclientweb/cache", "/opt/rpkiclientweb/output", "/config"]
@@ -46,7 +52,6 @@ VOLUME ["/opt/rpkiclientweb/cache", "/opt/rpkiclientweb/output", "/config"]
 ADD config.yml /config/
 
 USER daemon
-WORKDIR /opt/rpkiclientweb
 
 # default port from default config
 EXPOSE 8888
