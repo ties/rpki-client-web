@@ -20,7 +20,7 @@ jobs:
 
       - name: Install uv and set the python version
         # d9e0f98 = 6.5.0
-        uses: astral-sh/setup-uv@d9e0f98
+        uses: astral-sh/setup-uv@d9e0f98d3fc6adb07d1e3d37f3043649ddad06a1
         with:
           python-version: ${{ matrix.python-version }}
 
