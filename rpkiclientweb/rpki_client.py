@@ -235,7 +235,7 @@ class RpkiClient:
             LOG.info(
                 "removed rpkiclient_fetch_status_total{type='%s', uri='%s'}",
                 entry[1],
-                entry[1],
+                entry[0],
             )
             RPKI_CLIENT_FETCH_STATUS.remove(entry)
 
