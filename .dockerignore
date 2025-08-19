@@ -13,3 +13,4 @@ output
 azure-pipelines.yml
 Vagrantfile
 Dockerfile
+tests
