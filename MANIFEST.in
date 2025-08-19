@@ -8,12 +8,13 @@ exclude pylintrc
 exclude Dockerfile
 exclude .dockerignore
 exclude Vagrantfile
-exclude htmlcov
+
 
 graft util
 
 global-exclude .gitkeep .gitignore .DS_Store
 
+prune htmlcov
 prune tests
 prune .github
 prune .vscode
