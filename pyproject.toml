@@ -15,15 +15,16 @@ requires-python = ">=3.10"
 
 dependencies = [
     "aiohttp>=3.10.11",
-    "prometheus-async==22.2.0",
+    "prometheus-async>=25.1.0",
     "PyYAML>=6.0",
 ]
 
 [project.urls]
 repository = "https://github.com/ties/rpki-client-web"
 
-[project.optional-dependencies]
+[dependency-groups]
 dev = [
+    "twine>=6.1.0",
     "pytest>=8.3.4",
     "isort>=6.0.1",
     "pytest-cov>=6.0.0",
@@ -70,4 +71,5 @@ target-version = "py310"
 junit_family = "xunit2"
 
 [settings]
+
 # known_third_party = []
