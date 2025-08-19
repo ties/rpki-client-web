@@ -33,7 +33,7 @@ jobs:
           uv run flake8 rpkiclientweb tests
           uv run black --check --diff rpkiclientweb tests
       - name: test
-        run: poetry run pytest --cov rpkiclientweb --cov-report html -qq -o console_output_style=count -p no:sugar tests
+        run: uv run pytest --cov rpkiclientweb --cov-report html -qq -o console_output_style=count -p no:sugar tests
       - name: package and test packaging
         run: |
           uv build
