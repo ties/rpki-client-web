@@ -6,7 +6,7 @@ import logging
 import os
 import time
 from dataclasses import dataclass, field
-from typing import FrozenSet, List
+from typing import FrozenSet, List, Tuple
 
 from prometheus_async.aio import time as time_metric
 from prometheus_async.aio import track_inprogress
@@ -58,6 +58,8 @@ class RpkiClient:
 
     openmetrics_parser: OpenmetricsOutputParser = field(init=False)
     json_parser: JSONOutputParser = field(init=False)
+
+    fetched: FrozenSet[Tuple[str, str]] = frozenset()
 
     def __post_init__(self) -> None:
         self.openmetrics_parser = OpenmetricsOutputParser()
@@ -211,16 +213,33 @@ class RpkiClient:
                     RPKI_CLIENT_PULLED.remove(unreferenced_repo)
                 except KeyError:
                     pass
+
         # Update pulling & pulled
         for repo in new_pulling:
             RPKI_CLIENT_PULLING.labels(repo).set_to_current_time()
         for repo in parsed.pulled:
             RPKI_CLIENT_PULLED.labels(repo).set_to_current_time()
 
+        fetched: list[Tuple[str, str]] = []
+
         for fetch_status in parsed.fetch_status:
             RPKI_CLIENT_FETCH_STATUS.labels(
                 uri=fetch_status.uri, type=fetch_status.type
             ).inc(fetch_status.count)
+
+            fetched.append((fetch_status.uri, fetch_status.type))
+        new_fetched = frozenset(fetched)
+
+        # Clean up fetch status metrics for unreferenced repos
+        for entry in self.fetched - new_fetched:
+            LOG.info(
+                "removed rpkiclient_fetch_status_total{type='%s', uri='%s'}",
+                entry[1],
+                entry[1],
+            )
+            RPKI_CLIENT_FETCH_STATUS.remove(entry)
+
+        self.fetched = new_fetched
 
         for rpki_client_error in parsed.rpki_client_errors:
             RPKI_CLIENT_ERRORS.labels(type=rpki_client_error.warning_type).inc()
