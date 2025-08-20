@@ -146,3 +146,18 @@ def test_fetch_error_404_no_full_url_in_metric() -> None:
     assert FetchStatus("https://rrdp.ripe.net", "http_404") in status_errors
 
     assert FetchStatus("https://magellan.ipxo.com", "http_521") in status_errors
+
+
+def test_fetch_status_rpki_client_9_5_1() -> None:
+    """Parse output from rpki-client 9.5.1"""
+    res = parse_output_file("inputs/20250820_rpki_client_orig.txt")
+    status_errors = list(res.fetch_status)
+
+    for status in status_errors:
+        assert (
+            status.uri.startswith("https://") or status.uri.startswith("rsync://")
+        ) or "://" not in status.uri
+
+    status_types = {status.type for status in status_errors}
+    # this is detailed, but less granular than the number of lines
+    assert len(status_types) < 0.2 * len(status_errors)

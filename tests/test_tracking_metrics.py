@@ -13,6 +13,7 @@ def sample_config() -> Configuration:
 
 
 def test_add_remove_fetch_status(sample_config: Configuration) -> None:
+    """Test the fetch status state tracked in the rpki-client object."""
     subject = RpkiClient(sample_config)
 
     with (Path(__file__).parent / "inputs/20250820_rpki_client_orig.txt").open(
