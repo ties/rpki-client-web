@@ -148,7 +148,7 @@ SYNC_RRDP_TLS_CERTIFICATE_VERIFICATION_FAILED = re.compile(
     r"rpki-client: (?P<uri>[^ ]+)(?P<ip> \([0-9a-f:\.]+\))?: TLS handshake: certificate verification failed:.*"
 )
 SYNC_RRDP_TLS_FAILURE = re.compile(
-    r"rpki-client: (?P<uri>.*): TLS read: read failed:.*"
+    r"rpki-client: (?P<uri>[^ ]+)(?P<ip> \([0-9a-f:\.]+\))?: TLS read: read failed:.*"
 )
 SYNC_RRDP_CONTENT_TOO_BIG = re.compile(r"rpki-client: parse failed - content too big")
 
@@ -172,7 +172,7 @@ RPKI_CLIENT_NOT_ALL_FILES = re.compile(
 )
 
 
-def parse_maybe_warning_line(line) -> Generator[RPKIClientWarning, None, None]:
+def parse_maybe_warning_line(line: str) -> Generator[RPKIClientWarning, None, None]:
     """Parse a line for warnings - may be empty."""
     # LabelWarning (<type, file> tuples) first
     #

@@ -1,8 +1,10 @@
+from dataclasses import dataclass
 from datetime import datetime
 from typing import NamedTuple, Union
 
 
-class FetchStatus(NamedTuple):
+@dataclass
+class FetchStatus:
     """
     rpki-client fetch status for a repo.
 
@@ -12,6 +14,11 @@ class FetchStatus(NamedTuple):
     uri: str
     type: str
     count: int = 1
+
+    def __post_init__(self):
+        # Strip leading .rsync/ from the URI if present
+        if self.uri.startswith(".rsync/"):
+            self.uri = "rsync://" + self.uri[7:]
 
 
 class LabelWarning(NamedTuple):
@@ -29,12 +36,22 @@ class ExpirationWarning(NamedTuple):
     expiration: datetime
 
 
-class ManifestObjectWarning(NamedTuple):
+@dataclass
+class ManifestObjectWarning:
     """rpki-client warning about a file on a manifest."""
 
     warning_type: str
     uri: str
     object_name: str
+
+    def __post_init__(self):
+        # Strip leading .rsync/ from the URI if present
+        if self.uri.startswith(".rsync/"):
+            self.uri = self.uri[7:]
+
+        # Remove everything after the '#' if present
+        if "#" in self.uri:
+            self.uri = self.uri.split("#")[0]
 
 
 class MissingLabel(NamedTuple):
