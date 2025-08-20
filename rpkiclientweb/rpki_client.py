@@ -171,17 +171,18 @@ class RpkiClient:
         RPKI_CLIENT_UPDATE_COUNT.labels(returncode=proc.returncode).inc()
         RPKI_CLIENT_LAST_DURATION.set(duration)
 
-        output = stdout.decode("utf-8", errors="replace")
+        stdout_output = stdout.decode("utf-8", errors="replace")
+        stderr_output = stderr.decode("utf-8", errors="replace")
 
-        self.update_warning_metrics(output, proc.returncode == 0)
+        self.update_warning_metrics(stderr_output, proc.returncode == 0)
 
         asyncio.create_task(self.update_validated_objects_gauge(proc.returncode))
         asyncio.create_task(self.update_rpki_client_openmetrics())
 
         return ExecutionResult(
             returncode=proc.returncode,
-            stdout=stdout.decode(),
-            stderr=stderr.decode(),
+            stdout=stdout_output,
+            stderr=stderr_output,
             duration=duration,
         )
 
