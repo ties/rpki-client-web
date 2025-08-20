@@ -4,8 +4,8 @@ FROM fedora:42 AS builder
 RUN echo -e '[main]\ninstall_weak_deps=False\nbest=True' > /etc/dnf/dnf.conf
 
 # Use dependencies from fedora as much as possible, saves building them and build deps.
-RUN --mount=type=cache,target=/var/cache/dnf \
-    --mount=type=cache,target=/var/cache/libdnf5 \
+RUN --mount=type=cache,sharing=locked,target=/var/cache/dnf \
+    --mount=type=cache,sharing=locked,target=/var/cache/libdnf5 \
   dnf install -y tini rpki-client python3-uv rsync \
   && dnf install -y @development-tools python3-devel \
   && yum info rpki-client >> /rpki-client-version.txt
@@ -23,12 +23,12 @@ ENV UV_COMPILE_BYTECODE=1 UV_LINK_MODE=copy
 ENV UV_PYTHON_DOWNLOADS=0
 
 WORKDIR /opt/rpkiclientweb
-RUN --mount=type=cache,target=/root/.cache/uv \
+RUN --mount=type=cache,sharing=locked,target=/root/.cache/uv \
     --mount=type=bind,source=uv.lock,target=uv.lock \
     --mount=type=bind,source=pyproject.toml,target=pyproject.toml \
     uv sync --locked --no-install-project --no-dev
 COPY . /opt/rpkiclientweb
-RUN --mount=type=cache,target=/root/.cache/uv \
+RUN --mount=type=cache,sharing=locked,target=/root/.cache/uv \
     uv sync --locked --no-dev
 
 FROM fedora:42
@@ -36,14 +36,15 @@ FROM fedora:42
 # configure dnf to pick best and no weak dependencies
 RUN echo -e '[main]\ninstall_weak_deps=False\nbest=True' > /etc/dnf/dnf.conf
 
-RUN --mount=type=cache,target=/var/cache/dnf \
-    --mount=type=cache,target=/var/cache/libdnf5 \
+RUN --mount=type=cache,sharing=locked,target=/var/cache/dnf \
+    --mount=type=cache,sharing=locked,target=/var/cache/libdnf5 \
   dnf install -y tini rpki-client rsync \
   && yum info rpki-client >> /rpki-client-version.txt
 
 COPY --from=builder --chown=daemon:daemon /opt/rpkiclientweb /opt/rpkiclientweb
 WORKDIR /opt/rpkiclientweb
-RUN --mount=type=cache,target=/var/cache/dnf \
+RUN --mount=type=cache,sharing=locked,target=/var/cache/dnf \
+    --mount=type=cache,sharing=locked,target=/var/cache/libdnf5 \
   mkdir /opt/rpkiclientweb/cache /opt/rpkiclientweb/output /config \
   && chown -R daemon:daemon /opt/rpkiclientweb /config/ \
   && dnf install -y python3
