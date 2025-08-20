@@ -1,6 +1,7 @@
 """Wrapper for rpki-client"""
 
 import asyncio
+import datetime
 import itertools
 import logging
 import os
@@ -60,6 +61,7 @@ class RpkiClient:
     json_parser: JSONOutputParser = field(init=False)
 
     fetched: FrozenSet[Tuple[str, str]] = frozenset()
+    last_seen: dict[str, datetime.datetime] = field(default_factory=dict)
 
     def __post_init__(self) -> None:
         self.openmetrics_parser = OpenmetricsOutputParser()
@@ -224,7 +226,6 @@ class RpkiClient:
             RPKI_CLIENT_PULLED.labels(repo).set_to_current_time()
 
         fetched: list[Tuple[str, str]] = []
-        fetched_uris = set()
 
         for fetch_status in parsed.fetch_status:
             RPKI_CLIENT_FETCH_STATUS.labels(
@@ -232,21 +233,30 @@ class RpkiClient:
             ).inc(fetch_status.count)
 
             fetched.append((fetch_status.uri, fetch_status.type))
-            fetched_uris.add(fetch_status.uri)
+            self.last_seen[fetch_status.uri] = datetime.datetime.now()
 
         new_fetched = frozenset(fetched)
 
-        # Clean up fetch status metrics for unreferenced repos --- these where
-        # the URI is not longer referenced.
+        # Clean up fetch status metrics for unreferenced repos
         for uri, fetch_type in self.fetched - new_fetched:
-            if uri not in fetched_uris:
+            last_seen_at = self.last_seen.get(uri, None)
+
+            # Keep metric for 24 hours if it was seen
+            keep = (
+                last_seen_at
+                and (datetime.datetime.now() - last_seen_at).total_seconds()
+                < 24 * 60 * 60
+            )
+            if not keep:
                 LOG.info(
                     "removed metric for unreferenced repository: rpkiclient_fetch_status_total{type='%s', uri='%s'}",
                     fetch_type,
                     uri,
                 )
-                # labels: uri, status
+                # remove the metric
                 RPKI_CLIENT_FETCH_STATUS.remove(uri, fetch_type)
+                # and remove entry
+                self.last_seen.pop(uri, None)
 
         self.fetched = new_fetched
 
