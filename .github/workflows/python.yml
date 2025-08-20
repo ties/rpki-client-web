@@ -24,14 +24,12 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
 
-      - name: lint (ruff)
+      - name: lint and format (ruff)
         run: |
-          # default set of ruff rules with GitHub Annotations
-          uv run ruff check .
-      - name: lint (flak8, black)
-        run: |
-          uv run flake8 rpkiclientweb tests
-          uv run black --check --diff rpkiclientweb tests
+          # Check formatting
+          uv run ruff format --check rpkiclientweb tests
+          # Run linter with GitHub Annotations
+          uv run ruff check rpkiclientweb tests
       - name: test
         run: uv run pytest --cov rpkiclientweb --cov-report html -qq -o console_output_style=count -p no:sugar tests
       - name: package and test packaging

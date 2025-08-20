@@ -26,13 +26,10 @@ repository = "https://github.com/ties/rpki-client-web"
 dev = [
     "twine>=6.1.0",
     "pytest>=8.3.4",
-    "isort>=6.0.1",
     "pytest-cov>=6.0.0",
     "pytest-xdist>=3.2.1",
     "ruff>=0.9.7",
-    "black>=24.10.0",
     "check-manifest>=0.50",
-    "flake8>=7.0.0",
 ]
 
 [build-system]
@@ -43,29 +40,23 @@ build-backend = "hatchling.build"
 packages = ["rpkiclientweb"]
 include = ["util/rsync_timeout"]
 
-[tool.black]
-target-version = ["py310"]
-include = '\.pyi?$'
-extend-exclude = '''
-/(
-  | \.mypy_cache
-  | \.venv
-  | build
-  | dist
-)/
-'''
-
-[tool.isort]
-multi_line_output = 3
-include_trailing_comma = true
-force_grid_wrap = 0
-use_parentheses = true
-line_length = 88
-profile = "black"
-
 [tool.ruff]
-ignore = ["E501"]
 target-version = "py310"
+exclude = [
+    ".mypy_cache",
+    ".venv",
+    "build",
+    "dist",
+]
+
+[tool.ruff.lint]
+ignore = ["E501"]
+
+[tool.ruff.format]
+# Use single quotes for strings
+quote-style = "double"
+# Respect existing line endings
+line-ending = "auto"
 
 [tool.pytest]
 junit_family = "xunit2"
