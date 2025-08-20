@@ -171,7 +171,9 @@ class RpkiClient:
         RPKI_CLIENT_UPDATE_COUNT.labels(returncode=proc.returncode).inc()
         RPKI_CLIENT_LAST_DURATION.set(duration)
 
-        self.update_warning_metrics(stderr, proc.returncode == 0)
+        output = stdout.decode("utf-8", errors="replace")
+
+        self.update_warning_metrics(output, proc.returncode == 0)
 
         asyncio.create_task(self.update_validated_objects_gauge(proc.returncode))
         asyncio.create_task(self.update_rpki_client_openmetrics())
@@ -197,9 +199,9 @@ class RpkiClient:
 
         self.openmetrics_parser.parse(metrics_path)
 
-    def update_warning_metrics(self, stderr: bytes, was_successful_run: bool) -> None:
+    def update_warning_metrics(self, output: str, was_successful_run: bool) -> None:
         """Update the warning gauges."""
-        parsed = OutputParser(stderr.decode("utf8"))
+        parsed = OutputParser(output)
 
         # Delete labels for repos not included anymore (unreferenced)
         new_pulling = parsed.pulling
@@ -221,6 +223,7 @@ class RpkiClient:
             RPKI_CLIENT_PULLED.labels(repo).set_to_current_time()
 
         fetched: list[Tuple[str, str]] = []
+        fetched_uris = set()
 
         for fetch_status in parsed.fetch_status:
             RPKI_CLIENT_FETCH_STATUS.labels(
@@ -228,17 +231,21 @@ class RpkiClient:
             ).inc(fetch_status.count)
 
             fetched.append((fetch_status.uri, fetch_status.type))
+            fetched_uris.add(fetch_status.uri)
+
         new_fetched = frozenset(fetched)
 
-        # Clean up fetch status metrics for unreferenced repos
+        # Clean up fetch status metrics for unreferenced repos --- these where
+        # the URI is not longer referenced.
         for uri, fetch_type in self.fetched - new_fetched:
-            LOG.info(
-                "removed rpkiclient_fetch_status_total{type='%s', uri='%s'}",
-                fetch_type,
-                uri,
-            )
-            # labels: uri, status
-            RPKI_CLIENT_FETCH_STATUS.remove(uri, fetch_type)
+            if uri not in fetched_uris:
+                LOG.info(
+                    "removed metric for unreferenced repository: rpkiclient_fetch_status_total{type='%s', uri='%s'}",
+                    fetch_type,
+                    uri,
+                )
+                # labels: uri, status
+                RPKI_CLIENT_FETCH_STATUS.remove(uri, fetch_type)
 
         self.fetched = new_fetched
 
