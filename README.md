@@ -36,7 +36,7 @@ Changes
 
 2025-xx-yy v0.15.1:
   * remove leftover `rpkiclient_fetch_status_total` metrics for unreferenced
-    repositories.
+    repositories after the uri has not been seen for 24h.
   * clean up the URIs in some metrics: while it is not possible to get them
     100% consistent, the `.rsync` prefix should be gone from metrics (and
     replaced with `rsync://`)
