@@ -2,7 +2,7 @@
 
 import tempfile
 from pathlib import Path
-from typing import Dict
+from typing import Any, Dict
 
 import pytest
 
@@ -11,7 +11,7 @@ from rpkiclientweb.rpki_client import RpkiClient
 from rpkiclientweb.util import json_dumps, load_yaml
 
 
-def load_sample_conf() -> Dict:
+def load_sample_conf() -> Dict[str, Any]:
     path = Path(__file__).parent / "sample.yml"
 
     return load_yaml(path.open("r"))

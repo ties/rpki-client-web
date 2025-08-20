@@ -1,0 +1,444 @@
+rpki-client: ta/afrinic: pulling from https://rpki.afrinic.net/repository/AfriNIC.cer
+rpki-client: ta/lacnic: pulling from https://rrdp.lacnic.net/ta/rta-lacnic-rpki.cer
+rpki-client: ta/apnic: pulling from https://rpki.apnic.net/repository/apnic-rpki-root-iana-origin.cer
+rpki-client: ta/ripe: pulling from https://rpki.ripe.net/ta/ripe-ncc-ta.cer
+rpki-client: ta/arin: pulling from https://rrdp.arin.net/arin-rpki-ta.cer
+rpki-client: ta/ripe: loaded from network
+rpki-client: https://rrdp.ripe.net/notification.xml: pulling from network
+rpki-client: ta/afrinic: loaded from network
+rpki-client: https://rrdp.afrinic.net/notification.xml: pulling from network
+rpki-client: ta/lacnic: loaded from network
+rpki-client: https://rrdp.lacnic.net/rrdp/notification.xml: pulling from network
+rpki-client: https://rrdp.ripe.net/notification.xml: downloading 2 deltas (172322cf-c642-4e6f-806c-bd2375d8001a#144580)
+rpki-client: https://rrdp.afrinic.net/notification.xml: repository not modified (8fe3109e-2561-4627-8850-83ab94b9bb91#51226)
+rpki-client: https://rrdp.afrinic.net/notification.xml: loaded from network
+rpki-client: https://rrdp.ripe.net/notification.xml: loaded from network
+rpki-client: ta/arin: loaded from network
+rpki-client: https://rrdp.arin.net/notification.xml: pulling from network
+rpki-client: https://rrdp.arin.net/notification.xml: downloading snapshot (4a394319-7460-4141-a416-1addb69284ff#127046)
+rpki-client: ta/apnic: loaded from network
+rpki-client: https://rrdp.lacnic.net/rrdp/notification.xml: downloading 7 deltas (66b09eea-03c7-435f-bb29-5bee810bd657#247064)
+rpki-client: https://rrdp.apnic.net/notification.xml: pulling from network
+rpki-client: .rrdp/2A58FCECAC1BEAAECDB0232275D0A971B146A47C3E64FEF2FA46A24F5F6B1821/rpki.afrinic.net/repository/member_repository/F36C06CB/D8FF6538D4F311ECB3714BD3F1222468/06392D96808111EFACB35A67762E951A.roa: certificate is not yet valid
+rpki-client: https://rrdp.apnic.net/notification.xml: downloading 4 deltas (1976999f-5bc5-4767-b567-e9d15ac74007#77513)
+rpki-client: https://rrdp.apnic.net/notification.xml: loaded from network
+rpki-client: .rrdp/2A58FCECAC1BEAAECDB0232275D0A971B146A47C3E64FEF2FA46A24F5F6B1821/rpki.afrinic.net/repository/member_repository/F368F2D0/7F4A98EA6E0511E89C0D6E4BF8AEA228/B6E28282609B11F09633A392DAE4EC9C.roa: certificate has expired
+rpki-client: .rrdp/2A58FCECAC1BEAAECDB0232275D0A971B146A47C3E64FEF2FA46A24F5F6B1821/rpki.afrinic.net/repository/member_repository/F361610C/90D847F0B49A11EF9D6E0B60762E951A/FAE9132EBEE311EFA8C67594762E951A.roa: certificate is not yet valid
+rpki-client: .rrdp/2A58FCECAC1BEAAECDB0232275D0A971B146A47C3E64FEF2FA46A24F5F6B1821/rpki.afrinic.net/repository/member_repository/F3613254/C9012ADE023411EFA096505F017001B1/9870DA98AD8511EFAF5F92BE762E951A.roa: certificate is not yet valid
+rpki-client: .rrdp/2A58FCECAC1BEAAECDB0232275D0A971B146A47C3E64FEF2FA46A24F5F6B1821/rpki.afrinic.net/repository/member_repository/F36B10B8/DA26C5EE0F1711EB96C8FA5CF8AEA228/23D4257A20FB11F0900F649ADAE4EC9C.roa: certificate is not yet valid
+rpki-client: .rrdp/2A58FCECAC1BEAAECDB0232275D0A971B146A47C3E64FEF2FA46A24F5F6B1821/rpki.afrinic.net/repository/member_repository/F36663C2/B390E9E8C78311ECB1982894F1222468/9F17036CB4E311EFA49155A2762E951A.roa: certificate is not yet valid
+rpki-client: .rrdp/2A58FCECAC1BEAAECDB0232275D0A971B146A47C3E64FEF2FA46A24F5F6B1821/rpki.afrinic.net/repository/member_repository/F36663C2/B390E9E8C78311ECB1982894F1222468/DB465DA6B4E311EFA8F972A4762E951A.roa: certificate is not yet valid
+rpki-client: .rrdp/2A58FCECAC1BEAAECDB0232275D0A971B146A47C3E64FEF2FA46A24F5F6B1821/rpki.afrinic.net/repository/member_repository/F368F2D0/92F86E1C6E0511E8A1B5854BF8AEA228/84C61B1A5D7611F09CCFA3CADAE4EC9C.roa: certificate has expired
+rpki-client: .rrdp/2A58FCECAC1BEAAECDB0232275D0A971B146A47C3E64FEF2FA46A24F5F6B1821/rpki.afrinic.net/repository/member_repository/F368F2D0/92F86E1C6E0511E8A1B5854BF8AEA228/63CC9642609A11F0A0FAF889DAE4EC9C.roa: certificate has expired
+rpki-client: .rrdp/2A58FCECAC1BEAAECDB0232275D0A971B146A47C3E64FEF2FA46A24F5F6B1821/rpki.afrinic.net/repository/member_repository/F368F2D0/92F86E1C6E0511E8A1B5854BF8AEA228/2C0259565D7811F09CC393D6DAE4EC9C.roa: certificate has expired
+rpki-client: .rrdp/2A58FCECAC1BEAAECDB0232275D0A971B146A47C3E64FEF2FA46A24F5F6B1821/rpki.afrinic.net/repository/member_repository/F368F2D0/92F86E1C6E0511E8A1B5854BF8AEA228/30F166E85D7611F083317EC8DAE4EC9C.roa: certificate has expired
+rpki-client: .rrdp/2A58FCECAC1BEAAECDB0232275D0A971B146A47C3E64FEF2FA46A24F5F6B1821/rpki.afrinic.net/repository/member_repository/F368F2D0/92F86E1C6E0511E8A1B5854BF8AEA228/7E72B38A609C11F094F02197DAE4EC9C.roa: certificate has expired
+rpki-client: .rrdp/2A58FCECAC1BEAAECDB0232275D0A971B146A47C3E64FEF2FA46A24F5F6B1821/rpki.afrinic.net/repository/member_repository/F368F2D0/92F86E1C6E0511E8A1B5854BF8AEA228/ED20A3B6609A11F08AD7228EDAE4EC9C.roa: certificate has expired
+rpki-client: .rrdp/2A58FCECAC1BEAAECDB0232275D0A971B146A47C3E64FEF2FA46A24F5F6B1821/rpki.afrinic.net/repository/member_repository/F368F2D0/92F86E1C6E0511E8A1B5854BF8AEA228/557552805D7711F0AE5BDBD1DAE4EC9C.roa: certificate has expired
+rpki-client: https://rrdp.lacnic.net/rrdp/notification.xml: loaded from network
+rpki-client: https://0.sb/rrdp/notification.xml: pulling from network
+rpki-client: https://rrdp-rps.arin.net/notification.xml: pulling from network
+rpki-client: https://0.sb/rrdp/notification.xml: notification file not modified (044b2cba-f82b-4ea7-8277-c0f07266f5c3#40016)
+rpki-client: https://0.sb/rrdp/notification.xml: loaded from network
+rpki-client: https://rrdp.arin.net/4a394319-7460-4141-a416-1addb69284ff/127046/snapshot.xml (2001:500:13::153): TLS read: read failed: error:0A000126:SSL routines::unexpected eof while reading
+rpki-client: https://rrdp.arin.net/notification.xml: bad message digest
+rpki-client: https://rrdp-rps.arin.net/notification.xml: downloading 2 deltas (222bc4dd-08cd-46c3-b744-f99835520fa4#83035)
+rpki-client: https://rrdp.arin.net/notification.xml: load from network failed, fallback to rsync
+rpki-client: .rsync/rpki.arin.net/repository: pulling from rsync://rpki.arin.net/repository
+rpki-client: https://rrdp-rps.arin.net/notification.xml: loaded from network
+rpki-client: https://pub.krill.ausra.cloud/rrdp/notification.xml: pulling from network
+rpki-client: https://pub.krill.ausra.cloud/rrdp/notification.xml: notification file not modified (2cc0afd8-223a-4355-b2d6-82d70506265a#924)
+rpki-client: https://pub.krill.ausra.cloud/rrdp/notification.xml: loaded from network
+rpki-client: https://chloe.sobornost.net/rpki/news.xml: pulling from network
+rpki-client: pub.krill.ausra.cloud/repo/Ausra-Systems-Internal-CA/0/B32E3E3753E1C34EB8EC09DDA363F06C67B7DB8A.mft: CRL has expired
+rpki-client: https://rpki.sunoaki.net/rrdp/notification.xml: pulling from network
+rpki-client: https://rpki.sunoaki.net/rrdp/notification.xml: repository not modified (8ff7fcf2-8880-44f0-b334-c0efb8c59c3b#1295)
+rpki-client: https://rpki.sunoaki.net/rrdp/notification.xml: loaded from network
+rpki-client: https://rpki.folf.systems/rrdp/notification.xml: pulling from network
+rpki-client: https://krill.signalx.cloud/rrdp/notification.xml: pulling from network
+rpki-client: https://krill.signalx.cloud/rrdp/notification.xml: downloading 1 deltas (fee41ebf-f444-4655-9447-20590e38dc2a#80)
+rpki-client: https://krill.signalx.cloud/rrdp/notification.xml: loaded from network
+rpki-client: https://rpki-rrdp.us-east-2.amazonaws.com/rrdp/967a255c-d680-42d3-9ec3-ecb3f9da088c/notification.xml: pulling from network
+rpki-client: https://rpki-rrdp.warpnet.xyz/notification.xml: pulling from network
+rpki-client: https://rpki-rrdp.us-east-2.amazonaws.com/rrdp/967a255c-d680-42d3-9ec3-ecb3f9da088c/notification.xml: notification file not modified (50656cf5-c3aa-45bf-8de3-7c9fa8af5322#3353)
+rpki-client: https://rpki-rrdp.us-east-2.amazonaws.com/rrdp/967a255c-d680-42d3-9ec3-ecb3f9da088c/notification.xml: loaded from network
+rpki-client: https://rpki-rrdp.warpnet.xyz/notification.xml: notification file not modified (573bb206-2bff-49a4-893c-cfdace404e84#280)
+rpki-client: https://rpki-rrdp.warpnet.xyz/notification.xml: loaded from network
+rpki-client: https://chloe.sobornost.net/rpki/news.xml: downloading 1 deltas (bd919006-71a6-457c-8a7e-83bafbd1065c#16162)
+rpki-client: https://rpki-rrdp.us-east-2.amazonaws.com/rrdp/cfadba4d-134c-4a1e-9d9c-64e8c5d613f3/notification.xml: pulling from network
+rpki-client: https://rpki-rrdp.us-east-2.amazonaws.com/rrdp/cfadba4d-134c-4a1e-9d9c-64e8c5d613f3/notification.xml: notification file not modified (b0caedc1-04f5-4b63-8ba7-d781ff02951c#201)
+rpki-client: https://rpki-rrdp.us-east-2.amazonaws.com/rrdp/cfadba4d-134c-4a1e-9d9c-64e8c5d613f3/notification.xml: loaded from network
+rpki-client: https://rpki.xindi.eu/rrdp/notification.xml: pulling from network
+rpki-client: https://rpki.xindi.eu/rrdp/notification.xml: notification file not modified (7942b57b-6403-4e70-8753-f0017937938c#1764)
+rpki-client: https://rpki.xindi.eu/rrdp/notification.xml: loaded from network
+rpki-client: https://rrdp.rp.ki/notification.xml: pulling from network
+rpki-client: https://rpki.admin.freerangecloud.com/rrdp/notification.xml: pulling from network
+rpki-client: https://rpki-01.pdxnet.uk/rrdp/notification.xml: pulling from network
+rpki-client: https://rrdp.rp.ki/notification.xml: notification file not modified (697fbe5a-b6ba-4c4f-b343-8dd9dd6a488e#4203)
+rpki-client: https://rrdp.rp.ki/notification.xml: loaded from network
+rpki-client: https://rpki-01.pdxnet.uk/rrdp/notification.xml: repository not modified (1e603317-6ada-44ce-902e-75f38f5bf61a#6104)
+rpki-client: https://rpki-01.pdxnet.uk/rrdp/notification.xml: loaded from network
+rpki-client: https://rpki.admin.freerangecloud.com/rrdp/notification.xml: notification file not modified (9786cbe1-f5e2-4ad0-bf13-b99f68a958d8#9984)
+rpki-client: https://rpki.admin.freerangecloud.com/rrdp/notification.xml: loaded from network
+rpki-client: https://chloe.sobornost.net/rpki/news.xml: loaded from network
+rpki-client: https://repo.kagl.me/rpki/notification.xml: pulling from network
+rpki-client: https://rrdp.sub.apnic.net/notification.xml: pulling from network
+rpki-client: repo.kagl.me: nodename nor servname provided, or not known
+rpki-client: https://repo.kagl.me/rpki/notification.xml: load from network failed, fallback to rsync
+rpki-client: .rsync/repo.kagl.me/rpki: pulling from rsync://repo.kagl.me/rpki
+rpki-client: https://rpki.as207960.net/rrdp/notification.xml: pulling from network
+rsync: getaddrinfo: repo.kagl.me 873: nodename nor servname provided, or not known
+rsync error: error in socket IO (code 10) at clientserver.c(139) [Receiver=3.4.1]
+rpki-client: rsync rsync://repo.kagl.me/rpki failed
+rpki-client: .rsync/repo.kagl.me/rpki: load from network failed, fallback to cache
+rpki-client: https://rpki.as207960.net/rrdp/notification.xml: downloading snapshot (d376fe5b-dba0-4d08-ab92-38dfa036bbe9#23029)
+rpki-client: https://rrdp.sub.apnic.net/notification.xml: notification file not modified (4573fec0-a38d-478c-b212-25eb1eb78c8b#43)
+rpki-client: https://rrdp.sub.apnic.net/notification.xml: loaded from network
+rpki-client: https://rpki.roa.net/rrdp/notification.xml: pulling from network
+rpki-client: https://rpki.roa.net/rrdp/notification.xml: notification file not modified (a86fd55d-d6e8-47bf-a661-5a7342942a34#22078)
+rpki-client: https://rpki.roa.net/rrdp/notification.xml: loaded from network
+rpki-client: https://rpki.as207960.net/rrdp/notification.xml: loaded from network
+rpki-client: https://rrdp.rpki.tianhai.link/rrdp/notification.xml: pulling from network
+rpki-client: https://rpki.owl.net/rrdp/notification.xml: pulling from network
+rpki-client: https://rpki.owl.net/rrdp/notification.xml: notification file not modified (c4099639-6616-41dd-916c-2f176cf89178#3458)
+rpki-client: https://rpki.owl.net/rrdp/notification.xml: loaded from network
+rpki-client: https://rrdp.rpki.tianhai.link/rrdp/notification.xml: notification file not modified (93cd51a0-7c5a-4c43-a30c-4aa6a2271dcf#2317)
+rpki-client: https://rrdp.rpki.tianhai.link/rrdp/notification.xml: loaded from network
+rpki-client: rsync.rpki.tianhai.link/repo/TianhaiRpki/1/911E180145E68F7315DA3AB2200D186671FFE75B.mft: CRL has expired
+rpki-client: https://krill.47272.net/rrdp/notification.xml: pulling from network
+rpki-client: https://rpki.netiface.net/rrdp/notification.xml: pulling from network
+rpki-client: rpki.netiface.net: nodename nor servname provided, or not known
+rpki-client: https://rpki.netiface.net/rrdp/notification.xml: load from network failed, fallback to rsync
+rpki-client: .rsync/rpki.netiface.net/repo: pulling from rsync://rpki.netiface.net/repo
+rpki-client: https://krill.uta.ng:3030/rrdp/notification.xml: pulling from network
+rsync: getaddrinfo: rpki.netiface.net 873: nodename nor servname provided, or not known
+rsync error: error in socket IO (code 10) at clientserver.c(139) [Receiver=3.4.1]
+rpki-client: rsync rsync://rpki.netiface.net/repo failed
+rpki-client: .rsync/rpki.netiface.net/repo: load from network failed, fallback to cache
+rpki-client: rpki.netiface.net/repo/Civilized/0/593E81C92EF98F9130AC43641AAE8022546E9F4A.mft: no valid manifest available
+rpki-client: https://krill.47272.net/rrdp/notification.xml: repository not modified (30abe6dd-cf8e-4345-b341-0550f970b5fd#707)
+rpki-client: https://krill.47272.net/rrdp/notification.xml: loaded from network
+rpki-client: rsync.rpki.tianhai.link/repo/TianhaiRpki/0/3CDEC27384AADE5CA0809FD6F16D2BCA18BEB659.mft: CRL has expired
+rpki-client: https://krill.accuristechnologies.ca/rrdp/notification.xml: pulling from network
+rpki-client: https://krill.accuristechnologies.ca/rrdp/notification.xml: notification file not modified (7027f733-88b9-4b7e-a562-22f19286b58e#3908)
+rpki-client: https://krill.accuristechnologies.ca/rrdp/notification.xml: loaded from network
+rpki-client: https://rpki.pudu.be/rrdp/notification.xml: pulling from network
+rpki-client: https://krill.uta.ng:3030/rrdp/notification.xml: notification file not modified (a75b4651-ddc3-4906-91d5-faed7da7c6eb#1308)
+rpki-client: https://krill.uta.ng:3030/rrdp/notification.xml: loaded from network
+rpki-client: https://rpki.pudu.be/rrdp/notification.xml: repository not modified (12e56a6f-de3e-492a-a9d3-2c448e4eccc7#2210)
+rpki-client: https://rpki.pudu.be/rrdp/notification.xml: loaded from network
+rpki-client: https://repo.rpki.space/rrdp/notification.xml: pulling from network
+rpki-client: repo.rpki.space: nodename nor servname provided, or not known
+rpki-client: https://repo.rpki.space/rrdp/notification.xml: load from network failed, fallback to rsync
+rpki-client: .rsync/repo.rpki.space/repo: pulling from rsync://repo.rpki.space/repo
+rsync: getaddrinfo: repo.rpki.space 873: nodename nor servname provided, or not known
+rsync error: error in socket IO (code 10) at clientserver.c(139) [Receiver=3.4.1]
+rpki-client: rsync rsync://repo.rpki.space/repo failed
+rpki-client: .rsync/repo.rpki.space/repo: load from network failed, fallback to cache
+rpki-client: https://oto.wakuwaku.ne.jp/pki/oshirase.xml: pulling from network
+rpki-client: repo.rpki.space/repo/Infiniroute/1/5B8E21C6890BD79AB764D91B60C39C3B7E4985E1.mft: no valid manifest available
+rpki-client: oto.wakuwaku.ne.jp: nodename nor servname provided, or not known
+rpki-client: https://oto.wakuwaku.ne.jp/pki/oshirase.xml: load from network failed, fallback to rsync
+rpki-client: .rsync/oto.wakuwaku.ne.jp/pki: pulling from rsync://oto.wakuwaku.ne.jp/pki
+rsync: getaddrinfo: oto.wakuwaku.ne.jp 873: nodename nor servname provided, or not known
+rsync error: error in socket IO (code 10) at clientserver.c(139) [Receiver=3.4.1]
+rpki-client: rsync rsync://oto.wakuwaku.ne.jp/pki failed
+rpki-client: .rsync/oto.wakuwaku.ne.jp/pki: load from network failed, fallback to cache
+rpki-client: oto.wakuwaku.ne.jp/pki/simple/0/398357E569F1D4C03D26A7636E00D36AB796A703.mft: no valid manifest available
+rpki-client: https://rpki.zappiehost.com/rrdp/notification.xml: pulling from network
+rpki-client: https://rpki.zappiehost.com/rrdp/notification.xml (2a0e:97c0:a43::301): connect: Connection refused
+rpki-client: https://rpki.zappiehost.com/rrdp/notification.xml: notification file not modified (b215999d-8764-48cf-9ccc-68ea7e82e28a#5317)
+rpki-client: https://rpki.zappiehost.com/rrdp/notification.xml: loaded from network
+rpki-client: repo.rpki.space/repo/Netiface/3/A640AA61F1D62B9C940459804AE11BE99AD43842.mft: no valid manifest available
+rpki-client: oto.wakuwaku.ne.jp/pki/202400/2/93315FBBDD477E024849BB6F66D8FB94395F6350.mft: no valid manifest available
+rpki-client: rsync.rpki.tianhai.link/repo/TianhaiRpki/2/3E32DA3B9DC955F96CF1BF58C5748B7B80FCB798.mft: CRL has expired
+rpki-client: rpki.netiface.net/repo/Civilized/0/C5947ECC8683AD0DBCD95A8F332F0CAA13574790.mft: no valid manifest available
+rpki-client: https://rpki.folf.systems/rrdp/notification.xml (2600:3c02::f03c:92ff:fe46:72f0): connect timeout
+rpki-client: https://rpki.cc/rrdp/notification.xml: pulling from network
+rpki-client: https://rpki.folf.systems/rrdp/notification.xml: notification file not modified (c48ad592-2a48-41d1-b650-136b893dc924#874)
+rpki-client: https://rpki.folf.systems/rrdp/notification.xml: loaded from network
+rpki-client: rpki.folf.systems/repo/Folf-Systems/0/E883D1D2313A14E8659F604A65D65CE39A3F826B.mft: CRL has expired
+rpki-client: https://rpki.cc/rrdp/notification.xml: notification file not modified (0cb9803b-9a9f-42ff-a7d5-2e84aa67d985#12825)
+rpki-client: https://rpki.cc/rrdp/notification.xml: loaded from network
+rpki-client: https://rpki.sn-p.io/rrdp/notification.xml: pulling from network
+rpki-client: https://rpki.sn-p.io/rrdp/notification.xml: repository not modified (a9b5b05c-ecd2-42f8-af25-398e0e4ecbd5#1537)
+rpki-client: https://rpki.sn-p.io/rrdp/notification.xml: loaded from network
+rpki-client: https://rpki.komorebi.network:3030/rrdp/notification.xml: pulling from network
+rpki-client: https://rpki.komorebi.network:3030/rrdp/notification.xml: notification file not modified (7bf85f04-702e-4d21-a095-dc79957e846a#3323)
+rpki-client: https://rpki.komorebi.network:3030/rrdp/notification.xml: loaded from network
+rpki-client: https://rpki.leitecastro.com/notification.xml: pulling from network
+rpki-client: https://ca.rg.net/rrdp/notify.xml: pulling from network
+rpki-client: https://rpki.leitecastro.com/notification.xml: downloading snapshot (da648a1f-d958-4c06-b097-b78f3fc0fa22#545)
+rpki-client: https://rpki.leitecastro.com/notification.xml: loaded from network
+rpki-client: https://ca.rg.net/rrdp/notify.xml: downloading 1 deltas (eaf7cb9c-717a-4c02-b683-4ee3820ab3d0#100014)
+rpki-client: https://ca.rg.net/rrdp/notify.xml: loaded from network
+rpki-client: https://rpki.nellicus.net/rrdp/notification.xml: pulling from network
+rpki-client: https://rpki.athene-center.net/rrdp/notification.xml: pulling from network
+rpki-client: https://rpki.athene-center.net/rrdp/notification.xml: repository not modified (21c3d959-5aa3-475b-b012-f0f85484d17b#535)
+rpki-client: https://rpki.athene-center.net/rrdp/notification.xml: loaded from network
+rpki-client: https://rpki.nellicus.net/rrdp/notification.xml: repository not modified (567b6664-36cc-463d-aa2a-aa9239cb749c#935)
+rpki-client: https://rpki.nellicus.net/rrdp/notification.xml: loaded from network
+rpki-client: https://rpki.multacom.com/rrdp/notification.xml: pulling from network
+rpki-client: https://rpki-rrdp.us-east-2.amazonaws.com/rrdp/dba8f01c-9669-44a3-ac6e-db2edb099b84/notification.xml: pulling from network
+rpki-client: https://rpki.multacom.com/rrdp/notification.xml: notification file not modified (f00d73b4-e8ae-4786-8163-c0f0767687d4#13496)
+rpki-client: https://rpki.multacom.com/rrdp/notification.xml: loaded from network
+rpki-client: https://rpki-rrdp.us-east-2.amazonaws.com/rrdp/dba8f01c-9669-44a3-ac6e-db2edb099b84/notification.xml: notification file not modified (27e3c914-3741-40c5-bec7-265e2eb80946#4277)
+rpki-client: https://rpki-rrdp.us-east-2.amazonaws.com/rrdp/dba8f01c-9669-44a3-ac6e-db2edb099b84/notification.xml: loaded from network
+rpki-client: https://rrdp.krill.nlnetlabs.nl/notification.xml: pulling from network
+rpki-client: repo.rpki.space/repo/Pfcloud/1/28D23EC5E787AAAE052A8773FD9DFEC5B1FBC3A2.mft: no valid manifest available
+rpki-client: https://rrdp.krill.nlnetlabs.nl/notification.xml: notification file not modified (9c663ca8-c73a-4166-9258-8fe830eb278f#604)
+rpki-client: https://rrdp.krill.nlnetlabs.nl/notification.xml: loaded from network
+rpki-client: repo.rpki.space/repo/Infiniroute/2/6DCA9DDA0262FADDF34A1B5C19C01825F36B0DE4.mft: no valid manifest available
+rpki-client: https://rpki.0i1.eu/rrdp/notification.xml: pulling from network
+rpki-client: https://rpki.0i1.eu/rrdp/notification.xml (2a03:4000:20:b7::106): connect timeout
+rpki-client: https://rpki.0i1.eu/rrdp/notification.xml: load from network failed, fallback to rsync
+rpki-client: .rsync/rpki.0i1.eu/repo: pulling from rsync://rpki.0i1.eu/repo
+rpki-client: .rrdp/73885635ED28814800212D730AE80581FC5112C4B5804A08D55D6BDA2AFA1615/ca.rg.net/rpki/RGnet-OU/laI1_vEYtlNzj-K0SXR_yGpd1TA.gbr: Ghostbusters record with invalid vCard
+rpki-client: .rrdp/B466E380FFC62CC14FF3B1E5A0BA3113D10EE5470CD7FB063CD37F57E2CCC35B/rpki-repo.as207960.net/repo/rpki_ca_d0f2db99fe1d4b36b9301c821220fe3a/1/83027A47466EFA0ED200A7CA6EE9CF229F431C1B.cer: certificate has expired
+rpki-client: https://magellan.ipxo.com/rrdp/notification.xml: pulling from network
+rpki-client: https://rpki.qs.nu/rrdp/notification.xml: pulling from network
+rpki-client: https://magellan.ipxo.com/rrdp/notification.xml: downloading 1 deltas (7cc3800e-d438-4274-bf75-cadbb018a1cf#6678)
+rpki-client: https://krill.rg.net/rrdp/notification.xml: pulling from network
+rpki-client: https://magellan.ipxo.com/rrdp/notification.xml: loaded from network
+rpki-client: https://rpki.qs.nu/rrdp/notification.xml: notification file not modified (3d9016b8-c804-481f-96fa-3675352e538e#5055)
+rpki-client: https://rpki.qs.nu/rrdp/notification.xml: loaded from network
+rpki-client: https://rov-measurements.nlnetlabs.net/rrdp/notification.xml: pulling from network
+rpki-client: https://cloudie.rpki.app/rrdp/notification.xml: pulling from network
+rpki-client: https://krill.rg.net/rrdp/notification.xml (2001:418:3807::62): connect: Connection refused
+rpki-client: https://rov-measurements.nlnetlabs.net/rrdp/notification.xml: notification file not modified (5370952c-9fc4-4186-bb79-18eb139e9859#1071)
+rpki-client: https://rov-measurements.nlnetlabs.net/rrdp/notification.xml: loaded from network
+rpki-client: https://krill.rg.net/rrdp/notification.xml: repository not modified (fb57006f-2065-403a-85c2-8ce141e7d95b#1004)
+rpki-client: https://krill.rg.net/rrdp/notification.xml: loaded from network
+rpki-client: https://rpki-repository.nic.ad.jp/rrdp/ap/notification.xml: pulling from network
+rpki-client: https://rrdp.twnic.tw/rrdp/notify.xml: pulling from network
+rpki-client: https://cloudie.rpki.app/rrdp/notification.xml: downloading 1 deltas (d92cf37b-c955-4272-bbe6-efda084ad2de#7070)
+rpki-client: https://rpki-rrdp.us-east-2.amazonaws.com/rrdp/08c2f264-23f9-49fb-9d43-f8b50bec9261/notification.xml: pulling from network
+rpki-client: https://repo-rpki.idnic.net/rrdp/notification.xml: pulling from network
+rpki-client: https://cloudie.rpki.app/rrdp/notification.xml: loaded from network
+rpki-client: https://rpki-rrdp.us-east-2.amazonaws.com/rrdp/08c2f264-23f9-49fb-9d43-f8b50bec9261/notification.xml: notification file not modified (e790f563-189d-4719-847f-44fdb428874c#6510)
+rpki-client: https://rpki-rrdp.us-east-2.amazonaws.com/rrdp/08c2f264-23f9-49fb-9d43-f8b50bec9261/notification.xml: loaded from network
+rpki-client: https://rpki.cnnic.cn/rrdp/notify.xml: pulling from network
+rpki-client: rpki.apnic.net/member_repository/A9152E70/E60E937C7D8611F08FB0E879C4F9AE02/B_6JYwIB3vN_TWiiDtEzqcO2oqM.mft: no valid manifest available
+rpki-client: https://rpki-repository.nic.ad.jp/rrdp/ap/notification.xml: downloading 9 deltas (f2e649b1-8e7b-4872-afd8-9e80331d66a6#1)
+rpki-client: https://rrdp.twnic.tw/rrdp/notify.xml: downloading 156 deltas (71d39673-7062-4036-b080-957aa1b854b3#1782179)
+rpki-client: https://rpki.cnnic.cn/rrdp/notify.xml: downloading 5 deltas (d4427960-abb3-49e4-902c-d815a518b867#3166634)
+rpki-client: rpki.sub.apnic.net/repository/A91905300000/7/4B1987D5160068092602529871C93EA320045A75.mft: CRL has expired
+rsync error: timeout waiting for daemon connection (code 35) at socket.c(278) [Receiver=3.4.1]
+rpki-client: rsync rsync://rpki.0i1.eu/repo failed
+rpki-client: .rsync/rpki.0i1.eu/repo: load from network failed, fallback to cache
+rpki-client: rpki.0i1.eu/repo/h45/0/7C5CDC3FD51653B5120B4EBEDD2FA382240A5868.mft: no valid manifest available
+rpki-client: rpki.sub.apnic.net/repository/A91905300000/0/30356EF46D594DA57C7697011183ACFFE04613E0.mft: CRL has expired
+rpki-client: https://sakuya.nat.moe/rrdp/notification.xml: pulling from network
+rpki-client: https://rpki-repository.nic.ad.jp/rrdp/ap/notification.xml: loaded from network
+rpki-client: rsync.rpki.tianhai.link/repo/TianhaiRpki/3/459D2B834A3BA08C0AA67C6E578146A8B1FE2C2F.mft: CRL has expired
+rpki-client: https://rpki.cnnic.cn/rrdp/notify.xml: loaded from network
+rpki-client: https://sakuya.nat.moe/rrdp/notification.xml: downloading snapshot (44b861a4-fafd-4aae-b3cf-9d8f5375e415#5829)
+rpki-client: https://sakuya.nat.moe/rrdp/notification.xml: loaded from network
+rpki-client: https://rpki-rrdp.us-east-2.amazonaws.com/rrdp/bd48a1fa-3471-4ab2-8508-ad36b96813e4/notification.xml: pulling from network
+rpki-client: https://rpki-rrdp.us-east-2.amazonaws.com/rrdp/bd48a1fa-3471-4ab2-8508-ad36b96813e4/notification.xml: notification file not modified (be5f8930-8247-40cb-9d48-559e1f1fa93a#1196)
+rpki-client: https://rpki-rrdp.us-east-2.amazonaws.com/rrdp/bd48a1fa-3471-4ab2-8508-ad36b96813e4/notification.xml: loaded from network
+rpki-client: rpki.sub.apnic.net/repository/A91905300000/3/B18F989967D30F2509E3D29707C5F85B5F6BDB6F.mft: CRL has expired
+rpki-client: rpki.sub.apnic.net/repository/A91905300000/9/33F4082166A89FFF6F326AE09B44BFBEF1629FEB.mft: CRL has expired
+rpki-client: https://repo-rpki.idnic.net/rrdp/notification.xml (2406:6cc0:a300:4622:116:193:188:25): connect: Network is unreachable
+rpki-client: https://rpki-rrdp.us-east-2.amazonaws.com/rrdp/c3cd7c24-12cb-4abc-8fd2-5e2bcbb85ae6/notification.xml: pulling from network
+rpki-client: https://rpki-rrdp.us-east-2.amazonaws.com/rrdp/c3cd7c24-12cb-4abc-8fd2-5e2bcbb85ae6/notification.xml: notification file not modified (7d81c8e0-e560-4b46-8ebd-89dca0f8ce06#1310)
+rpki-client: https://rpki-rrdp.us-east-2.amazonaws.com/rrdp/c3cd7c24-12cb-4abc-8fd2-5e2bcbb85ae6/notification.xml: loaded from network
+rpki-client: https://rpki.cernet.edu.cn/rrdp/notification.xml: pulling from network
+rpki-client: https://repo-rpki.idnic.net/rrdp/notification.xml: downloading 20 deltas (c8e38181-c389-41eb-8f37-7495a08d2d9a#673411)
+rpki-client: https://rpki.cernet.edu.cn/rrdp/notification.xml: notification file not modified (05408d7c-7f01-44ad-9919-c840b08c8271#40)
+rpki-client: https://rpki.cernet.edu.cn/rrdp/notification.xml: loaded from network
+rpki-client: rpki.cnnic.cn (64:ff9b::daf1:693d): TLS read: read failed: error:0A000126:SSL routines::unexpected eof while reading
+rpki-client: https://rpki-rrdp.us-east-2.amazonaws.com/rrdp/db9a372a-09bc-4a32-bfe4-8c48e5dbd219/notification.xml: pulling from network
+rpki-client: https://rpki-rrdp.us-east-2.amazonaws.com/rrdp/db9a372a-09bc-4a32-bfe4-8c48e5dbd219/notification.xml: notification file not modified (af012d70-97a6-4671-8800-0259f8ff833a#1170)
+rpki-client: https://rpki-rrdp.us-east-2.amazonaws.com/rrdp/db9a372a-09bc-4a32-bfe4-8c48e5dbd219/notification.xml: loaded from network
+rpki-client: https://rpki-rrdp.us-east-2.amazonaws.com/rrdp/708aafaf-00b4-485b-854c-0b32ca30f57b/notification.xml: pulling from network
+rpki-client: https://rpki-rrdp.us-east-2.amazonaws.com/rrdp/708aafaf-00b4-485b-854c-0b32ca30f57b/notification.xml: notification file not modified (7c2d14ed-ded9-4777-9885-dc9d35403305#1289)
+rpki-client: https://rpki-rrdp.us-east-2.amazonaws.com/rrdp/708aafaf-00b4-485b-854c-0b32ca30f57b/notification.xml: loaded from network
+rpki-client: https://repo-rpki.idnic.net/rrdp/notification.xml: loaded from network
+rpki-client: rpki.sub.apnic.net/repository/A91905300000/4/B7351B05B1619E9DE395F0B2FFC9EE1129F300B4.mft: CRL has expired
+rpki-client: https://rpki.rand.renamed.apnic.net/rrdp/notification.xml: pulling from network
+rpki-client: .rrdp/B466E380FFC62CC14FF3B1E5A0BA3113D10EE5470CD7FB063CD37F57E2CCC35B/rpki-repo.as207960.net/repo/rpki_ca_d0f2db99fe1d4b36b9301c821220fe3a/0/E42882C5C372E03CCD5EA87BB1B6FFEF1FF1BFF5.cer: certificate has expired
+rpki-client: https://rpki.rand.renamed.apnic.net/rrdp/notification.xml: notification file not modified (96c441f4-9169-42ad-80db-439295e122d8#1774)
+rpki-client: https://rpki.rand.renamed.apnic.net/rrdp/notification.xml: loaded from network
+rpki-client: .rsync/rpki.arin.net/repository: loaded from network
+rpki-client: https://rpki-rrdp.us-east-2.amazonaws.com/rrdp/c474d778-43cb-4c30-ad6a-39968cbc94bc/notification.xml: pulling from network
+rpki-client: https://rpki-repo.registro.br/rrdp/notification.xml: pulling from network
+rpki-client: https://rpki-publication.haruue.net/rrdp/notification.xml: pulling from network
+rpki-client: https://rpki-rrdp.us-east-2.amazonaws.com/rrdp/c474d778-43cb-4c30-ad6a-39968cbc94bc/notification.xml: notification file not modified (7d3762dc-7d10-483a-84b2-e85456b2cd55#36)
+rpki-client: https://rpki-rrdp.us-east-2.amazonaws.com/rrdp/c474d778-43cb-4c30-ad6a-39968cbc94bc/notification.xml: loaded from network
+rpki-client: https://rpki.apernet.io/rrdp/notification.xml: pulling from network
+rpki-client: https://rpki.luys.cloud/rrdp/notification.xml: pulling from network
+rpki-client: https://rpki-rrdp.mnihyc.com/rrdp/notification.xml: pulling from network
+rpki-client: https://krill.rpki-measurement.site/rrdp/notification.xml: pulling from network
+rpki-client: https://krill.nic.edu.cn/rrdp/notification.xml: pulling from network
+rpki-client: https://rpki-rrdp.mnihyc.com/rrdp/notification.xml: downloading snapshot (673ed395-23b3-4426-b8f3-3335a5937daa#4080)
+rpki-client: https://rpki-rrdp.mnihyc.com/rrdp/notification.xml: loaded from network
+rpki-client: https://rpki-publication.haruue.net/rrdp/notification.xml: notification file not modified (b90ae412-4fba-4af2-a126-3c7cb3d00463#651)
+rpki-client: https://rpki-publication.haruue.net/rrdp/notification.xml: loaded from network
+rpki-client: https://krill.rpki-measurement.site/rrdp/notification.xml: cross origin redirect to https://mea-193-0-30-51.krill.rpki-measurement.site/rrdp/notification.xml
+rpki-client: https://krill.rpki-measurement.site/rrdp/notification.xml: load from network failed, fallback to rsync
+rpki-client: .rsync/krill.rpki-measurement.site/repo: pulling from rsync://krill.rpki-measurement.site/repo
+rpki-client: https://rpki-repo.registro.br/rrdp/notification.xml: downloading 30 deltas (b0982bb6-6f99-448a-9f71-91a86a455e39#190562)
+@ERROR: max connections (50) reached -- try again later
+rsync error: error starting client-server protocol (code 5) at main.c(1870) [Receiver=3.4.1]
+rpki-client: rsync rsync://krill.rpki-measurement.site/repo failed
+rpki-client: .rsync/krill.rpki-measurement.site/repo: load from network failed, fallback to cache
+rpki-client: https://rpki.apernet.io/rrdp/notification.xml: downloading snapshot (4ba8440d-138c-45f7-914e-c04a8cf66129#5246)
+rpki-client: krill.rpki-measurement.site/repo/measurements/1/49776F25BA047DAE0837698DFC0C1C9689EE4FAA.mft: no valid manifest available
+rpki-client: https://rpki.luys.cloud/rrdp/notification.xml: downloading snapshot (b14bf9f4-2d4f-418f-8f47-819710b78724#3966)
+rpki-client: https://rpki.luys.cloud/rrdp/notification.xml: loaded from network
+rpki-client: rpki.luys.cloud/repo/LY-RPKI/1/47717A8A2E301D872DAC129F2CBAC587F01A0813.mft: CRL has expired
+rpki-client: https://rpki.apernet.io/rrdp/notification.xml: loaded from network
+rpki-client: https://rpki-repo.registro.br/rrdp/notification.xml: loaded from network
+rpki-client: .rrdp/B8F24A9D701C0FA9BC46D97164BAF1C97CC608A7211B021A0CC972EA5BFCD2AC/rpki.cnnic.cn/rpki/A9162E3D0000/1663/kD1cnzQRlyFYpgXtgRtICm72lmM.roa: RFC 3779 resource not subset of parent's resources
+rpki-client: .rrdp/B8F24A9D701C0FA9BC46D97164BAF1C97CC608A7211B021A0CC972EA5BFCD2AC/rpki.cnnic.cn/rpki/A9162E3D0000/1663/e-bh-kKYZzEDIpt3tNTipKXIsp0.roa: RFC 3779 resource not subset of parent's resources
+rpki-client: .rrdp/B8F24A9D701C0FA9BC46D97164BAF1C97CC608A7211B021A0CC972EA5BFCD2AC/rpki.cnnic.cn/rpki/A9162E3D0000/1663/R5biKuMK1NGX66zvpfOWty_r6EA.roa: RFC 3779 resource not subset of parent's resources
+rpki-client: .rrdp/B8F24A9D701C0FA9BC46D97164BAF1C97CC608A7211B021A0CC972EA5BFCD2AC/rpki.cnnic.cn/rpki/A9162E3D0000/1663/zd5HkC9n_7OHPRjLM4bjr1RAdS0.roa: RFC 3779 resource not subset of parent's resources
+rpki-client: .rrdp/B8F24A9D701C0FA9BC46D97164BAF1C97CC608A7211B021A0CC972EA5BFCD2AC/rpki.cnnic.cn/rpki/A9162E3D0000/1663/ShL43F-3e775jTRDSr8zYxFHqDU.roa: RFC 3779 resource not subset of parent's resources
+rpki-client: .rrdp/B8F24A9D701C0FA9BC46D97164BAF1C97CC608A7211B021A0CC972EA5BFCD2AC/rpki.cnnic.cn/rpki/A9162E3D0000/3098/GjKFYON1QwkcYmmYvToy_XkfjA8.roa: RFC 3779 resource not subset of parent's resources
+rpki-client: .rrdp/B8F24A9D701C0FA9BC46D97164BAF1C97CC608A7211B021A0CC972EA5BFCD2AC/rpki.cnnic.cn/rpki/A9162E3D0000/3098/lQFQ5ISEWP3TBysV9W0q2VC_U7w.roa: RFC 3779 resource not subset of parent's resources
+rpki-client: https://krill.ca-bc-01.ssmidge.xyz/rrdp/notification.xml: pulling from network
+rpki-client: https://krill.ca-bc-01.ssmidge.xyz/rrdp/notification.xml: repository not modified (c5903f0a-9874-4b75-8ed7-9dfdd7b2cd26#2008)
+rpki-client: https://krill.ca-bc-01.ssmidge.xyz/rrdp/notification.xml: loaded from network
+rpki-client: https://rrdp.twnic.tw/rrdp/notify.xml: loaded from network
+rpki-client: https://krill.nic.edu.cn/rrdp/notification.xml (64:ff9b::133:2d4): connect timeout
+rpki-client: rpki-repo.registro.br/repo/4xcLWXC7hdQTkJrcabpTqP5wA1hRpHZvfQGUnXKdAG3W/0/67F46E91955DB6CC22A4F3A0BA0A45DDEBAE0A44.mft: CRL has expired
+rpki-client: rpki-repo.registro.br/repo/CWZHz8piVu8zevQxGnestGbreTQPMDNquKihUHqiqSkC/0/7F41F2DF45380ED28EBC66827733788836A8955D.mft: CRL has expired
+rpki-client: rpki-repo.registro.br/repo/BA7vDYY2Vdj9LcCtoixct2gmPoqegLYp9mEuT18MpWYs/0/E013AB8E55CC157E0D73605EC9E019342448B031.mft: CRL has expired
+rpki-client: rpki-repo.registro.br/repo/8pva4tQzH36bLQmausbgvvMoVnkKQGsdtBPxuPgUadGF/1/7DC1C2AA899276F04E4330B1E4471D510486417F.mft: CRL has expired
+rpki-client: rpki-repo.registro.br/repo/C6Amcnbx5NuDzbgD977znWbf1NcR2oqqZdNLUYQmRtme/0/BF5F73267A0876B9F6FDA75E2467704D6BFB84D0.mft: CRL has expired
+rpki-client: rpki-repo.registro.br/repo/4GHaNrxUSuEcQjnH3jjm3hA7ppnJ6Jt2gEMUtgqaxW1G/1/E35E54F1D0263B8E903A0929A61313C8C5BE8DA6.mft: CRL has expired
+rpki-client: rpki-repo.registro.br/repo/9SF3ELzzbBNW2b1uf6GK8c5oSGQAtxHXCQoNZnvBarQE/0/157F6108533B10B33C69A854D184113D2CC781E1.mft: CRL has expired
+rpki-client: rpki-repo.registro.br/repo/ErdXEkDdDAoJBYfQCWqeHzTY5nhbRcfVEiyJkyjzRBcr/1/734B66FA6878EDCF866CF08634B1680301F14295.mft: CRL has expired
+rpki-client: rpki-repo.registro.br/repo/4A5d97posXL29CbuStvVv3XACfR2c7rXbdDTCXiCERqX/1/36ECAA0A83F15C768CBF66E950397B9929964174.mft: CRL has expired
+rpki-client: rpki-repo.registro.br/repo/BXy4Asq7odjvWx5kB85Hj5ZZjqsu5y2RPKgeF3rRoP3f/1/36E2592A4F09731FA90CEA56F7F8D410522525DE.mft: CRL has expired
+rpki-client: rpki-repo.registro.br/repo/ATkdqEFa9Po6oWF79RU4QwkpKbQ5ENnZMQC67bwVq4NQ/0/E725E9B4F82190D8D57184CFCE7A132D323D9AAB.mft: CRL has expired
+rpki-client: rpki-repo.registro.br/repo/EUbpFYKTQsmVpn9owjqCvNyqCsB3Xd72NW5gZGyikyLa/1/E78F0A2152F1A8E4D5B309774272DB70D8BDE05D.mft: CRL has expired
+rpki-client: rpki-repo.registro.br/repo/2ZyRx9w3icoUzqQH7LRSNjhNySee8mhkGcWsEBhgLfVA/0/04025647B40E02B1D6ED1F825223771295356B79.mft: CRL has expired
+rpki-client: rpki-repo.registro.br/repo/3rGiamacFWEyW9ZPS7SSqxHFAYHtvVixF1XePMod1qti/1/4DA69F03DA36D179DE66AE4E0D1F75C4B665D10E.mft: CRL has expired
+rpki-client: rpki-repo.registro.br/repo/7sJpx1DJz5t7V4itgR9VrFS8KHNAfoNZYZ2s3F2Jvp2B/1/3E9ABEDC7E771B85710E3E49ED20657F04DA1797.mft: CRL has expired
+rpki-client: rpki-repo.registro.br/repo/GExZqbg4s5knrsc6VKKzbhafKZD1heRDuKefxajkq4pE/0/FDC3ABD576F0A132A9B041C7B6E6997785CBCD4A.mft: CRL has expired
+rpki-client: rpki-repo.registro.br/repo/WSxxAn3UtmrYsXRXmUnPj6ZjioavzKUqkWzvnNrBGyw/1/98A11CF45A997CA909604F2E4619398BBAA2D923.mft: CRL has expired
+rpki-client: rpki-repo.registro.br/repo/69UzC9meuhSgwRhPgyGY4vBJ7KYPeUjVxVuVvoPJDHoZ/2/23B77CF7BD1F94F72A6C0808569C4F51A9BA389A.mft: CRL has expired
+rpki-client: rpki-repo.registro.br/repo/2cjVmpjDJStVtzYBqnUS2R5QNAGUAsKFEYgFy6Mvan8x/0/5445B268F95C5A86AE66A9F2C23E2E41A58C3D78.mft: CRL has expired
+rpki-client: rpki-repo.registro.br/repo/FibNYZsSgMq2wzExhyesQTBthEaHNHJa48meoFpUbfWx/0/958953A4AA375C5503E39C46573EE52C1795B779.mft: CRL has expired
+rpki-client: rpki-repo.registro.br/repo/GBfThanibP9be45pXqsrzTMJbDmBf1ymN45CBDQrmnxb/1/8BCC3BCD747996DEA6D7F16098CF132148801B30.mft: CRL has expired
+rpki-client: rpki-repo.registro.br/repo/9PEGshzPBREJYPJPsGRVgmR9usVQrAiSEfKudf6wMZVx/0/328573A0E4A7C9F4466BFF0B6CB9F81FFF33EA38.mft: CRL has expired
+rpki-client: rpki-repo.registro.br/repo/88yzmdnCACc2qYPnCfYUCwmgRW3eMFtWQY7aqWc1SZPW/0/4D0CD93B18B5D138D85795CC62510B357A7ECBFB.mft: CRL has expired
+rpki-client: rpki-repo.registro.br/repo/E3uuAtiF3iZrkSKHmeYcywcBZhqUMycG9vpxsqCjyMNz/1/0CEEA1DDF076523B39CF76E704244FA173114D8F.mft: CRL has expired
+rpki-client: rpki-repo.registro.br/repo/F5QLKnomNWndabawnXZbHSdA2CBm5c3uR9ymvCsi8PmX/0/9A13D4C02D9B439C8AD7096965C3720E3F1B9A5C.mft: CRL has expired
+rpki-client: rpki-repo.registro.br/repo/Du5HsiUqxmSUBiCeuwWpDUPUvTiF8CLFjRp8HBhV8sMr/0/FED723E7FEF416679E265910E6E617325917A4CC.mft: CRL has expired
+rpki-client: rpki-repo.registro.br/repo/7etSEGsoNQcqyij1BvYy9xugP5yMzyDTAy89En3UyuUD/0/7776F4A23F28A21CFF17F04D68A489CEC9241597.mft: CRL has expired
+rpki-client: rpki-repo.registro.br/repo/6BKKT3FEsg5U6fAzTTDWMmffQpbXpPnzhKJhUmyhieBp/1/7144A25056381147DFC3DCDC6541F98F698E0817.mft: CRL has expired
+rpki-client: rpki-repo.registro.br/repo/FREdJF4yi4hsAuQzKaMr9dzAcATExnskfh3Zq4a1aASR/0/09251826C5FE59A1110BFFDB5B8AA13FB9F3AC57.mft: CRL has expired
+rpki-client: rpki-repo.registro.br/repo/GEH7UUpY7TRmEbYWtKdWSVne5gBzxfvNQLyF7WsuabaP/1/801C62756CEAB17FA0153A254E96D04D8EA570B3.mft: CRL has expired
+rpki-client: rpki-repo.registro.br/repo/2YLArYCJA7ZVYvDMFHN18RfvsLTE8HVvHhx2MTwsRjWr/1/7060E33282702ABCE5F9D4885CC70B1F11E76FED.mft: CRL has expired
+rpki-client: rpki-repo.registro.br/repo/8wLZUK7waTZjCjSnZbvwjJGP1yLk8ifWoi31HJqj1u74/0/BCC70231E0F5873F65D74BA9E22BDB4A1E52E437.mft: CRL has expired
+rpki-client: rpki-repo.registro.br/repo/3oXRAqwwHFf2iwYjnZtCBjakZt16S2vPxb94wcBrsSrX/0/1B827C9EBC31D48DC10AB52ACE52BF27C89E90AC.mft: CRL has expired
+rpki-client: rpki-repo.registro.br/repo/CwicFrahQ5HkwPCirwUtD4M9BpaF2buPw1eWajSyLTBL/1/2A56F974D01ED8CFD5D24022C9C313E4A67D0B82.mft: CRL has expired
+rpki-client: rpki-repo.registro.br/repo/Gp7XC86R9nb6wWnpVtD6y8mzx24m9rwQGDHBqCwoXu2J/1/4522BB89648AA114F962AB6359DA8F28C7B660C2.mft: CRL has expired
+rpki-client: rpki-repo.registro.br/repo/5uENiHDYwVy4DAAeQgxL4nLtsrqnHafPDVw3KYwuwJL5/1/8CD2E74C0B51414825F95C9D3D432ADD56896751.mft: CRL has expired
+rpki-client: rpki-repo.registro.br/repo/84cPB6KkxcR9XZoiL8pho3aYpJ1durKEsGHDjpHbtG7c/0/7B82A2A1CC9CDE4A7FFE900F6C1F204C40AE019A.mft: CRL has expired
+rpki-client: rpki-repo.registro.br/repo/BuKiLExJDfzSpp2UcUBZsSx2FkHuburd45jSGakkjKb4/1/0848CF0033EBDC84F70FE97CEF07FDEA40979FF9.mft: CRL has expired
+rpki-client: rpki-repo.registro.br/repo/5wGxsi2TWxs6qais3M26V86GrVAsSPNuJCk8UHVhmzM4/0/8D649BA756DE234532A1E9A858DEBF41843906BD.mft: CRL has expired
+rpki-client: rpki-repo.registro.br/repo/GHUCDWBu6SpC3uYW8T99Fw4podnWdL269GsX2U254AdQ/0/D5971D89CD1208B4E9C29B793E9B467F9E26074E.mft: CRL has expired
+rpki-client: rpki-repo.registro.br/repo/Em8u3mjx6DGFMbj5nsHkYs3vkzDhuSAai1UdSxFDuAdE/1/A940AAD948DF51968F2CFC007E5775994F255968.mft: CRL has expired
+rpki-client: https://rpki-pp.com/rrdp/notification.xml: pulling from network
+rpki-client: rpki-repo.registro.br/repo/E9vFSeKTPq17PZQ4HmBQRUFsgXuLP26TXx514wnFxGs1/2/9927C14EA35BCE9F2B736ADDCC0DE0B1A07C9E17.mft: CRL has expired
+rpki-client: rpki-repo.registro.br/repo/5HL38UQhKYqbN5WNh5JsrzodZr87PYQKGthuvnSWNxY8/1/9F7BE7FF636315A2112430004A5ADD47912C1F17.mft: CRL has expired
+rpki-client: rpki-repo.registro.br/repo/CHoxjdgzo9miFakW8wP8uvcZ1FnpG85pUNhyNoQGHn2U/1/AAC916B9D4E8FD376A0B242F7B7DC7C5E4E9BDD1.mft: CRL has expired
+rpki-client: rpki-repo.registro.br/repo/HFGrK8RodyYfdZVv2hdamZPzQF6jJiaReZ6nMqdYkEnu/2/9B57A6172822ADD9870A24E746B19FCFAD78E2E9.mft: CRL has expired
+rpki-client: https://rpki-pp.com/rrdp/notification.xml: notification file not modified (685ed835-6b8e-488d-bdde-8f2e96df7a8d#18133)
+rpki-client: https://rpki-pp.com/rrdp/notification.xml: loaded from network
+rpki-client: https://krill.nic.edu.cn/rrdp/notification.xml (1.51.2.212): connect timeout
+rpki-client: https://krill.nic.edu.cn/rrdp/notification.xml: load from network failed, fallback to rsync
+rpki-client: .rsync/krill.nic.edu.cn/repo: pulling from rsync://krill.nic.edu.cn/repo
+rsync: [Receiver] failed to connect to krill.nic.edu.cn (64:ff9b::133:2d4): Connection refused (61)
+rsync: [Receiver] failed to connect to krill.nic.edu.cn (1.51.2.212): Connection refused (61)
+rsync error: error in socket IO (code 10) at clientserver.c(139) [Receiver=3.4.1]
+rpki-client: rsync rsync://krill.nic.edu.cn/repo failed
+rpki-client: .rsync/krill.nic.edu.cn/repo: load from network failed, fallback to cache
+rpki-client: krill.nic.edu.cn/repo/nic/1/C6F78F62408927F518ECE35D446D4E99A20B6318.mft: no valid manifest available
+rpki-client: https://rpki-rrdp.us-east-2.amazonaws.com/rrdp/2df51cd2-e6af-493a-a88a-3221d01f7d90/notification.xml: pulling from network
+rpki-client: https://rpki-repo.canops.org/rrdp/notification.xml: pulling from network
+rpki-client: https://rpki-rrdp.us-east-2.amazonaws.com/rrdp/2df51cd2-e6af-493a-a88a-3221d01f7d90/notification.xml: downloading snapshot (af2a4f41-37b0-4531-a576-88a42b3f670a#98)
+rpki-client: https://rpki-repo.canops.org/rrdp/notification.xml (2602:f633:0:30::10): TLS handshake: certificate verification failed: unable to get local issuer certificate
+rpki-client: https://rpki-repo.canops.org/rrdp/notification.xml: load from network failed, fallback to rsync
+rpki-client: .rsync/rpki-repo.canops.org/repo: pulling from rsync://rpki-repo.canops.org/repo
+rpki-client: https://rpki-rrdp.us-east-2.amazonaws.com/rrdp/2df51cd2-e6af-493a-a88a-3221d01f7d90/notification.xml: loaded from network
+rpki-client: .rsync/rpki-repo.canops.org/repo: loaded from network
+rpki-client: https://rpki-rrdp.us-east-2.amazonaws.com/rrdp/b3f6b688-cff4-402f-97d5-02f6f1886b7e/notification.xml: pulling from network
+rpki-client: https://rpki-rrdp.us-east-2.amazonaws.com/rrdp/b3f6b688-cff4-402f-97d5-02f6f1886b7e/notification.xml: downloading snapshot (c90ce58f-7675-4d72-9c9a-d615359ae3ba#1019)
+rpki-client: https://rpki-rrdp.us-east-2.amazonaws.com/rrdp/b3f6b688-cff4-402f-97d5-02f6f1886b7e/notification.xml: loaded from network
+rpki-client: https://rpki-rrdp.us-east-2.amazonaws.com/rrdp/2f059a21-d41b-4846-b7ae-7ea38c32fd4c/notification.xml: pulling from network
+rpki-client: https://rpki-rrdp.us-east-2.amazonaws.com/rrdp/2f059a21-d41b-4846-b7ae-7ea38c32fd4c/notification.xml: downloading snapshot (30d919c0-4898-4685-8fab-5e1c067ab213#1146)
+rpki-client: https://rpki-rrdp.us-east-2.amazonaws.com/rrdp/2f059a21-d41b-4846-b7ae-7ea38c32fd4c/notification.xml: loaded from network
+rpki-client: https://rpki-rrdp.us-east-2.amazonaws.com/rrdp/71e5236f-c6f1-4928-a1b9-8def09c06085/notification.xml: pulling from network
+rpki-client: https://rpki.sailx.co/rrdp/notification.xml: pulling from network
+rpki-client: https://rpki-rrdp.us-east-2.amazonaws.com/rrdp/71e5236f-c6f1-4928-a1b9-8def09c06085/notification.xml: downloading snapshot (c6122fc7-42c8-40a4-bca2-8cc1c883d8f8#1017)
+rpki-client: https://rpki-rrdp.us-east-2.amazonaws.com/rrdp/71e5236f-c6f1-4928-a1b9-8def09c06085/notification.xml: loaded from network
+rpki-client: https://rpki.sailx.co/rrdp/notification.xml: downloading snapshot (49901d73-2e81-4fad-a7b0-60077ca499db#2015)
+rpki-client: https://rpki.sailx.co/rrdp/notification.xml: loaded from network
+rpki-client: https://rpki-rrdp.us-east-2.amazonaws.com/rrdp/54602fb0-a9d4-4f9f-b0ca-be2a139ea92b/notification.xml: pulling from network
+rpki-client: https://rpki-rrdp.us-east-2.amazonaws.com/rrdp/54602fb0-a9d4-4f9f-b0ca-be2a139ea92b/notification.xml: downloading snapshot (098c0ce1-b270-4006-a087-bd4f56f842f3#114100)
+rpki-client: https://rpki-rrdp.us-east-2.amazonaws.com/rrdp/54602fb0-a9d4-4f9f-b0ca-be2a139ea92b/notification.xml: loaded from network
+rpki-client: https://rpki-rrdp.us-east-2.amazonaws.com/rrdp/16f1ffee-7461-4674-bb05-fddefa9a02c6/notification.xml: pulling from network
+rpki-client: https://rpki-rrdp.us-east-2.amazonaws.com/rrdp/16f1ffee-7461-4674-bb05-fddefa9a02c6/notification.xml: downloading snapshot (f62e1519-f2e4-4d57-80bc-56c3699ba88e#68604)
+rpki-client: https://rpki-rrdp.us-east-2.amazonaws.com/rrdp/16f1ffee-7461-4674-bb05-fddefa9a02c6/notification.xml: loaded from network
+rpki-client: https://rpki-rrdp.us-east-2.amazonaws.com/rrdp/e72d8db0-4728-4fc1-bdd8-471129866362/notification.xml: pulling from network
+rpki-client: https://rpki-rrdp.us-east-2.amazonaws.com/rrdp/e72d8db0-4728-4fc1-bdd8-471129866362/notification.xml: downloading snapshot (dc9f329e-549c-4f77-a043-ae2e219c1b98#1199)
+rpki-client: https://rpki-rrdp.us-east-2.amazonaws.com/rrdp/e72d8db0-4728-4fc1-bdd8-471129866362/notification.xml: loaded from network
+rpki-client: rpki-rps.arin.net/repository/8a848ade7fb71aa9017fdd9c5dd324c7/0/EB1DD8AA3E2B6864E06379C751DBFFFCC6418350.mft: CRL has expired
+rpki-client: rpki-rps.arin.net/repository/8a848adf850d063e01856ba3bdd43d3c/0/FB251CC7AAB29D28F17756B88E15DC43DC5ACF09.mft: CRL has expired
+rpki-client: repo.kagl.me/rpki/KeatonAGLair/0/7EC9B5D22508C0231C15DABDAF5135990B66BFED.mft: no valid manifest available
+rpki-client: rpki-rps.arin.net/repository/8a848adf7fb722e9017ffead9f534ac5/0/BFA2750976CA07F56A68976B0F01EB862F17C3B3.mft: CRL has expired
+rpki-client: https://ca.nat.moe/rrdp/notification.xml: pulling from network
+rpki-client: https://rpki-rrdp.us-east-2.amazonaws.com/rrdp/e7518af5-a343-428d-bf78-f982b6e60505/notification.xml: pulling from network
+rpki-client: https://rpki-rrdp.us-east-2.amazonaws.com/rrdp/dfd7f6d3-e6e9-4987-9ae7-d052c5353898/notification.xml: pulling from network
+rpki-client: https://rpki.tools.westconnect.ca/rrdp/notification.xml: pulling from network
+rpki-client: https://repodepot.wildtky.com/rrdp/notification.xml: pulling from network
+rpki-client: rpki-rps.arin.net/repository/8a848adf8f0b806c018fa5136e29184a/1/2AAC42AB07A1BF97E63560510DCB7B28CE11B9EC.mft: no valid manifest available
+rpki-client: rpki-rps.arin.net/repository/8a848ade8baa579c018c63046aa94533/0/A2110BBC490FA9C5E85F6218D333DCDC5E34811D.mft: CRL has expired
+rpki-client: https://rpki-rrdp.us-east-2.amazonaws.com/rrdp/517f3ed7-58b5-4796-be37-14d62e48f056/notification.xml: pulling from network
+rpki-client: rpki-rps.arin.net/repository/8a848adf7f518c5d017f949e0c8c42f5/0/7DF55DC7DAC41CA7453595CB9A79AB7FE6C83531.mft: CRL has expired
+rpki-client: https://rpki-rrdp.us-east-2.amazonaws.com/rrdp/e7518af5-a343-428d-bf78-f982b6e60505/notification.xml: downloading snapshot (4bd13b08-31cf-4342-af8f-0bc15fcee76b#1621)
+rpki-client: rpki-rps.arin.net/repository/8a848ade91fb43b4019288462c3804e6/0/389874291F32B753C52179673ADD5AD10FCB863D.mft: CRL has expired
+rpki-client: repo.rpki.space/repo/Netiface/1/FBF78E5DA5B5D6AD4E2F932634206B133CCBFD25.mft: no valid manifest available
+rpki-client: rpki-rps.arin.net/repository/8a848adf89e02e8b018ab95d1cec7a41/0/540B536AC1A2BB8FD1201662B430485BDE4FA6D0.mft: CRL has expired
+rpki-client: https://rpki-rrdp.us-east-2.amazonaws.com/rrdp/ff9fa84e-9783-4a0b-a58d-6dc8e2433d33/notification.xml: pulling from network
+rpki-client: https://rpki-rrdp.us-east-2.amazonaws.com/rrdp/e7518af5-a343-428d-bf78-f982b6e60505/notification.xml: loaded from network
+rpki-client: rpki-rps.arin.net/repository/8a848adf850d063e01856ba3bdd43d3c/1/73A8BD732D93790878D7033EC4558AFD0D11F932.mft: CRL has expired
+rpki-client: https://rpki-rrdp.us-east-2.amazonaws.com/rrdp/b8a1dd25-c313-4f25-ac21-bf55514d9c7d/notification.xml: pulling from network
+rpki-client: https://rpki-rrdp.us-east-2.amazonaws.com/rrdp/42582c67-dd3f-4bc5-ba60-e97e552c6e35/notification.xml: pulling from network
+rpki-client: https://rpki-rrdp.us-east-2.amazonaws.com/rrdp/20aa329b-fc52-4c61-bf53-09725c042942/notification.xml: pulling from network
+rpki-client: https://rpki-rrdp.us-east-2.amazonaws.com/rrdp/602a26e5-4a9e-4e5e-89f0-ef891490d9c9/notification.xml: pulling from network
+rpki-client: https://rpki-rrdp.us-east-2.amazonaws.com/rrdp/a841823c-a10d-477c-bfdf-4086f0b1594c/notification.xml: pulling from network
+rpki-client: https://rpki-rrdp.us-east-2.amazonaws.com/rrdp/dfd7f6d3-e6e9-4987-9ae7-d052c5353898/notification.xml: downloading snapshot (fd0039bd-1d18-4bd9-bd0c-5e5fc3d1976a#1005)
+rpki-client: https://rpki-rrdp.us-east-2.amazonaws.com/rrdp/f703696e-e47b-4c20-bd93-6f80904e42d2/notification.xml: pulling from network
+rpki-client: https://rpki-rrdp.us-east-2.amazonaws.com/rrdp/517f3ed7-58b5-4796-be37-14d62e48f056/notification.xml: downloading snapshot (15049d5c-515b-4018-8402-cc98e4b507da#1581)
+rpki-client: https://rpki-rrdp.us-east-2.amazonaws.com/rrdp/b8a1dd25-c313-4f25-ac21-bf55514d9c7d/notification.xml: downloading snapshot (7f9c5bd1-c000-4f2b-9a98-bb3b625b490c#1581)
+rpki-client: https://ca.nat.moe/rrdp/notification.xml: downloading snapshot (22278cbf-c44e-4920-b166-ccfc7f82dd11#1464)
+rpki-client: https://rpki-rrdp.us-east-2.amazonaws.com/rrdp/dfd7f6d3-e6e9-4987-9ae7-d052c5353898/notification.xml: loaded from network
+rpki-client: https://rpki-rrdp.us-east-2.amazonaws.com/rrdp/ff9fa84e-9783-4a0b-a58d-6dc8e2433d33/notification.xml: downloading snapshot (4da0bc15-6736-49ab-a0ba-48042a621a58#898)
+rpki-client: https://rpki-rrdp.us-east-2.amazonaws.com/rrdp/b8a1dd25-c313-4f25-ac21-bf55514d9c7d/notification.xml: loaded from network
+rpki-client: https://repodepot.wildtky.com/rrdp/notification.xml: downloading snapshot (f94832a2-fe30-4b96-8a70-ccbdc4f8e369#5)
+rpki-client: https://rpki-rrdp.us-east-2.amazonaws.com/rrdp/20aa329b-fc52-4c61-bf53-09725c042942/notification.xml: downloading snapshot (0eac24d1-fe4a-41b7-9d76-c9f22cdfbe81#23538)
+rpki-client: https://rpki-rrdp.us-east-2.amazonaws.com/rrdp/42582c67-dd3f-4bc5-ba60-e97e552c6e35/notification.xml: downloading snapshot (74a44187-d8e1-40af-861d-78d32361edb9#1053)
+rpki-client: https://rpki-rrdp.us-east-2.amazonaws.com/rrdp/602a26e5-4a9e-4e5e-89f0-ef891490d9c9/notification.xml: downloading snapshot (7be1c1f0-fb1a-4b5b-875a-fb3feb9a8d1b#1063)
+rpki-client: https://rpki-rrdp.us-east-2.amazonaws.com/rrdp/f703696e-e47b-4c20-bd93-6f80904e42d2/notification.xml: downloading snapshot (2f7c3e28-e453-499f-9113-51a844b87050#20243)
+rpki-client: https://rpki-rrdp.us-east-2.amazonaws.com/rrdp/a841823c-a10d-477c-bfdf-4086f0b1594c/notification.xml: downloading snapshot (c4c8c42a-ba17-45c5-b04a-58c85419df9c#1068)
+rpki-client: https://repodepot.wildtky.com/rrdp/notification.xml: loaded from network
+rpki-client: https://rpki-rrdp.us-east-2.amazonaws.com/rrdp/517f3ed7-58b5-4796-be37-14d62e48f056/notification.xml: loaded from network
+rpki-client: .rrdp/E9DA48B395D82E09BC2F764FB778095CA1D49B699BBB545A83F5F366B597325C/krill.accuristechnologies.ca/repo/Accuris-Technologies/0/8A15107195E63966ABA1997AD31382979C75F736.cer: certificate has expired
+rpki-client: https://rpki-rrdp.us-east-2.amazonaws.com/rrdp/ff9fa84e-9783-4a0b-a58d-6dc8e2433d33/notification.xml: loaded from network
+rpki-client: https://rpki-rrdp.us-east-2.amazonaws.com/rrdp/602a26e5-4a9e-4e5e-89f0-ef891490d9c9/notification.xml: loaded from network
+rpki-client: https://rpki-rrdp.us-east-2.amazonaws.com/rrdp/42582c67-dd3f-4bc5-ba60-e97e552c6e35/notification.xml: loaded from network
+rpki-client: https://rpki.tools.westconnect.ca/rrdp/notification.xml: downloading snapshot (18c85c29-3700-4ec9-8c0c-b3aab9a969c0#1395)
+rpki-client: https://rpki-rrdp.us-east-2.amazonaws.com/rrdp/a841823c-a10d-477c-bfdf-4086f0b1594c/notification.xml: loaded from network
+rpki-client: https://ca.nat.moe/rrdp/notification.xml: loaded from network
+rpki-client: .rrdp/B9455114E9FE21E4EDA2F4693C91715418A217E09D74E4EC727E834877FA4173/rpki-rps.arin.net/repository/8a848adf850d063e0185755c91be3f9d/1/67DAC6BFE8CF4F99CC7DE476F2D7C11DD253702A.cer: certificate has expired
+rpki-client: .rrdp/FFB6966FFE83242ED17E8E43AE937FCA8CD7887AFEF2D5CE3E7CD58DE3D8DC70/cloudie-repo.rpki.app/repo/CLOUDIE-RPKI/2/EF426F94C58940B7071B544A524D3C9EA3456B00.cer: certificate has expired
+rpki-client: https://rpki.tools.westconnect.ca/rrdp/notification.xml: loaded from network
+rpki-client: https://rpki-rrdp.us-east-2.amazonaws.com/rrdp/f703696e-e47b-4c20-bd93-6f80904e42d2/notification.xml: loaded from network
+rpki-client: https://rpki-rrdp.us-east-2.amazonaws.com/rrdp/20aa329b-fc52-4c61-bf53-09725c042942/notification.xml: loaded from network
+rpki-client: all files parsed: generating output
