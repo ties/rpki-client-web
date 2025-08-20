@@ -30,6 +30,7 @@ from rpkiclientweb.metrics import (
 from rpkiclientweb.outputparser import OutputParser, WarningSummary, missing_labels
 from rpkiclientweb.rpki_client_output import JSONOutputParser, OpenmetricsOutputParser
 from rpkiclientweb.util import json_dumps
+from rpkiclientweb.util.misc import parse_proto_host_from_url
 
 LOG = logging.getLogger(__name__)
 LOG_STDOUT = LOG.getChild("stdout")
@@ -229,7 +230,7 @@ class RpkiClient:
 
         for fetch_status in parsed.fetch_status:
             RPKI_CLIENT_FETCH_STATUS.labels(
-                uri=fetch_status.uri, type=fetch_status.type
+                uri=parse_proto_host_from_url(fetch_status.uri), type=fetch_status.type
             ).inc(fetch_status.count)
 
             fetched.append((fetch_status.uri, fetch_status.type))
@@ -254,7 +255,9 @@ class RpkiClient:
                     uri,
                 )
                 # remove the metric
-                RPKI_CLIENT_FETCH_STATUS.remove(uri, fetch_type)
+                RPKI_CLIENT_FETCH_STATUS.remove(
+                    parse_proto_host_from_url(uri), fetch_type
+                )
                 # and remove entry
                 self.last_seen.pop(uri, None)
 

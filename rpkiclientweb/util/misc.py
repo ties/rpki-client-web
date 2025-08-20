@@ -76,6 +76,12 @@ def parse_proto_host_from_url(url: str) -> str:
 
     Used to reduce the cardinality of the corresponding metric.
     """
+    if not url:
+        return ""
+
+    if url.startswith(".rsync/"):
+        url = url[7:]
+
     tokens = urllib.parse.urlparse(url if url else "")
     if url and (not tokens or (not tokens.scheme and not tokens.netloc)):
         return url

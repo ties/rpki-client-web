@@ -75,7 +75,7 @@ def test_parse_failed_fetch() -> None:
     assert (
         ManifestObjectWarning(
             warning_type="bad_message_digest",
-            uri="chloe.sobornost.net/rpki/uplift/IBfMWA0nPFS6MGTNLNavObgEuIc.mft",
+            uri=".rsync/chloe.sobornost.net/rpki/uplift/IBfMWA0nPFS6MGTNLNavObgEuIc.mft#1486",
             object_name="T2ll0jOGuS7ODxpWNmwS1yOtzRM.roa",
         )
         in warnings

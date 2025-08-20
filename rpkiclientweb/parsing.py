@@ -10,7 +10,6 @@ from rpkiclientweb.models import (
     RpkiClientError,
     RPKIClientWarning,
 )
-from rpkiclientweb.util.misc import parse_proto_host_from_url
 
 #
 # Regular expressions matching log lines.
@@ -291,7 +290,7 @@ def parse_fetch_status(line: str) -> Generator[FetchStatus, None, None]:  # noqa
     http_error = SYNC_HTTP_ERROR.match(line)
     if http_error:
         yield FetchStatus(
-            parse_proto_host_from_url(http_error.group("uri")),
+            http_error.group("uri"),
             f"http_{http_error.group('http_status')}",
         )
         return
