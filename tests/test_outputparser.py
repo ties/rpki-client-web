@@ -167,6 +167,17 @@ def test_pulling_lines() -> None:
     assert "rpki.ripe.net/ta" in parser.pulled
     assert "rpki.ripe.net/repository" in parser.pulled
 
+    assert not any(".rsync/" in path for path in parser.pulling)
+    assert not any(".rsync/" in path for path in parser.pulled)
+
+
+def test_pulling_rsync_prefix() -> None:
+    """Test that the correct pulling lines are listed."""
+    parser = parse_output_file("inputs/20250820_rpki_client_orig.txt")
+
+    assert not any(".rsync/" in path for path in parser.pulling)
+    assert not any(".rsync/" in path for path in parser.pulled)
+
 
 def test_vanished_lines() -> None:
     """Test that the vanished file lines are detected."""
