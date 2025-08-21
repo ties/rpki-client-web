@@ -48,6 +48,9 @@ RUN --mount=type=cache,sharing=locked,target=/var/cache/dnf \
   mkdir /opt/rpkiclientweb/cache /opt/rpkiclientweb/output /config \
   && chown -R daemon:daemon /opt/rpkiclientweb /config/ \
   && dnf install -y python3
+
+# Make sure the venv is on the path
+ENV PATH="/opt/rpkiclientweb/.venv/bin:$PATH"
 VOLUME ["/opt/rpkiclientweb/cache", "/opt/rpkiclientweb/output", "/config"]
 
 ADD config.yml /config/
