@@ -137,7 +137,7 @@ def test_rrdp_referenced_file_delted() -> None:
     )
 
     assert FetchStatus(
-        "rpki.example.org/repository/DEFAULT/0f/331bcf-8e29-45bd-ab6c-f52b30e01820/1/BaYSj14pZXCsabRKG-pJ7HoYDvM.roa",
+        "rpki.example.org",
         "rrdp_referenced_file_deleted",
         1,
     ) in list(res.fetch_status)

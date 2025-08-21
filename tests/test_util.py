@@ -70,3 +70,16 @@ def test_parse_proto_host_from_url() -> None:
         parse_proto_host_from_url("https://example.org/message.txt")
         == "https://example.org"
     )
+
+    assert (
+        parse_proto_host_from_url(
+            ".rsync/rsync.paas.rpki.prepdev.ripe.net/repository/fc05bbfd-23b2-44df-b180-f1878e582a05/0/F239CACE716335E7E4079F4068CCE35BD9F33D45.crl"
+        )
+        == "rsync.paas.rpki.prepdev.ripe.net"
+    )
+    assert (
+        parse_proto_host_from_url(
+            "rsync.paas.rpki.prepdev.ripe.net/repository/fc05bbfd-23b2-44df-b180-f1878e582a05/0/F239CACE716335E7E4079F4068CCE35BD9F33D45.crl"
+        )
+        == "rsync.paas.rpki.prepdev.ripe.net"
+    )

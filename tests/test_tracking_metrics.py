@@ -21,7 +21,10 @@ def test_add_remove_fetch_status(sample_config: Configuration) -> None:
     ) as f:
         subject.update_warning_metrics(f.read(), True)
 
-    fetch_uris = set(f[0] for f in subject.fetched)
+    fetch_uris = set(f.uri for f in subject.fetch_status)
+
+    # Clear the last seen status for all
+    subject.last_seen.clear()
 
     # Now read the file where some repositories have been removed
     with (
@@ -29,7 +32,7 @@ def test_add_remove_fetch_status(sample_config: Configuration) -> None:
     ).open("r") as f:
         subject.update_warning_metrics(f.read(), True)
 
-    fetch_uris_after = set(f[0] for f in subject.fetched)
+    fetch_uris_after = set(f.uri for f in subject.fetch_status)
 
     # two were removed
     assert "https://rrdp.paas.rpki.ripe.net/notification.xml" in (
