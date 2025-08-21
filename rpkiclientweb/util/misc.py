@@ -83,9 +83,14 @@ def parse_proto_host_from_url(url: str) -> str:
     if url.startswith(".rsync/"):
         url = url[7:]
 
+    # when a URL has no scheme, add a synthetic one, and strip it on return.
     tokens = urllib.parse.urlparse(url if url else "")
-    if url and (not tokens or (not tokens.scheme and not tokens.netloc)):
-        return url
+    if not tokens or (not tokens.scheme and not tokens.netloc):
+        tokens = urllib.parse.urlparse(f"unknown://{url}")
+
+        return tokens._replace(
+            scheme="", path="", params="", query="", fragment=""
+        ).geturl()[2:]
 
     return tokens._replace(path="", params="", query="", fragment="").geturl()
 

@@ -10,6 +10,7 @@ from rpkiclientweb.models import (
     RpkiClientError,
     RPKIClientWarning,
 )
+from rpkiclientweb.util.misc import parse_proto_host_from_url
 
 #
 # Regular expressions matching log lines.
@@ -320,8 +321,10 @@ def parse_fetch_status(line: str) -> Generator[FetchStatus, None, None]:  # noqa
 
     rrdp_referenced_file_deleted = SYNC_RRDP_REFERENCED_FILE_DELETED.match(line)
     if rrdp_referenced_file_deleted:
+        # This is a full object uri -> take protocol + host.
         yield FetchStatus(
-            rrdp_referenced_file_deleted.group("uri"), "rrdp_referenced_file_deleted"
+            parse_proto_host_from_url(rrdp_referenced_file_deleted.group("uri")),
+            "rrdp_referenced_file_deleted",
         )
         return
 

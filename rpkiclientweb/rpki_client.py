@@ -7,7 +7,7 @@ import logging
 import os
 import time
 from dataclasses import dataclass, field
-from typing import FrozenSet, List, Tuple
+from typing import FrozenSet, List
 
 from prometheus_async.aio import time as time_metric
 from prometheus_async.aio import track_inprogress
@@ -30,7 +30,6 @@ from rpkiclientweb.metrics import (
 from rpkiclientweb.outputparser import OutputParser, WarningSummary, missing_labels
 from rpkiclientweb.rpki_client_output import JSONOutputParser, OpenmetricsOutputParser
 from rpkiclientweb.util import json_dumps
-from rpkiclientweb.util.misc import parse_proto_host_from_url
 
 LOG = logging.getLogger(__name__)
 LOG_STDOUT = LOG.getChild("stdout")
@@ -49,6 +48,12 @@ class ExecutionResult:
     duration: float
 
 
+@dataclass(frozen=True)
+class FetchEntry:
+    uri: str
+    type: str
+
+
 @dataclass
 class RpkiClient:
     """Wrapper for rpki-client."""
@@ -61,7 +66,7 @@ class RpkiClient:
     openmetrics_parser: OpenmetricsOutputParser = field(init=False)
     json_parser: JSONOutputParser = field(init=False)
 
-    fetched: FrozenSet[Tuple[str, str]] = frozenset()
+    fetch_status: set[FetchEntry] = field(default_factory=set)
     last_seen: dict[str, datetime.datetime] = field(default_factory=dict)
 
     def __post_init__(self) -> None:
@@ -226,42 +231,39 @@ class RpkiClient:
         for repo in parsed.pulled:
             RPKI_CLIENT_PULLED.labels(repo).set_to_current_time()
 
-        fetched: list[Tuple[str, str]] = []
-
         for fetch_status in parsed.fetch_status:
             RPKI_CLIENT_FETCH_STATUS.labels(
-                uri=parse_proto_host_from_url(fetch_status.uri), type=fetch_status.type
+                uri=fetch_status.uri, type=fetch_status.type
             ).inc(fetch_status.count)
 
-            fetched.append((fetch_status.uri, fetch_status.type))
+            self.fetch_status.add(FetchEntry(fetch_status.uri, fetch_status.type))
             self.last_seen[fetch_status.uri] = datetime.datetime.now()
 
-        new_fetched = frozenset(fetched)
-
         # Clean up fetch status metrics for unreferenced repos
-        for uri, fetch_type in self.fetched - new_fetched:
-            last_seen_at = self.last_seen.get(uri, None)
+        keep_uris: set[str] = set()
 
+        for uri, last_seen in self.last_seen.items():
             # Keep metric for 24 hours if it was seen
-            keep = (
-                last_seen_at
-                and (datetime.datetime.now() - last_seen_at).total_seconds()
-                < 24 * 60 * 60
-            )
-            if not keep:
-                LOG.info(
-                    "removed metric for unreferenced repository: rpkiclient_fetch_status_total{type='%s', uri='%s'}",
-                    fetch_type,
-                    uri,
-                )
-                # remove the metric
-                RPKI_CLIENT_FETCH_STATUS.remove(
-                    parse_proto_host_from_url(uri), fetch_type
-                )
-                # and remove entry
-                self.last_seen.pop(uri, None)
+            keep = (datetime.datetime.now() - last_seen) < datetime.timedelta(days=1)
 
-        self.fetched = new_fetched
+            if keep:
+                keep_uris.add(uri)
+
+        old_fetch_status = self.fetch_status.copy()
+
+        for removed_uri in self.last_seen.keys() - keep_uris:
+            # Remove the host from the last_seen dict
+            self.last_seen.pop(removed_uri, None)
+
+        for entry in old_fetch_status:
+            if entry.uri not in keep_uris:
+                LOG.info(
+                    "removing metric for unreferenced repository: rpkiclient_fetch_status_total{type='%s', uri='%s'}",
+                    entry.type,
+                    entry.uri,
+                )
+                self.fetch_status.discard(entry)
+                RPKI_CLIENT_FETCH_STATUS.remove(entry.uri, entry.type)
 
         for rpki_client_error in parsed.rpki_client_errors:
             RPKI_CLIENT_ERRORS.labels(type=rpki_client_error.warning_type).inc()
