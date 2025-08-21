@@ -41,6 +41,7 @@ Changes
     100% consistent, the `.rsync` prefix should be gone from metrics (and
     replaced with `rsync://`)
   * **switch to uv + hatchling for build system**
+  * add PEP 751 `pylock.toml` for dependencies
   * switch github actions for uv build
   * container based on Fedora 42
   * use newer upload-artifacts github action

@@ -8,6 +8,7 @@ Calculates the time left to the deadline and then execs `timeout` with
 appropriate arguments. Timeout will SIGKILL on the deadline and SIGTERM
 max(time left/2, time left-0.5)s before deadline.
 """
+
 import datetime
 import os
 import sys
