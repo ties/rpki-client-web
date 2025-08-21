@@ -17,6 +17,7 @@ from rpkiclientweb.parsing import (
     parse_rpki_client_error,
 )
 from rpkiclientweb.util import parse_host
+from rpkiclientweb.util.misc import strip_leading_rsync
 
 __all__ = ["OutputParser", "missing_labels"]
 
@@ -68,22 +69,26 @@ class OutputParser:
     @property
     def pulling(self) -> FrozenSet[str]:
         """The repositories a pull started from."""
-        res = set()
+        res: set[str] = set()
         for line in self.lines:
             pulling = PULLING_RE.match(line)
             if pulling:
-                res.add(pulling.group("uri"))
+                res.add(strip_leading_rsync(pulling.group("uri")))
 
         return frozenset(res)
 
     @property
     def pulled(self) -> FrozenSet[str]:
-        """The repositories pulled from."""
-        res = set()
+        """
+        The repositories pulled from.
+
+        Keeps the individual rsync/RRDP uris, but cleans up prefixes.
+        """
+        res: set[str] = set()
         for line in self.lines:
             pulling = PULLED_RE.match(line)
             if pulling:
-                res.add(pulling.group("uri"))
+                res.add(strip_leading_rsync(pulling.group("uri")))
 
         return frozenset(res)
 
