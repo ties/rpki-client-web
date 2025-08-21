@@ -49,6 +49,7 @@ def parse_host(incomplete_uri: str) -> str:
     rrdp/hex(sha256(rrdp_notification_url))/rrdp.example.org/file.ext
     .rrdp/hex(sha256(rrdp_notification_url))/rrdp.example.org/file.ext
     rsync/rpki.example.org/file.ext
+    .rsync/rpki.example.org/file.ext
     ```
 
     """
@@ -61,7 +62,7 @@ def parse_host(incomplete_uri: str) -> str:
 
     if tokens[0] in ("rrdp", ".rrdp"):
         uri_tokens = tokens[2:]
-    elif tokens[0] == "rsync":
+    elif tokens[0] in ("rsync", ".rsync"):
         uri_tokens = tokens[1:]
     else:
         uri_tokens = tokens
@@ -87,6 +88,19 @@ def parse_proto_host_from_url(url: str) -> str:
         return url
 
     return tokens._replace(path="", params="", query="", fragment="").geturl()
+
+
+def strip_leading_rsync(uri: str) -> str:
+    """
+    Strip leading rsync/ or .rsync/ from uri.
+
+    Used to reduce the cardinality of the corresponding metric.
+    """
+    if uri.startswith(".rsync/"):
+        return uri[7:]
+    elif uri.startswith("rsync/"):
+        return uri[6:]
+    return uri
 
 
 def validate(should_be_true: bool, message: str, *args: str) -> None:
