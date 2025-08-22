@@ -10,7 +10,7 @@ from rpkiclientweb.models import (
     RpkiClientError,
     RPKIClientWarning,
 )
-from rpkiclientweb.util.misc import parse_proto_host_from_url
+from rpkiclientweb.util.misc import parse_proto_host_from_url, strip_leading_rsync
 
 #
 # Regular expressions matching log lines.
@@ -376,16 +376,20 @@ def parse_fetch_status(line: str) -> Generator[FetchStatus, None, None]:  # noqa
 
     cache_fallback = SYNC_CACHE_FALLBACK.match(line)
     if cache_fallback:
-        yield FetchStatus(cache_fallback.group("uri"), "sync_fallback_to_cache")
+        yield FetchStatus(
+            strip_leading_rsync(cache_fallback.group("uri")), "sync_fallback_to_cache"
+        )
         return
 
     load_failed = SYNC_RSYNC_LOAD_FAILED.match(line)
     if load_failed:
-        yield FetchStatus(load_failed.group("uri"), "rsync_load_failed")
+        yield FetchStatus(
+            strip_leading_rsync(load_failed.group("uri")), "rsync_load_failed"
+        )
         return
 
 
-def parse_rpki_client_error(line) -> Generator[RpkiClientError, None, None]:
+def parse_rpki_client_error(line: str) -> Generator[RpkiClientError, None, None]:
     """Errors output by rpki-client."""
     assertion_failed = RPKI_CLIENT_ASSERTION_FAILED.match(line)
     if assertion_failed:
