@@ -40,6 +40,7 @@ Changes
   * clean up the URIs in some metrics: while it is not possible to get them
     100% consistent, the `.rsync` prefix should be gone from metrics (and
     replaced with `rsync://`)
+  * iteratively clean up other high cardinality url-values in label
   * **switch to uv + hatchling for build system**
   * add PEP 751 `pylock.toml` for dependencies
   * switch github actions for uv build

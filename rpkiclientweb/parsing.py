@@ -276,9 +276,12 @@ def parse_fetch_status(line: str) -> Generator[FetchStatus, None, None]:  # noqa
         )
         return
 
+    # This contains the full url -> take protocol + host only for low cardinality.
     tls_failure = SYNC_RRDP_TLS_FAILURE.match(line)
     if tls_failure:
-        yield FetchStatus(tls_failure.group("uri"), "tls_failure")
+        yield FetchStatus(
+            parse_proto_host_from_url(tls_failure.group("uri")), "tls_failure"
+        )
         return
 
     synchronisation_timeout = SYNC_SYNCHRONISATION_TIMEOUT.match(line)
