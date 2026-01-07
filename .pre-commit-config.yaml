@@ -13,14 +13,14 @@ repos:
       - id: forbid-submodules
   - repo: https://github.com/astral-sh/uv-pre-commit
     # uv version.
-    rev: 0.8.12
+    rev: 0.9.22
     hooks:
       - id: uv-lock
       - id: uv-export
         args: ["-o", "pylock.toml"]
   # Use official astral ruff pre-commit hooks
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.12.9
+    rev: v0.14.10
     hooks:
       # Run the linter with fixes
       - id: ruff-check

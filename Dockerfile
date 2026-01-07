@@ -1,4 +1,6 @@
-FROM fedora:42 AS builder
+ARG FEDORA_VERSION="43"
+
+FROM fedora:${FEDORA_VERSION} AS builder
 
 # configure dnf to pick best and no weak dependencies
 RUN echo -e '[main]\ninstall_weak_deps=False\nbest=True' > /etc/dnf/dnf.conf
@@ -31,7 +33,7 @@ COPY . /opt/rpkiclientweb
 RUN --mount=type=cache,sharing=locked,target=/root/.cache/uv \
     uv sync --locked --no-dev
 
-FROM fedora:42
+FROM fedora:${FEDORA_VERSION}
 
 # configure dnf to pick best and no weak dependencies
 RUN echo -e '[main]\ninstall_weak_deps=False\nbest=True' > /etc/dnf/dnf.conf
