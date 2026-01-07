@@ -34,7 +34,8 @@ Endpoints
 Changes
 =======
 
-2025-xx-yy v0.15.1:
+2026-01-07 v0.15.1:
+  * container based on Fedora 43
   * updated dependencies
   * remove leftover `rpkiclient_fetch_status_total` metrics for unreferenced
     repositories after the uri has not been seen for 24h.
@@ -45,7 +46,6 @@ Changes
   * **switch to uv + hatchling for build system**
   * add PEP 751 `pylock.toml` for dependencies
   * switch github actions for uv build
-  * container based on Fedora 42
   * use newer upload-artifacts github action
 
 2025-01-15 v0.15.0:

@@ -1,6 +1,6 @@
 [project]
 name = "rpkiclientweb"
-version = "0.15.0"
+version = "0.15.1"
 license = {text = "MIT"}
 keywords = ["rpki", "rpki-client", "validator", "metrics", "prometheus"]
 description = "A web api for RPKI-client"
