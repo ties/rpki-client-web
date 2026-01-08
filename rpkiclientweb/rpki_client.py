@@ -7,7 +7,7 @@ import logging
 import os
 import time
 from dataclasses import dataclass, field
-from typing import FrozenSet, List
+from typing import FrozenSet, List, Tuple
 
 from prometheus_async.aio import time as time_metric
 from prometheus_async.aio import track_inprogress
@@ -31,6 +31,9 @@ from rpkiclientweb.outputparser import OutputParser, WarningSummary, missing_lab
 from rpkiclientweb.rpki_client_output import JSONOutputParser, OpenmetricsOutputParser
 from rpkiclientweb.util import json_dumps
 
+# Type alias for stdout lines with timestamps
+TimestampedLine = Tuple[datetime.datetime, str]
+
 LOG = logging.getLogger(__name__)
 LOG_STDOUT = LOG.getChild("stdout")
 LOG_STDERR = LOG.getChild("stderr")
@@ -43,8 +46,8 @@ class ExecutionResult:
     """Execution result (exit code + output)."""
 
     returncode: int
-    stdout: str
-    stderr: str
+    stdout: List[TimestampedLine]
+    stderr: List[TimestampedLine]
     duration: float
 
 
@@ -52,6 +55,24 @@ class ExecutionResult:
 class FetchEntry:
     uri: str
     type: str
+
+
+async def read_stream_with_timestamps(
+    stream: asyncio.StreamReader,
+    logger: logging.Logger | None = None,
+) -> List[TimestampedLine]:
+    """Read stream line-by-line, capturing timestamp for each line."""
+    lines: List[TimestampedLine] = []
+    while True:
+        line_bytes = await stream.readline()
+        if not line_bytes:
+            break
+        timestamp = datetime.datetime.now()
+        line = line_bytes.decode("utf-8", errors="replace").rstrip("\r\n")
+        lines.append((timestamp, line))
+        if logger and logger.isEnabledFor(logging.DEBUG):
+            logger.debug(line)
+    return lines
 
 
 @dataclass
@@ -152,6 +173,15 @@ class RpkiClient:
             env=env,
         )
 
+        # Start reading stdout and stderr with timestamps asynchronously
+        # Pass loggers to stream output as it arrives
+        stdout_task = asyncio.create_task(
+            read_stream_with_timestamps(proc.stdout, LOG_STDOUT)
+        )
+        stderr_task = asyncio.create_task(
+            read_stream_with_timestamps(proc.stderr, LOG_STDERR)
+        )
+
         try:
             if self.config.timeout > 0:
                 await asyncio.wait_for(proc.wait(), self.config.timeout)
@@ -161,36 +191,25 @@ class RpkiClient:
             LOG.error("timeout (%ds): killing %d", self.config.timeout, proc.pid)
             proc.kill()
 
-        stdout, stderr = await proc.communicate()
+        # Wait for stream reading to complete
+        stdout_lines, stderr_lines = await asyncio.gather(stdout_task, stderr_task)
         duration = time.monotonic() - t0
         LOG.info(
             "[%d] exited with %d in %f seconds", proc.pid, proc.returncode, duration
         )
 
-        # log lines to separate lines - requested feature because some setups
-        # truncate log output.
-        if LOG_STDOUT.isEnabledFor(logging.DEBUG):
-            for line in stdout.decode(errors="replace").splitlines():
-                LOG_STDOUT.debug(line)
-        if LOG_STDERR.isEnabledFor(logging.DEBUG):
-            for line in stderr.decode(errors="replace").splitlines():
-                LOG_STDERR.debug(line)
-
         RPKI_CLIENT_UPDATE_COUNT.labels(returncode=proc.returncode).inc()
         RPKI_CLIENT_LAST_DURATION.set(duration)
 
-        stdout_output = stdout.decode("utf-8", errors="replace")
-        stderr_output = stderr.decode("utf-8", errors="replace")
-
-        self.update_warning_metrics(stderr_output, proc.returncode == 0)
+        self.update_warning_metrics(stderr_lines, proc.returncode == 0)
 
         asyncio.create_task(self.update_validated_objects_gauge(proc.returncode))
         asyncio.create_task(self.update_rpki_client_openmetrics())
 
         return ExecutionResult(
             returncode=proc.returncode,
-            stdout=stdout_output,
-            stderr=stderr_output,
+            stdout=stdout_lines,
+            stderr=stderr_lines,
             duration=duration,
         )
 
@@ -208,7 +227,9 @@ class RpkiClient:
 
         self.openmetrics_parser.parse(metrics_path)
 
-    def update_warning_metrics(self, output: str, was_successful_run: bool) -> None:
+    def update_warning_metrics(
+        self, output: List[TimestampedLine], was_successful_run: bool
+    ) -> None:
         """Update the warning gauges."""
         parsed = OutputParser(output)
 

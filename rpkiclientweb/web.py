@@ -47,8 +47,21 @@ class RpkiClientWeb:
             ]
         )
 
+    @staticmethod
+    def _format_timestamped_lines(lines: list) -> str:
+        """Format timestamped lines for HTML display."""
+        if not lines:
+            return ""
+        return "\n".join(f"{ts.isoformat()} {line}" for ts, line in lines)
+
     async def index(self, req) -> web.Response:
         """Human readable index page."""
+        stdout_formatted = (
+            self._format_timestamped_lines(self.result.stdout) if self.result else ""
+        )
+        stderr_formatted = (
+            self._format_timestamped_lines(self.result.stderr) if self.result else ""
+        )
         return web.Response(
             text=f"""<html>
             <head><title>rpki-client wrapper</title></head>
@@ -60,8 +73,8 @@ class RpkiClientWeb:
                 <p><a href="/objects/validated">Validated objects</a></p>
                 <p><a href="/result">Result</a></p>
                 <p>{f"Process exited with {self.result.returncode} in {self.result.duration}s" if self.result else "No output available (yet)"}</p>
-                {f"<p><h3>stdout</h3></p><p><pre>{self.result.stdout}</pre></p>" if self.result else ""}
-                {f"<p><h3>stderr</h3></p><p><pre>{self.result.stderr}</pre></p>" if self.result else ""}
+                {f"<p><h3>stdout</h3></p><p><pre>{stdout_formatted}</pre></p>" if self.result else ""}
+                {f"<p><h3>stderr</h3></p><p><pre>{stderr_formatted}</pre></p>" if self.result else ""}
             </body>
         </html>""",
             content_type="text/html",

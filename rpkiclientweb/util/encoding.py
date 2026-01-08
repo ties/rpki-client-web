@@ -1,5 +1,6 @@
 import json
 from dataclasses import asdict, is_dataclass
+from datetime import datetime
 from pathlib import Path
 from typing import Any, Dict, Optional, TextIO
 
@@ -23,6 +24,8 @@ class CustomJSONEncoder(json.JSONEncoder):
             return asdict(o)
         if isinstance(o, Path):
             return str(o)
+        if isinstance(o, datetime):
+            return o.isoformat()
         # Let the base class default method raise the TypeError if otherwise
         # unknown)
         return json.JSONEncoder.default(self, o)

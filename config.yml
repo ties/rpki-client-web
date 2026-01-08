@@ -20,7 +20,6 @@ host: 0.0.0.0
 port: 8888
 
 rpki_client: /usr/sbin/rpki-client
-# rsync_command: ./util/rsync_timeout
 
 additional_opts: []
   # use -R to disable RRDP on recent rpki-client versions.
@@ -30,6 +29,4 @@ trust_anchor_locators:
   - /etc/pki/tals/apnic.tal
   - /etc/pki/tals/lacnic.tal
   - /etc/pki/tals/ripe.tal
-  # You need to supply your own copy of the ARIN tal
-  # If you agree to the ARIN RPA https://www.arin.net/resources/manage/rpki/tal/
-  # links to the TAL at https://www.arin.net/resources/manage/rpki/arin.tal
+  - /etc/pki/tals/arin.tal
