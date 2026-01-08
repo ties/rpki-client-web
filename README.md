@@ -34,6 +34,10 @@ Endpoints
 Changes
 =======
 
+2026-01-08 v0.15.2:
+  * Stream rpki-client output to stdout/stderr when debugging logging, instead
+    of writing in one batch.
+
 2026-01-07 v0.15.1:
   * container based on Fedora 43
   * updated dependencies
