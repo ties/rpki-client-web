@@ -1,7 +1,8 @@
+import datetime
 import logging
 import re
 from collections import Counter
-from typing import FrozenSet, Generator, List
+from typing import FrozenSet, Generator, List, Tuple, Union
 
 from rpkiclientweb.metrics import RPKI_CLIENT_WEB_PARSE_ERROR
 from rpkiclientweb.models import (
@@ -18,6 +19,9 @@ from rpkiclientweb.parsing import (
 )
 from rpkiclientweb.util import parse_host
 from rpkiclientweb.util.misc import strip_leading_rsync
+
+# Type alias for timestamped lines
+TimestampedLine = Tuple[datetime.datetime, str]
 
 __all__ = ["OutputParser", "missing_labels"]
 
@@ -48,13 +52,16 @@ class OutputParser:
 
     lines: List[str]
 
-    def __init__(self, stderr_output: str):
-        """Skip unparseable intertwined lines."""
-        self.lines = [
-            line
-            for line in stderr_output.split("\n")
-            if not INTERTWINED_LINE_RE.match(line)
-        ]
+    def __init__(self, stderr_output: Union[str, List[TimestampedLine]]):
+        """Skip unparseable intertwined lines, extract line content from timestamps."""
+        if isinstance(stderr_output, str):
+            # Legacy format: plain string
+            raw_lines = stderr_output.split("\n")
+        else:
+            # New format: list of (timestamp, line) tuples
+            raw_lines = [line for _ts, line in stderr_output]
+
+        self.lines = [line for line in raw_lines if not INTERTWINED_LINE_RE.match(line)]
 
     @property
     def warnings(self) -> Generator[RPKIClientWarning, None, None]:
