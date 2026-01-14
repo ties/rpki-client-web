@@ -8,7 +8,8 @@ RUN echo -e '[main]\ninstall_weak_deps=False\nbest=True' > /etc/dnf/dnf.conf
 # Use dependencies from fedora as much as possible, saves building them and build deps.
 RUN --mount=type=cache,sharing=locked,target=/var/cache/dnf \
     --mount=type=cache,sharing=locked,target=/var/cache/libdnf5 \
-  dnf install -y tini rpki-client python3-uv rsync \
+  dnf install -y tini python3-uv rsync \
+  && dnf install -y --enablerepo=updates-testing rpki-client \
   && dnf install -y @development-tools python3-devel \
   && yum info rpki-client >> /rpki-client-version.txt
 
@@ -40,7 +41,8 @@ RUN echo -e '[main]\ninstall_weak_deps=False\nbest=True' > /etc/dnf/dnf.conf
 
 RUN --mount=type=cache,sharing=locked,target=/var/cache/dnf \
     --mount=type=cache,sharing=locked,target=/var/cache/libdnf5 \
-  dnf install -y tini rpki-client rsync \
+  dnf install -y tini rsync \
+  && dnf install -y --enablerepo=updates-testing rpki-client \
   && yum info rpki-client >> /rpki-client-version.txt
 
 COPY --from=builder --chown=daemon:daemon /opt/rpkiclientweb /opt/rpkiclientweb
