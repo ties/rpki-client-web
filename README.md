@@ -34,9 +34,9 @@ Endpoints
 Changes
 =======
 
-2026-01-14 (no release of package):
+2026-01-14 v0.15.2post1:
   * container: Install rpki-client from fedora testing if it's in there.
-    Installs rpki-client 9.7
+    Installs rpki-client 9.7.
 
 2026-01-08 v0.15.2:
   * Stream rpki-client output to stdout/stderr when debugging logging, instead
