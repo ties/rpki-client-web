@@ -34,6 +34,9 @@ Endpoints
 Changes
 =======
 
+2026-02-03 v0.15.2post2:
+  * container: Rebuild with new openssl
+
 2026-01-14 v0.15.2post1:
   * container: Install rpki-client from fedora testing if it's in there.
     Installs rpki-client 9.7.

@@ -11,7 +11,7 @@ RUN --mount=type=cache,sharing=locked,target=/var/cache/dnf \
   dnf install -y tini python3-uv rsync \
   && dnf install -y --enablerepo=updates-testing rpki-client \
   && dnf install -y @development-tools python3-devel \
-  && yum info rpki-client >> /rpki-client-version.txt
+  && dnf info rpki-client >> /rpki-client-version.txt
 
 #
 # Tini is used from the base image distribution since this is cross-architecture.
@@ -43,7 +43,7 @@ RUN --mount=type=cache,sharing=locked,target=/var/cache/dnf \
     --mount=type=cache,sharing=locked,target=/var/cache/libdnf5 \
   dnf install -y tini rsync \
   && dnf install -y --enablerepo=updates-testing rpki-client \
-  && yum info rpki-client >> /rpki-client-version.txt
+  && dnf info rpki-client >> /rpki-client-version.txt
 
 COPY --from=builder --chown=daemon:daemon /opt/rpkiclientweb /opt/rpkiclientweb
 WORKDIR /opt/rpkiclientweb
