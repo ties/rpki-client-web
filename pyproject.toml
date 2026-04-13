@@ -27,7 +27,7 @@ dev = [
     "twine>=6.1.0",
     "pytest>=8.3.4",
     "pytest-cov>=6.0.0",
-    "pytest-xdist>=3.2.1",
+    "pytest-xdist>=3.8.0",
     "ruff>=0.9.7",
     "check-manifest>=0.50",
 ]
