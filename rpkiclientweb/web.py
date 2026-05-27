@@ -39,8 +39,8 @@ class RpkiClientWeb:
                 web.get("/result", self.json_result),
                 web.get("/objects/validated", self.validated_objects),
                 web.static(
-                    "/cache",
-                    self.config.cache_dir,
+                    "/output",
+                    self.config.output_dir,
                     follow_symlinks=False,
                     show_index=True,
                 ),
@@ -67,10 +67,11 @@ class RpkiClientWeb:
             <head><title>rpki-client wrapper</title></head>
             <body>
                 <h1>rpki-client wrapper</h1>
-                <p><a href="/cache">Cache directory</a></p>
+                <p><a href="/output">Output directory</a></p>
                 <p><a href="/config">Configuration</a></p>
                 <p><a href="/metrics">Metrics</a></p>
-                <p><a href="/objects/validated">Validated objects</a></p>
+                <p><a href="/objects/validated">Validated objects (JSON)</a></p>
+                <p><a href="/output/rpki.ccr">CCR</a></p>
                 <p><a href="/result">Result</a></p>
                 <p>{f"Process exited with {self.result.returncode} in {self.result.duration}s" if self.result else "No output available (yet)"}</p>
                 {f"<p><h3>stdout</h3></p><p><pre>{stdout_formatted}</pre></p>" if self.result else ""}

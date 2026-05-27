@@ -34,6 +34,14 @@ Endpoints
 Changes
 =======
 
+2026-05-27 v0.16.0:
+  * **removed** the `/cache` path showing the rpki-client cache dir.
+  * **added** `/output` that shows the output directory (including `.ccr` and
+    json)
+  * updated dependencies
+  * container: rebuild with fedora 44
+  * route path to ccr
+
 2026-02-03 v0.15.2post2:
   * container: Rebuild with new openssl
 
