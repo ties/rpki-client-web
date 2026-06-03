@@ -34,6 +34,9 @@ Endpoints
 Changes
 =======
 
+2026-xx-yy: v0.16.1:
+  *
+
 2026-05-27 v0.16.0:
   * **removed** the `/cache` path showing the rpki-client cache dir.
   * **added** `/output` that shows the output directory (including `.ccr` and
