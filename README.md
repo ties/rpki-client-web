@@ -37,7 +37,7 @@ Changes
 2026-07-17: v0.16.1:
   * Known to be working with rpki-client 9.8.1 from Fedora. Tested in production
     at the RIPE NCC.
-  * Updated dependencies
+  * Updated product and development dependencies
 
 2026-05-27 v0.16.0:
   * **removed** the `/cache` path showing the rpki-client cache dir.

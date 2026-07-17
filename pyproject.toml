@@ -24,12 +24,11 @@ repository = "https://github.com/ties/rpki-client-web"
 
 [dependency-groups]
 dev = [
-    "twine>=6.1.0",
-    "pytest>=8.3.4",
-    "pytest-cov>=6.0.0",
-    "pytest-xdist>=3.2.1",
-    "ruff>=0.9.7",
-    "check-manifest>=0.50",
+    "twine>=6.2.0",
+    "pytest>=9.1.1",
+    "pytest-cov>=7.1.0",
+    "ruff>=0.15.22",
+    "check-manifest>=0.51",
 ]
 
 [build-system]
