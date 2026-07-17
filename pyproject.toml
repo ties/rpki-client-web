@@ -14,9 +14,9 @@ classifiers = [
 requires-python = ">=3.10"
 
 dependencies = [
-    "aiohttp>=3.13.3",
-    "prometheus-async>=25.1.0",
-    "PyYAML>=6.0",
+    "aiohttp>=3.14.1",
+    "prometheus-async>=26.1.0",
+    "PyYAML>=6.0.3",
 ]
 
 [project.urls]
