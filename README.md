@@ -35,7 +35,7 @@ Changes
 =======
 
 2026-07-17: v0.16.1:
-  * Known to be working with rpki-client 9.8.1 from Fedora. Tested in production
+  * Known to be working with rpki-client 9.8-1 from Fedora. Tested in production
     at the RIPE NCC.
   * Updated product and development dependencies
 
